@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_format">%d 条消息</string>
+    <string name="messages_format">来自 %2$d 个联系人的 %1$d 条消息</string>
+    <string name="reply" formatted="false">回复给 %s</string>
+    <string name="update_friend_face">更新好友头像</string>
+
+    <string name="view_token">查看令牌</string>
+    <string name="view_token_summary">查看此应用实例的令牌</string>
+
+    <string name="friend_messages">好友消息</string>
+    <string name="group_messages">群组消息</string>
+
+    <string name="server_url">服务器 URL</string>
+
+    <string name="notification">通知</string>
+
+    <string name="priority">优先级</string>
+    <string-array name="priority">
+        <item>最低</item>
+        <item>低</item>
+        <item>默认</item>
+        <item>高</item>
+        <item>最高</item>
+    </string-array>
+
+    <string name="vibrate">震动</string>
+    <string-array name="vibrate">
+        <item>禁用</item>
+        <item>默认</item>
+        <item>短</item>
+        <item>长</item>
+    </string-array>
+
+    <string name="led_light">呼吸灯</string>
+    <string name="sound">提示音</string>
+
+    <string name="select_qq">选择 QQ 程序</string>
+    <string name="select_qq_summary">这将被用于点击通知或是检测是否是前台</string>
+
+    <string name="at_as_friend">\@ 你的消息将会被当作好友消息处理</string>
+
+    <string name="share">分享</string>
+
+</resources>

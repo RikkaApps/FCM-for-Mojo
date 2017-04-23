@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="view_token"
+        android:title="@string/view_token"
+        android:summary="@string/view_token_summary"/>
+
+    <EditTextPreference
+        android:key="server_url"
+        android:title="@string/server_url"
+        android:summary="%s"
+        android:selectAllOnFocus="true"
+        android:inputType="textUri"
+        android:defaultValue="http://0.0.0.0:5000"/>
+
+    <EditTextPreference
+        android:key="qq_package"
+        android:title="@string/select_qq"
+        android:hint="@string/select_qq_summary"
+        android:summary="%s"
+        android:selectAllOnFocus="true"
+        android:inputType="textUri"
+        android:defaultValue="com.tencent.mobileqq"/>
+
+    <PreferenceCategory
+        android:title="@string/friend_messages">
+
+        <SwitchPreference
+            android:key="notification"
+            android:title="@string/notification"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:key="light"
+            android:title="@string/led_light"
+            android:defaultValue="true"
+            android:dependency="notification"/>
+
+        <SimpleMenuPreference
+            android:key="vibrate"
+            android:title="@string/vibrate"
+            android:summary="%s"
+            android:entries="@array/vibrate"
+            android:entryValues="@array/vibrate_value"
+            android:defaultValue="1"
+            android:dependency="notification"/>
+
+        <RingtonePreference
+            android:key="sound"
+            android:title="@string/sound"
+            android:summary="%s"
+            android:ringtoneType="notification"
+            android:defaultValue="content://settings/system/notification_sound"
+            android:dependency="notification"/>
+
+        <SimpleMenuPreference
+            android:key="priority"
+            android:title="@string/priority"
+            android:summary="%s"
+            android:entries="@array/priority"
+            android:entryValues="@array/priority_value"
+            android:defaultValue="1"
+            android:dependency="notification"/>
+
+        <Preference
+            android:key="update_friend_face"
+            android:title="@string/update_friend_face"
+            android:dependency="notification"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/group_messages">
+
+        <SwitchPreference
+            android:key="notification_group"
+            android:summary="@string/at_as_friend"
+            android:title="@string/notification"
+            android:defaultValue="false"/>
+
+        <SwitchPreference
+            android:key="light_group"
+            android:title="@string/led_light"
+            android:defaultValue="true"
+            android:dependency="notification_group"/>
+
+        <SimpleMenuPreference
+            android:key="vibrate_group"
+            android:title="@string/vibrate"
+            android:summary="%s"
+            android:entries="@array/vibrate"
+            android:entryValues="@array/vibrate_value"
+            android:defaultValue="1"
+            android:dependency="notification_group"/>
+
+        <RingtonePreference
+            android:key="sound_group"
+            android:title="@string/sound"
+            android:summary="%s"
+            android:ringtoneType="notification"
+            android:defaultValue="content://settings/system/notification_sound"
+            android:dependency="notification_group"/>
+
+        <SimpleMenuPreference
+            android:key="priority_group"
+            android:title="@string/priority"
+            android:summary="%s"
+            android:entries="@array/priority"
+            android:entryValues="@array/priority_value"
+            android:defaultValue="1"
+            android:dependency="notification_group"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

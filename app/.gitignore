@@ -1,0 +1,4 @@
+/build
+*.apk
+*.iml
+/google-services.json

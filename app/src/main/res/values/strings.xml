@@ -1,0 +1,44 @@
+<resources>
+    <string name="message_format">%d messages</string>
+    <string name="messages_format">%1$d messages from %2$d chats</string>
+    <string name="reply" formatted="false">Reply to %s</string>
+    <string name="update_friend_face">Update friend face</string>
+
+    <string name="view_token">View token</string>
+    <string name="view_token_summary">View token of this app instance</string>
+
+    <string name="friend_messages">Friend messages</string>
+    <string name="group_messages">Group messages</string>
+
+    <string name="server_url">Server URL</string>
+
+    <string name="notification">Notification</string>
+
+    <string name="priority">Priority</string>
+    <string-array name="priority">
+        <item>Min</item>
+        <item>Low</item>
+        <item>Default</item>
+        <item>High</item>
+        <item>Max</item>
+    </string-array>
+
+    <string name="vibrate">Vibrate</string>
+    <string-array name="vibrate">
+        <item>Disabled</item>
+        <item>Default</item>
+        <item>Short</item>
+        <item>Long</item>
+    </string-array>
+
+    <string name="led_light">LED light</string>
+    <string name="sound">Sound</string>
+
+    <string name="select_qq">Select QQ application</string>
+    <string name="select_qq_summary">This will be used when notification clicked or get if is foreground</string>
+
+    <string name="at_as_friend">Messages that \@ you will be treated as friend message</string>
+
+    <string name="share">Share</string>
+
+</resources>

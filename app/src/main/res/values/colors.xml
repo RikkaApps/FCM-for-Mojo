@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorPrimaryDark">#0288D1</color>
+    <color name="colorAccent">#FFC400</color>
+    <color name="colorNotification">#29B6FC</color>
+
+    <color name="colorNotificationRed">#EF5350</color>
+    <color name="colorNotificationOrange">#FFA726</color>
+    <color name="colorNotificationYellow">#FFEE58</color>
+    <color name="colorNotificationGreen">#66BB6A</color>
+    <color name="colorNotificationIndigo">#3F51B5</color>
+    <color name="colorNotificationBlue">@color/colorNotification</color>
+    <color name="colorNotificationPurple">#7E57C2</color>
+
+</resources>
