@@ -3,6 +3,7 @@ package moe.shizuku.fcmformojo.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.RemoteInput;
 import android.util.Log;
@@ -11,7 +12,9 @@ import android.widget.Toast;
 import moe.shizuku.fcmformojo.BuildConfig;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
+import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.api.WebQQService;
+import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.SendResult;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import retrofit2.Call;
@@ -53,26 +56,23 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
+        long id = intent.getLongExtra(EXTRA_ID, 0);
+        boolean all = intent.getBooleanExtra(EXTRA_ALL, false);
+
         switch (intent.getAction()) {
             case ACTION_REPLY:
                 handleReply(context, intent);
                 break;
             case ACTION_CONTENT:
-                handleContent(context);
-
-                FFMApplication.get(context).getNotificationBuilder()
-                        .clearMessages(context);
+                handleContent(context, id, all);
                 break;
             case ACTION_DELETE:
-                long id = intent.getLongExtra(EXTRA_ID, 0);
-                boolean all = intent.getBooleanExtra(EXTRA_ALL, false);
-
                 if (!all) {
                     FFMApplication.get(context).getNotificationBuilder()
-                            .clearMessages(context, id);
+                            .clearMessages(id);
                 } else {
                     FFMApplication.get(context).getNotificationBuilder()
-                            .clearMessages(context);
+                            .clearMessages();
                 }
                 break;
         }
@@ -127,11 +127,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 }
 
                 NotificationBuilder nb = FFMApplication.get(context).getNotificationBuilder();
-                if (nb.getSendersCount() <= 1) {
-                    nb.clearMessages(context);
-                } else {
-                    nb.clearMessages(context, id);
-                }
+                nb.clearMessages(id);
             }
 
             @Override
@@ -146,12 +142,26 @@ public class NotificationReceiver extends BroadcastReceiver {
                 });
 
                 FFMApplication.get(context).getNotificationBuilder()
-                        .clearMessages(context, id);
+                        .clearMessages(id);
             }
         });
     }
 
-    private void handleContent(Context context) {
+    private void handleContent(Context context, long id, boolean all) {
+        if (id == -2) {
+            Chat chat = FFMApplication.get(context).getNotificationBuilder().getChat(id);
+            if (chat != null) {
+                context.startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(chat.getLastMessage().getContent())), context.getString(R.string.open)));
+            }
+
+            FFMApplication.get(context).getNotificationBuilder()
+                    .clearMessages(id);
+            return;
+        }
+
+        FFMApplication.get(context).getNotificationBuilder()
+                .clearMessages();
+
         Intent intent = context.getPackageManager().getLaunchIntentForPackage(FFMSettings.getQQPackageName());
         if (intent == null) {
             return;

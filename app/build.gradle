@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -7,7 +9,7 @@ android {
         applicationId "moe.shizuku.fcmformojo"
         minSdkVersion 24
         targetSdkVersion 25
-        versionCode 1
+        versionCode gitCommitCount
         versionName "0.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resConfigs "en", "zh-rCN"

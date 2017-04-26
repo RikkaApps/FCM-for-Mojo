@@ -10,7 +10,6 @@ import android.support.v4.app.NotificationCompat;
 public class MessagingStyle extends NotificationCompat.MessagingStyle {
 
     private CharSequence mSummaryText;
-    private String mSubName;
 
     /**
      * @param userDisplayName the name to be displayed for any replies sent by the user before the
@@ -31,14 +30,12 @@ public class MessagingStyle extends NotificationCompat.MessagingStyle {
         super.addCompatExtras(extras);
 
         extras.putCharSequence(NotificationCompat.EXTRA_SUMMARY_TEXT, mSummaryText);
-        //extras.putString("android.substName", "QQQQQQ");
     }
 
     @Override
     protected void restoreFromCompatExtras(Bundle extras) {
         super.restoreFromCompatExtras(extras);
 
-        //mSubName = extras.getString("android.substName");
         mSummaryText = extras.getCharSequence(NotificationCompat.EXTRA_SUMMARY_TEXT);
     }
 }

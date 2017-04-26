@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FFMApplication extends Application {
 
-    private NotificationBuilder mNotificationBuilder = new NotificationBuilder();
+    private NotificationBuilder mNotificationBuilder;
     private Retrofit mRetrofit;
 
     private Handler mMainHandler;
@@ -37,7 +37,7 @@ public class FFMApplication extends Application {
 
         mMainHandler = new Handler(getMainLooper());
 
-        mNotificationBuilder = new NotificationBuilder();
+        mNotificationBuilder = new NotificationBuilder(this);
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(FFMSettings.getBaseUrl())
