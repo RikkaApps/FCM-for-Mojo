@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.IntRange;
+import android.support.annotation.Nullable;
 import android.support.v4.util.LongSparseArray;
 
 import java.lang.ref.WeakReference;
@@ -24,6 +25,8 @@ import moe.shizuku.fcmformojo.utils.DrawableUtils;
  * 用来放消息内容，处理发通知，通知被点击被删除的东西
  */
 public class NotificationBuilder {
+
+    private NotificationManager mNotificationManager;
 
     private LongSparseArray<Chat> mMessages;
 
@@ -49,11 +52,12 @@ public class NotificationBuilder {
         return null;
     }
 
-    public NotificationBuilder() {
+    public NotificationBuilder(Context context) {
         mSendersCount = 0;
         mMessages = new LongSparseArray<>();
         mPersonIcons = new WeakReference[7];
         mGroupIcons = new WeakReference[7];
+        mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     public int getSendersCount() {
@@ -62,6 +66,10 @@ public class NotificationBuilder {
 
     int getMessageCount() {
         return mMessageCount;
+    }
+
+    public NotificationManager getNotificationManager() {
+        return mNotificationManager;
     }
 
     /**
@@ -84,50 +92,58 @@ public class NotificationBuilder {
         }
     }
 
+    public Chat getChat(long id) {
+        return mMessages.get(id);
+    }
+
     private boolean shouldNotify(Chat chat) {
-        return FFMSettings.getNotification(chat.getType() != 1);
+        return chat.isSystemMessage() || FFMSettings.getNotification(chat.getType() != 1);
     }
 
     /**
      * 清空全部消息
      *
-     * @param context Context
      */
-    public void clearMessages(Context context) {
+    public void clearMessages() {
         mMessageCount = 0;
         mSendersCount = 0;
         mMessages.clear();
 
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+        mNotificationManager.cancelAll();
     }
 
     /**
      * 清空消息
      *
-     * @param context Context
      * @param senderId 消息发送人 id
      */
-    public void clearMessages(Context context, long senderId) {
-        if (mMessages.get(senderId) != null) {
-            mMessageCount -= mMessages.get(senderId).getMessages().size();
-            mMessages.remove(senderId);
+    public void clearMessages(long senderId) {
+        Chat chat = mMessages.get(senderId);
+        if (chat == null) {
+            return;
         }
+        mMessageCount -= chat.getMessages().size();
+        mMessages.remove(senderId);
 
         mSendersCount = mMessages.size();
 
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel((int) senderId);
+        getImpl().clear(chat, this);
     }
 
-    public static PendingIntent getContentIntent(Context context, int requestCode, long senderId, boolean all) {
-        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.contentIntent(senderId, all), 0);
+    public static PendingIntent getContentIntent(Context context, int requestCode, @Nullable Chat chat, boolean all) {
+        long id = chat == null ? 0 : chat.getId();
+        if (id == -1 || id == -3) {
+            return null;
+        }
+        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.contentIntent(id, all), 0);
     }
 
-    public static PendingIntent getDeleteIntent(Context context, int requestCode, long senderId, boolean all) {
-        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.deleteIntent(senderId, all), 0);
+    public static PendingIntent getDeleteIntent(Context context, int requestCode, @Nullable Chat chat, boolean all) {
+        long id = chat == null ? 0 : chat.getId();
+        if (id == -1 || id == -3) {
+            return null;
+        }
+        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.deleteIntent(id, all), 0);
     }
 
     Bitmap getLargeIcon(Context context, int i, boolean group) {

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
@@ -30,6 +31,8 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
 
     private static final String KEY_TEXT_REPLY = "reply";
     private static final String GROUP_KEY = "messages";
+    private static final int GROUP_ID = -10000;
+    private static final int SYSTEM_MESSAGE_ID = -10001;
 
     private static final int MAX_MESSAGES = 8;
 
@@ -38,23 +41,32 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
 
     @Override
     void notify(Context context, Chat chat, NotificationBuilder nb) {
-        int id = (int) chat.getId();
+        int id = (int) chat.getUid();
 
-        notifyGroupSummary(context, nb);
+        if (chat.isSystemMessage()) {
+            id = (int) chat.getId();
+        }
+
+        notifyGroupSummary(context, chat, nb);
 
         NotificationCompat.Builder builder = getBuilder(context, chat)
                 .setLargeIcon(getLargeIcon(context, chat, nb))
                 .setContentTitle(chat.getName())
                 .setContentText(chat.getLastMessage().getContent())
-                .setGroup(GROUP_KEY)
+                .setGroup(chat.isSystemMessage() ? null : GROUP_KEY)
                 .setGroupSummary(false)
                 .setShowWhen(true)
                 .setWhen(chat.getLastMessage().getTimestamp())
                 .setStyle(getStyle(context, chat))
-                .setContentIntent(NotificationBuilder.getContentIntent(context, id, chat.getId(), false))
-                .setDeleteIntent(NotificationBuilder.getDeleteIntent(context, id, chat.getId(), false))
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .addAction(getReplyAction(context, id, chat));
+                .setContentIntent(NotificationBuilder.getContentIntent(context, id, chat, false))
+                .setDeleteIntent(NotificationBuilder.getDeleteIntent(context, id, chat, false))
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE);
+
+        if (!chat.isSystemMessage()) {
+            builder.addAction(getReplyAction(context, id, chat));
+        } else {
+            id = SYSTEM_MESSAGE_ID;
+        }
 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -63,6 +75,10 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
     }
 
     private static Bitmap getLargeIcon(Context context, Chat chat, NotificationBuilder nb) {
+        if (chat.isSystemMessage()) {
+            return null;
+        }
+
         if (chat.getType() == 1) {
             File file = FileUtils.getCacheFile(context, "/head/" + chat.getLastMessage().getSenderUid());
             if (file.exists()) {
@@ -77,7 +93,7 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
     }
 
     private static NotificationCompat.Style getStyle(Context context, Chat chat) {
-        if (chat.getType() == 1) {
+        if (chat.getType() == 1 || chat.isSystemMessage()) {
             NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
             style.setBigContentTitle(chat.getName());
 
@@ -129,7 +145,11 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
     /**
      * 分组消息的头部
      **/
-    private void notifyGroupSummary(Context context, NotificationBuilder nb) {
+    private void notifyGroupSummary(Context context, Chat chat, NotificationBuilder nb) {
+        if (chat.isSystemMessage()) {
+            return;
+        }
+
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -139,10 +159,10 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
                 .setWhen(System.currentTimeMillis())
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(true)
-                .setContentIntent(NotificationBuilder.getContentIntent(context, 0, 0, true))
-                .setDeleteIntent(NotificationBuilder.getDeleteIntent(context, 0, 0, true));
+                .setContentIntent(NotificationBuilder.getContentIntent(context, 0, null, true))
+                .setDeleteIntent(NotificationBuilder.getDeleteIntent(context, 0, null, true));
 
-        notificationManager.notify(0, builder.build());
+        notificationManager.notify(GROUP_ID, builder.build());
     }
 
     /**
@@ -206,5 +226,21 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
         }
 
         return builder;
+    }
+
+    @Override
+    void clear(Chat chat, NotificationBuilder nb) {
+        nb.getNotificationManager().cancel((int) chat.getUid());
+
+        boolean clearGroup = true;
+        for (StatusBarNotification sbn : nb.getNotificationManager().getActiveNotifications()) {
+            if (sbn.getId() != SYSTEM_MESSAGE_ID
+                    && sbn.getId() != GROUP_ID) {
+                clearGroup = false;
+            }
+        }
+        if (clearGroup) {
+            nb.getNotificationManager().cancel(GROUP_ID);
+        }
     }
 }

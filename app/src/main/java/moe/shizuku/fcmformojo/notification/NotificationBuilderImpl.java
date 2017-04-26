@@ -13,4 +13,9 @@ abstract class NotificationBuilderImpl {
      * 发送通知
      */
     abstract void notify(Context context, Chat chat, NotificationBuilder nb);
+
+    /**
+     * 清除通知
+     */
+    abstract void clear(Chat chat, NotificationBuilder nb);
 }

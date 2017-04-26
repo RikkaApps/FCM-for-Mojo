@@ -97,6 +97,10 @@ public class Chat {
         return messages.get(messages.size() - 1);
     }
 
+    public boolean isSystemMessage() {
+        return type == 0;
+    }
+
     @Override
     public String toString() {
         return "Chat{" +

@@ -41,7 +41,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         if (foreground != null
                 && foreground.equals(FFMSettings.getQQPackageName())) {
-            mNotificationBuilder.clearMessages(this);
+            mNotificationBuilder.clearMessages();
             return;
         }
 
