@@ -176,7 +176,7 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
     public static NotificationCompat.Builder getBuilder(Context context, @Nullable Chat chat) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setColor(context.getColor(R.color.colorNotification))
-                .setSmallIcon(R.drawable.ic_noti_24dp)
+                .setSmallIcon(FFMSettings.getNotificationAppName().equals("TIM") ? R.drawable.ic_noti_tim_24dp : R.drawable.ic_noti_qq_24dp)
                 .setVisibility(Notification.VISIBILITY_PRIVATE);
 
         if (FFMApplication.get(context).isSystem()) {
