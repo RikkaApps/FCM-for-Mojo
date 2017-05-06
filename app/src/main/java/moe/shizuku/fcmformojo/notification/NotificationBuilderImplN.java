@@ -181,7 +181,7 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
 
         if (FFMApplication.get(context).isSystem()) {
             Bundle extras = new Bundle();
-            extras.putString("android.substName", "QQ");
+            extras.putString("android.substName", FFMSettings.getNotificationAppName());
             builder.addExtras(extras);
         }
 

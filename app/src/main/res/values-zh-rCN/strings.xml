@@ -44,4 +44,7 @@
 
     <string name="open">打开…</string>
 
+    <string name="notification_app_name">通知应用名</string>
+    <string name="notification_app_name_summary">显示在通知上的应用名称（需要安装到 /system/priv-app）</string>
+
 </resources>

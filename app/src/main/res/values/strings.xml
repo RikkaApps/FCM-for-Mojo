@@ -42,4 +42,7 @@
     <string name="share">Share</string>
 
     <string name="open">Open…</string>
+
+    <string name="notification_app_name">Notification app name</string>
+    <string name="notification_app_name_summary">App name displayed on the notification (require install to /system/priv-app)</string>
 </resources>

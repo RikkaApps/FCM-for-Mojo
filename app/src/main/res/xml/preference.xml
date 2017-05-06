@@ -24,6 +24,13 @@
         android:inputType="textUri"
         android:defaultValue="com.tencent.mobileqq"/>
 
+    <EditTextPreference
+        android:key="notification_app_name"
+        android:title="@string/notification_app_name"
+        android:summary="@string/notification_app_name_summary"
+        android:selectAllOnFocus="true"
+        android:defaultValue="QQ"/>
+
     <PreferenceCategory
         android:title="@string/friend_messages">
 

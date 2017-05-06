@@ -13,6 +13,7 @@ public class FFMSettings {
 
     public static final String BASE_URL = "server_url";
     public static final String QQ_PACKAGE = "qq_package";
+    public static final String NOTIFICATION_NAME = "notification_app_name";
 
     public static String getBaseUrl() {
         return Settings.getString(BASE_URL, "http://0.0.0.0:5000");
@@ -25,6 +26,10 @@ public class FFMSettings {
 
     public static String getQQPackageName() {
         return Settings.getString(QQ_PACKAGE, "com.tencent.mobileqq");
+    }
+
+    public static String getNotificationAppName() {
+        return Settings.getString(NOTIFICATION_NAME, "QQ");
     }
 
     public static boolean getNotification(boolean group) {
