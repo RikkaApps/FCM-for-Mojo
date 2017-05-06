@@ -15,13 +15,13 @@
         android:inputType="textUri"
         android:defaultValue="http://0.0.0.0:5000"/>
 
-    <EditTextPreference
+    <SimpleMenuPreference
         android:key="qq_package"
         android:title="@string/select_qq"
         android:hint="@string/select_qq_summary"
         android:summary="%s"
-        android:selectAllOnFocus="true"
-        android:inputType="textUri"
+        android:entries="@array/qq_package"
+        android:entryValues="@array/qq_package_value"
         android:defaultValue="com.tencent.mobileqq"/>
 
     <EditTextPreference
@@ -30,6 +30,14 @@
         android:summary="@string/notification_app_name_summary"
         android:selectAllOnFocus="true"
         android:defaultValue="QQ"/>
+
+    <SimpleMenuPreference
+        android:key="get_foreground"
+        android:title="@string/get_foreground"
+        android:summary="%s"
+        android:entries="@array/get_foreground"
+        android:entryValues="@array/get_foreground_value"
+        android:defaultValue="disable"/>
 
     <PreferenceCategory
         android:title="@string/friend_messages">

@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+import moe.shizuku.fcmformojo.BuildConfig;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.model.PushMessage;
@@ -36,8 +37,14 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
 
-        String foreground = FFMApplication.get(this).getForegroundPackage();
-        Log.d(TAG, "foreground: " + foreground);
+        String foreground;
+        if (BuildConfig.DEBUG) {
+            long time = System.currentTimeMillis();
+            foreground = FFMApplication.get(this).getForegroundPackage();
+            Log.d(TAG, "foreground: " + foreground + " " + (System.currentTimeMillis() - time));
+        } else {
+            foreground = FFMApplication.get(this).getForegroundPackage();
+        }
 
         if (foreground != null
                 && foreground.equals(FFMSettings.getQQPackageName())) {

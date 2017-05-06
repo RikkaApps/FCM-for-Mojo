@@ -14,6 +14,7 @@ public class FFMSettings {
     public static final String BASE_URL = "server_url";
     public static final String QQ_PACKAGE = "qq_package";
     public static final String NOTIFICATION_NAME = "notification_app_name";
+    public static final String GET_FOREGROUND = "get_foreground";
 
     public static String getBaseUrl() {
         return Settings.getString(BASE_URL, "http://0.0.0.0:5000");

@@ -10,7 +10,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 25
         versionCode gitCommitCount
-        versionName "0.1.1"
+        versionName "0.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resConfigs "en", "zh-rCN"
     }
@@ -43,6 +43,7 @@ dependencies {
     compile 'moe.shizuku.support:recyclerview-v7:25.3.0'
     compile 'moe.shizuku.support:preference:1.1'
     compile 'moe.shizuku.utils:support-utils:1.1'
+    compile 'moe.shizuku.support:privileged-api:1.0'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'

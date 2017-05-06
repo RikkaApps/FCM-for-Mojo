@@ -5,12 +5,16 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.os.RemoteException;
 
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
+import moe.shizuku.fcmformojo.utils.PrivilegedServer;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
 import moe.shizuku.support.utils.Settings;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static moe.shizuku.fcmformojo.FFMSettings.GET_FOREGROUND;
 
 /**
  * Created by Rikka on 2017/4/19.
@@ -69,7 +73,25 @@ public class FFMApplication extends Application {
     }
 
     public String getForegroundPackage() {
-        return UsageStatsUtils.getForegroundPackage(this);
+        switch (Settings.getString(GET_FOREGROUND, "disable")) {
+            case "usage_stats":
+                return UsageStatsUtils.getForegroundPackage(this);
+            case "privileged_server":
+                PrivilegedServer.bind(this);
+                if (PrivilegedServer.service != null) {
+                    try {
+                        return PrivilegedServer.service.getForegroundPackageName();
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+
+                        return UsageStatsUtils.getForegroundPackage(this);
+                    }
+                }
+                return null;
+            case "disable":
+            default:
+                return null;
+        }
     }
 
     public boolean isSystem() {

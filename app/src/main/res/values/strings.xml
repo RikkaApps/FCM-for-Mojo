@@ -45,4 +45,20 @@
 
     <string name="notification_app_name">Notification app name</string>
     <string name="notification_app_name_summary">App name displayed on the notification (require install to /system/priv-app)</string>
+
+    <string name="get_foreground">How FFM get foreground package</string>
+    <string-array name="get_foreground">
+        <item>Do not check foreground package</item>
+        <item>Usage stats API (current user only)</item>
+        <item>Privileged API server (alpha, root only)</item>
+    </string-array>
+
+    <string-array name="qq_package">
+        <item>QQ</item>
+        <item>TIM</item>
+        <item>QQ Lite</item>
+        <item>QQ HD</item>
+        <item>QQ International</item>
+        <item>QQ Japan</item>
+    </string-array>
 </resources>

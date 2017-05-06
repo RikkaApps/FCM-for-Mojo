@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import moe.shizuku.fcmformojo.utils.ClipboardUtils;
+import moe.shizuku.fcmformojo.utils.PrivilegedServer;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
 import moe.shizuku.support.preference.Preference;
 import moe.shizuku.support.preference.PreferenceFragment;
@@ -61,17 +63,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 return true;
             }
         });
-
-        findPreference(FFMSettings.QQ_PACKAGE).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (!UsageStatsUtils.granted(getContext())) {
-                    getContext().startActivity(new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS));
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     @Override
@@ -98,6 +89,20 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         switch (key) {
             case FFMSettings.BASE_URL:
                 FFMApplication.get(getContext()).updateBaseUrl(FFMSettings.getBaseUrl());
+                break;
+            case FFMSettings.GET_FOREGROUND:
+                switch (sharedPreferences.getString(key, "disable")) {
+                    case "usage_stats":
+                        if (!UsageStatsUtils.granted(getContext())) {
+                            getContext().startActivity(new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS));
+                        }
+                        break;
+                    case "privileged_server":
+                        if (PrivilegedServer.service == null) {
+                            getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RikkaW/FCM-for-Mojo/wiki/%E4%BD%BF%E7%94%A8-app_process-%E6%9D%A5%E8%B0%83%E7%94%A8%E9%AB%98%E6%9D%83%E9%99%90-API")));
+                        }
+                        break;
+                }
                 break;
         }
     }

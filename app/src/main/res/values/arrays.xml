@@ -14,4 +14,19 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <string-array name="get_foreground_value" translatable="false">
+        <item>disable</item>
+        <item>usage_stats</item>
+        <item>privileged_server</item>
+    </string-array>
+
+    <string-array name="qq_package_value" translatable="false">
+        <item>com.tencent.mobileqq</item>
+        <item>com.tencent.tim</item>
+        <item>com.tencent.qqlite</item>
+        <item>com.tencent.minihd.qq</item>
+        <item>com.tencent.mobileqqi</item>
+        <item>com.tencent.qq.kddi</item>
+    </string-array>
 </resources>

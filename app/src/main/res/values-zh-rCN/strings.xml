@@ -47,4 +47,19 @@
     <string name="notification_app_name">通知应用名</string>
     <string name="notification_app_name_summary">显示在通知上的应用名称（需要安装到 /system/priv-app）</string>
 
+    <string name="get_foreground">获取前台应用方式</string>
+    <string-array name="get_foreground">
+        <item>不检查前台应用</item>
+        <item>使用情况访问（仅限当前用户）</item>
+        <item>特权 API 服务（测试中，仅 ROOT）</item>
+    </string-array>
+
+    <string-array name="qq_package">
+        <item>QQ</item>
+        <item>TIM</item>
+        <item>QQ 轻聊版</item>
+        <item>QQ HD</item>
+        <item>QQ 国际版</item>
+        <item>QQ 日本版</item>
+    </string-array>
 </resources>
