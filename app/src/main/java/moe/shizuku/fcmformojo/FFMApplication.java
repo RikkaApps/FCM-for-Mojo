@@ -8,8 +8,8 @@ import android.os.Handler;
 import android.os.RemoteException;
 
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
-import moe.shizuku.fcmformojo.utils.PrivilegedServer;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
+import moe.shizuku.privileged.api.PrivilegedServer;
 import moe.shizuku.support.utils.Settings;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -52,6 +52,8 @@ public class FFMApplication extends Application {
             mIsSystem = (getPackageManager().getApplicationInfo(getPackageName(), 0).flags & ApplicationInfo.FLAG_SYSTEM) != 0;
         } catch (PackageManager.NameNotFoundException ignored) {
         }
+
+        PrivilegedServer.bindSilently(this);
     }
 
     public void runInMainTheard(Runnable runnable) {
@@ -77,17 +79,8 @@ public class FFMApplication extends Application {
             case "usage_stats":
                 return UsageStatsUtils.getForegroundPackage(this);
             case "privileged_server":
-                PrivilegedServer.bind(this);
-                if (PrivilegedServer.service != null) {
-                    try {
-                        return PrivilegedServer.service.getForegroundPackageName();
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-
-                        return UsageStatsUtils.getForegroundPackage(this);
-                    }
-                }
-                return null;
+                PrivilegedServer.bindSilently(this);
+                return PrivilegedServer.getForegroundPackageName();
             case "disable":
             default:
                 return null;
