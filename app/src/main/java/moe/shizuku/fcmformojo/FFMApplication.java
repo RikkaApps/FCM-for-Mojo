@@ -53,7 +53,7 @@ public class FFMApplication extends Application {
         } catch (PackageManager.NameNotFoundException ignored) {
         }
 
-        PrivilegedServer.bindSilently(this);
+        PrivilegedServer.bind(this);
     }
 
     public void runInMainTheard(Runnable runnable) {
@@ -79,8 +79,12 @@ public class FFMApplication extends Application {
             case "usage_stats":
                 return UsageStatsUtils.getForegroundPackage(this);
             case "privileged_server":
-                PrivilegedServer.bindSilently(this);
-                return PrivilegedServer.getForegroundPackageName();
+                PrivilegedServer.bind(this);
+                if (PrivilegedServer.isServiceBind()) {
+                    return PrivilegedServer.getForegroundPackageName();
+                } else {
+                    return null;
+                }
             case "disable":
             default:
                 return null;
