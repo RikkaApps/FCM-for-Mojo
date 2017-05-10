@@ -56,7 +56,7 @@ public class FFMApplication extends Application {
         PrivilegedServer.bind(this);
     }
 
-    public void runInMainTheard(Runnable runnable) {
+    public void runInMainThread(Runnable runnable) {
         mMainHandler.post(runnable);
     }
 

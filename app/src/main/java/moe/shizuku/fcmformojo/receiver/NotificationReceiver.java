@@ -118,7 +118,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 Log.d("Reply", response.body().getStatus());
 
                 if (response.body().getCode() != 0) {
-                    FFMApplication.get(context).runInMainTheard(new Runnable() {
+                    FFMApplication.get(context).runInMainThread(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(context, response.body().getStatus(), Toast.LENGTH_LONG).show();
@@ -134,7 +134,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             public void onFailure(Call<SendResult> call, final Throwable t) {
                 Log.d("Reply", "failed " + t.toString());
 
-                FFMApplication.get(context).runInMainTheard(new Runnable() {
+                FFMApplication.get(context).runInMainThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
