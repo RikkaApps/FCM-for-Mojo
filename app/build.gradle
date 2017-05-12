@@ -4,7 +4,7 @@ def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], pr
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "moe.shizuku.fcmformojo"
         minSdkVersion 24
@@ -43,7 +43,7 @@ dependencies {
     compile 'moe.shizuku.support:recyclerview-v7:25.3.0'
     compile 'moe.shizuku.support:preference:1.1'
     compile 'moe.shizuku.utils:support-utils:1.1'
-    compile 'moe.shizuku.support:privileged-api:1.0'
+    compile 'moe.shizuku.support:privileged-api:0.1.5'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'

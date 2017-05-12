@@ -5,11 +5,10 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
-import android.os.RemoteException;
 
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
-import moe.shizuku.privileged.api.PrivilegedServer;
+import moe.shizuku.privileged.api.PrivilegedManager;
 import moe.shizuku.support.utils.Settings;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,6 +23,8 @@ public class FFMApplication extends Application {
 
     private NotificationBuilder mNotificationBuilder;
     private Retrofit mRetrofit;
+
+    private PrivilegedManager mPrivilegedManager;
 
     private Handler mMainHandler;
 
@@ -53,7 +54,7 @@ public class FFMApplication extends Application {
         } catch (PackageManager.NameNotFoundException ignored) {
         }
 
-        PrivilegedServer.bind(this);
+        mPrivilegedManager = PrivilegedManager.bind(this);
     }
 
     public void runInMainThread(Runnable runnable) {
@@ -70,6 +71,10 @@ public class FFMApplication extends Application {
                 .build();
     }
 
+    public PrivilegedManager getPrivilegedManager() {
+        return mPrivilegedManager;
+    }
+
     public NotificationBuilder getNotificationBuilder() {
         return mNotificationBuilder;
     }
@@ -79,12 +84,7 @@ public class FFMApplication extends Application {
             case "usage_stats":
                 return UsageStatsUtils.getForegroundPackage(this);
             case "privileged_server":
-                PrivilegedServer.bind(this);
-                if (PrivilegedServer.isServiceBind()) {
-                    return PrivilegedServer.getForegroundPackageName();
-                } else {
-                    return null;
-                }
+                return mPrivilegedManager.getForegroundPackageName();
             case "disable":
             default:
                 return null;
