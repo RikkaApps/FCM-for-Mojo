@@ -12,6 +12,8 @@ import moe.shizuku.support.utils.Settings;
 public class FFMSettings {
 
     public static final String BASE_URL = "server_url";
+    public static final String SERVER_HTTP_USERNAME = "server_http_username";
+    public static final String SERVER_HTTP_PASSWORD = "server_http_password";
     public static final String QQ_PACKAGE = "qq_package";
     public static final String NOTIFICATION_NAME = "notification_app_name";
     public static final String GET_FOREGROUND = "get_foreground";

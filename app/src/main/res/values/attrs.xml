@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HttpUriPreference">
+        <attr name="key_http_username" format="string"/>
+        <attr name="key_http_password" format="string"/>
+        <attr name="summary_when_authorization_set" format="string"/>
+    </declare-styleable>
+</resources>
