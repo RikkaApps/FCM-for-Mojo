@@ -61,4 +61,8 @@
         <item>QQ International</item>
         <item>QQ Japan</item>
     </string-array>
+    <string name="http_username">HTTP Username</string>
+    <string name="http_password">HTTP Password</string>
+    <string name="show_advanced_options">Show advanced options</string>
+    <string name="summary_uri_when_authorization_set">%s (with authorization)</string>
 </resources>

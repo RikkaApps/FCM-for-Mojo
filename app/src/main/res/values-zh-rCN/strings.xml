@@ -62,4 +62,8 @@
         <item>QQ 国际版</item>
         <item>QQ 日本版</item>
     </string-array>
+    <string name="http_username">HTTP 用户名</string>
+    <string name="http_password">HTTP 密码</string>
+    <string name="show_advanced_options">显示高级选项</string>
+    <string name="summary_uri_when_authorization_set">%s (附加登录信息)</string>
 </resources>

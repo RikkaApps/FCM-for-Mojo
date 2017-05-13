@@ -6,10 +6,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 
+import moe.shizuku.fcmformojo.interceptor.HttpBasicAuthorizationInterceptor;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
 import moe.shizuku.privileged.api.PrivilegedManager;
 import moe.shizuku.support.utils.Settings;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -44,9 +46,14 @@ public class FFMApplication extends Application {
 
         mNotificationBuilder = new NotificationBuilder(this);
 
+        OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new HttpBasicAuthorizationInterceptor())
+                .build();
+
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(FFMSettings.getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(mOkHttpClient)
                 .build();
 
         try {
