@@ -13,6 +13,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import moe.shizuku.fcmformojo.utils.ClipboardUtils;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
+import moe.shizuku.privileged.api.PrivilegedAPIs;
 import moe.shizuku.support.preference.Preference;
 import moe.shizuku.support.preference.PreferenceFragment;
 
@@ -97,7 +98,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                         }
                         break;
                     case "privileged_server":
-                        if (!FFMApplication.get(getContext()).getPrivilegedManager().connected()) {
+                        PrivilegedAPIs.setPermitNetworkThreadPolicy();
+                        if (FFMApplication.sPrivilegedAPIs == null
+                                || !FFMApplication.sPrivilegedAPIs.authorized()) {
                             getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RikkaW/FCM-for-Mojo/wiki/%E4%BD%BF%E7%94%A8-app_process-%E6%9D%A5%E8%B0%83%E7%94%A8%E9%AB%98%E6%9D%83%E9%99%90-API")));
                         }
                         break;

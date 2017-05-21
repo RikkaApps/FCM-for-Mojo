@@ -6,10 +6,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 
+import java.util.UUID;
+
 import moe.shizuku.fcmformojo.interceptor.HttpBasicAuthorizationInterceptor;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
-import moe.shizuku.privileged.api.PrivilegedManager;
+import moe.shizuku.privileged.api.PrivilegedAPIs;
 import moe.shizuku.support.utils.Settings;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -26,7 +28,7 @@ public class FFMApplication extends Application {
     private NotificationBuilder mNotificationBuilder;
     private Retrofit mRetrofit;
 
-    private PrivilegedManager mPrivilegedManager;
+    public static PrivilegedAPIs sPrivilegedAPIs;
 
     private Handler mMainHandler;
 
@@ -46,14 +48,14 @@ public class FFMApplication extends Application {
 
         mNotificationBuilder = new NotificationBuilder(this);
 
-        OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new HttpBasicAuthorizationInterceptor())
                 .build();
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(FFMSettings.getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(mOkHttpClient)
+                .client(okHttpClient)
                 .build();
 
         try {
@@ -61,7 +63,21 @@ public class FFMApplication extends Application {
         } catch (PackageManager.NameNotFoundException ignored) {
         }
 
-        mPrivilegedManager = PrivilegedManager.bind(this);
+        if (PrivilegedAPIs.installed(this)) {
+            PrivilegedAPIs.setPermitNetworkThreadPolicy();
+
+            PrivilegedAPIs privilegedAPIs = new PrivilegedAPIs(FFMSettings.getToken());
+            if (!privilegedAPIs.authorized()) {
+                UUID token = privilegedAPIs.requestToken(this);
+                if (token != null) {
+                    FFMSettings.putToken(token);
+
+                    sPrivilegedAPIs = privilegedAPIs;
+                }
+            } else {
+                sPrivilegedAPIs = privilegedAPIs;
+            }
+        }
     }
 
     public void runInMainThread(Runnable runnable) {
@@ -78,10 +94,6 @@ public class FFMApplication extends Application {
                 .build();
     }
 
-    public PrivilegedManager getPrivilegedManager() {
-        return mPrivilegedManager;
-    }
-
     public NotificationBuilder getNotificationBuilder() {
         return mNotificationBuilder;
     }
@@ -91,7 +103,7 @@ public class FFMApplication extends Application {
             case "usage_stats":
                 return UsageStatsUtils.getForegroundPackage(this);
             case "privileged_server":
-                return mPrivilegedManager.getForegroundPackageName();
+                return sPrivilegedAPIs == null ? null : sPrivilegedAPIs.getForegroundPackageName();
             case "disable":
             default:
                 return null;

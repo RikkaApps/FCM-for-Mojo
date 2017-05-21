@@ -3,6 +3,8 @@ package moe.shizuku.fcmformojo;
 import android.content.Context;
 import android.net.Uri;
 
+import java.util.UUID;
+
 import moe.shizuku.support.utils.Settings;
 
 /**
@@ -55,5 +57,21 @@ public class FFMSettings {
 
     public static Uri getSound(boolean group) {
         return Uri.parse(Settings.getString(group ? "sound_group" : "sound", android.provider.Settings.System.DEFAULT_NOTIFICATION_URI.toString()));
+    }
+
+    public static UUID getToken() {
+        long mostSig = Settings.getLong("token_most", 0);
+        long leastSig = Settings.getLong("token_least", 0);
+        return new UUID(mostSig, leastSig);
+    }
+
+    public static void putToken(UUID token) {
+        if (token != null) {
+            Settings.putLong("token_most", token.getMostSignificantBits());
+            Settings.putLong("token_least", token.getLeastSignificantBits());
+        } else {
+            Settings.putLong("token_most", 0);
+            Settings.putLong("token_least", 0);
+        }
     }
 }

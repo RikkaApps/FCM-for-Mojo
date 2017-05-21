@@ -51,7 +51,7 @@
     <string-array name="get_foreground">
         <item>不检查前台应用</item>
         <item>使用情况访问（仅限当前用户）</item>
-        <item>特权 API 服务（测试中，仅 ROOT）</item>
+        <item>特权 API 服务（为高级用户）</item>
     </string-array>
 
     <string-array name="qq_package">

@@ -37,13 +37,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
 
-        String foreground;
-        if (BuildConfig.DEBUG) {
-            long time = System.currentTimeMillis();
+        String foreground = null;
+        try {
             foreground = FFMApplication.get(this).getForegroundPackage();
-            Log.d(TAG, "foreground: " + foreground + " " + (System.currentTimeMillis() - time));
-        } else {
-            foreground = FFMApplication.get(this).getForegroundPackage();
+        } catch (Exception ignored) {
         }
 
         if (foreground != null
