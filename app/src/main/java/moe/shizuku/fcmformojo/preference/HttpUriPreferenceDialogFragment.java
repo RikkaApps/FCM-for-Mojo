@@ -48,7 +48,9 @@ public class HttpUriPreferenceDialogFragment extends PreferenceDialogFragment {
                 if (isChecked) {
                     advancedOptionsCheckBox.setVisibility(View.GONE);
                     advancedOptionsContainer.setVisibility(View.VISIBLE);
-                }
+                }/* else {
+                    advancedOptionsContainer.setVisibility(View.GONE);
+                }*/
             }
         });
         if (usernameEditText.length() != 0) {

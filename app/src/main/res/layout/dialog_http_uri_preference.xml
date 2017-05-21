@@ -36,14 +36,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                android:text="@string/http_username"/>
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            tools:visibility="visible">
 
             <EditText
                 android:id="@+id/et_http_username"
@@ -51,14 +46,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:hint="@string/http_username"
                 android:inputType="textNoSuggestions"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                android:text="@string/http_password"/>
 
             <EditText
                 android:id="@+id/et_http_password"
@@ -66,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:hint="@string/http_password"
                 android:inputType="textPassword"/>
 
         </LinearLayout>
