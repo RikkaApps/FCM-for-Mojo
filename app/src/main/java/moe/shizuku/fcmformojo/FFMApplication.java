@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.util.Log;
 
 import java.util.UUID;
 
@@ -63,21 +64,8 @@ public class FFMApplication extends Application {
         } catch (PackageManager.NameNotFoundException ignored) {
         }
 
-        if (PrivilegedAPIs.installed(this)) {
-            PrivilegedAPIs.setPermitNetworkThreadPolicy();
-
-            PrivilegedAPIs privilegedAPIs = new PrivilegedAPIs(FFMSettings.getToken());
-            if (!privilegedAPIs.authorized()) {
-                UUID token = privilegedAPIs.requestToken(this);
-                if (token != null) {
-                    FFMSettings.putToken(token);
-
-                    sPrivilegedAPIs = privilegedAPIs;
-                }
-            } else {
-                sPrivilegedAPIs = privilegedAPIs;
-            }
-        }
+        sPrivilegedAPIs = new PrivilegedAPIs(FFMSettings.getToken());
+        ensurePrivilegedAPIs(this);
     }
 
     public void runInMainThread(Runnable runnable) {
@@ -103,7 +91,8 @@ public class FFMApplication extends Application {
             case "usage_stats":
                 return UsageStatsUtils.getForegroundPackage(this);
             case "privileged_server":
-                return sPrivilegedAPIs == null ? null : sPrivilegedAPIs.getForegroundPackageName();
+                ensurePrivilegedAPIs(this);
+                return sPrivilegedAPIs.getForegroundPackageName();
             case "disable":
             default:
                 return null;
@@ -112,5 +101,22 @@ public class FFMApplication extends Application {
 
     public boolean isSystem() {
         return mIsSystem;
+    }
+
+    private static void ensurePrivilegedAPIs(Context context) {
+        PrivilegedAPIs.setPermitNetworkThreadPolicy();
+
+        if (!sPrivilegedAPIs.authorized()) {
+            if (!PrivilegedAPIs.installed(context)) {
+                return;
+            }
+
+            UUID token = sPrivilegedAPIs.requestToken(context);
+            if (token != null) {
+                FFMSettings.putToken(token);
+
+                Log.i("FFM", "update shizuku service token: " + token);
+            }
+        }
     }
 }

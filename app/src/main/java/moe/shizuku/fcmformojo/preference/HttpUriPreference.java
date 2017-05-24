@@ -39,9 +39,9 @@ public class HttpUriPreference extends DialogPreference {
         TypedArray a;
 
         a = context.obtainStyledAttributes(attrs, R.styleable.HttpUriPreference);
-        mSummaryWhenAuthorizationSet = a.getString(R.styleable.HttpUriPreference_summary_when_authorization_set);
-        keyUsername = a.getString(R.styleable.HttpUriPreference_key_http_username);
-        keyPassword = a.getString(R.styleable.HttpUriPreference_key_http_password);
+        mSummaryWhenAuthorizationSet = a.getString(R.styleable.HttpUriPreference_summaryWhenAuthorizationSet);
+        keyUsername = a.getString(R.styleable.HttpUriPreference_keyHttpUsername);
+        keyPassword = a.getString(R.styleable.HttpUriPreference_keyHttpPassword);
         a.recycle();
 
         a = context.obtainStyledAttributes(attrs,

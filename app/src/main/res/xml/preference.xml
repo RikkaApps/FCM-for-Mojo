@@ -10,11 +10,11 @@
 
     <moe.shizuku.fcmformojo.preference.HttpUriPreference
         android:key="server_url"
-        app:key_http_username="server_http_username"
-        app:key_http_password="server_http_password"
+        app:keyHttpUsername="server_http_username"
+        app:keyHttpPassword="server_http_password"
         android:title="@string/server_url"
         android:summary="%s"
-        app:summary_when_authorization_set="@string/summary_uri_when_authorization_set"
+        app:summaryWhenAuthorizationSet="@string/summary_uri_when_authorization_set"
         android:selectAllOnFocus="true"
         android:defaultValue="http://0.0.0.0:5000"/>
 
