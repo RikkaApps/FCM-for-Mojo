@@ -13,6 +13,7 @@ import moe.shizuku.fcmformojo.interceptor.HttpBasicAuthorizationInterceptor;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
 import moe.shizuku.privileged.api.PrivilegedAPIs;
+import moe.shizuku.privileged.api.receiver.TokenUpdateReceiver;
 import moe.shizuku.support.utils.Settings;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -64,8 +65,31 @@ public class FFMApplication extends Application {
         } catch (PackageManager.NameNotFoundException ignored) {
         }
 
+        PrivilegedAPIs.setPermitNetworkThreadPolicy();
+
         sPrivilegedAPIs = new PrivilegedAPIs(FFMSettings.getToken());
-        ensurePrivilegedAPIs(this);
+        if (!sPrivilegedAPIs.authorized()) {
+            if (!PrivilegedAPIs.installed(this)) {
+                return;
+            }
+
+            UUID token = sPrivilegedAPIs.requestToken(this);
+            if (token != null) {
+                FFMSettings.putToken(token);
+
+                Log.i("FFM", "update shizuku service token: " + token);
+            }
+        }
+        sPrivilegedAPIs.registerTokenUpdateReceiver(this, new TokenUpdateReceiver() {
+            @Override
+            public void onTokenUpdate(Context context, UUID token) {
+                FFMSettings.putToken(token);
+
+                sPrivilegedAPIs.updateToken(token);
+
+                Log.i("FFM", "update shizuku service token: " + token);
+            }
+        });
     }
 
     public void runInMainThread(Runnable runnable) {
@@ -91,7 +115,6 @@ public class FFMApplication extends Application {
             case "usage_stats":
                 return UsageStatsUtils.getForegroundPackage(this);
             case "privileged_server":
-                ensurePrivilegedAPIs(this);
                 return sPrivilegedAPIs.getForegroundPackageName();
             case "disable":
             default:
@@ -101,22 +124,5 @@ public class FFMApplication extends Application {
 
     public boolean isSystem() {
         return mIsSystem;
-    }
-
-    private static void ensurePrivilegedAPIs(Context context) {
-        PrivilegedAPIs.setPermitNetworkThreadPolicy();
-
-        if (!sPrivilegedAPIs.authorized()) {
-            if (!PrivilegedAPIs.installed(context)) {
-                return;
-            }
-
-            UUID token = sPrivilegedAPIs.requestToken(context);
-            if (token != null) {
-                FFMSettings.putToken(token);
-
-                Log.i("FFM", "update shizuku service token: " + token);
-            }
-        }
     }
 }
