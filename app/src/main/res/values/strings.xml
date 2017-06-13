@@ -50,7 +50,7 @@
     <string-array name="get_foreground">
         <item>Do not check foreground package</item>
         <item>Usage stats API (current user only)</item>
-        <item>Shizuku service (for advanced users)</item>
+        <item>Shizuku (for advanced users)</item>
     </string-array>
 
     <string-array name="qq_package">

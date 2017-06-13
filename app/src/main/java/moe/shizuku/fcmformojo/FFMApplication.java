@@ -78,6 +78,8 @@ public class FFMApplication extends Application {
                 FFMSettings.putToken(token);
 
                 Log.i("FFM", "update shizuku service token: " + token);
+            } else {
+                Settings.putString(GET_FOREGROUND, "disable");
             }
         }
         sPrivilegedAPIs.registerTokenUpdateReceiver(this, new TokenUpdateReceiver() {
