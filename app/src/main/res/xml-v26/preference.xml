@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:key="view_token"
+        android:title="@string/view_token"
+        android:summary="@string/view_token_summary"/>
+
+    <moe.shizuku.fcmformojo.preference.HttpUriPreference
+        android:key="server_url"
+        app:keyHttpUsername="server_http_username"
+        app:keyHttpPassword="server_http_password"
+        android:title="@string/server_url"
+        android:summary="%s"
+        app:summaryWhenAuthorizationSet="@string/summary_uri_when_authorization_set"
+        android:selectAllOnFocus="true"
+        android:defaultValue="http://0.0.0.0:5000"/>
+
+    <SimpleMenuPreference
+        android:key="qq_package"
+        android:title="@string/select_qq"
+        android:hint="@string/select_qq_summary"
+        android:summary="%s"
+        android:entries="@array/qq_package"
+        android:entryValues="@array/qq_package_value"
+        android:defaultValue="com.tencent.mobileqq"/>
+
+    <EditTextPreference
+        android:key="notification_app_name"
+        android:title="@string/notification_app_name"
+        android:summary="@string/notification_app_name_summary"
+        android:selectAllOnFocus="true"
+        android:defaultValue="QQ"/>
+
+    <SimpleMenuPreference
+        android:key="get_foreground"
+        android:title="@string/get_foreground"
+        android:summary="%s"
+        android:entries="@array/get_foreground"
+        android:entryValues="@array/get_foreground_value"
+        android:defaultValue="disable"/>
+
+    <PreferenceCategory
+        android:title="@string/friend_messages">
+
+        <SwitchPreference
+            android:key="notification"
+            android:title="@string/notification"
+            android:defaultValue="true"/>
+
+        <Preference
+            android:key="edit_channel"
+            android:title="@string/notification_style"/>
+
+        <Preference
+            android:key="update_friend_face"
+            android:title="@string/update_friend_face"
+            android:dependency="notification"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/group_messages">
+
+        <SwitchPreference
+            android:key="notification_group"
+            android:summary="@string/at_as_friend"
+            android:title="@string/notification"
+            android:defaultValue="false"/>
+
+        <Preference
+            android:key="edit_channel_group"
+            android:title="@string/notification_style"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

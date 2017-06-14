@@ -25,7 +25,7 @@ import moe.shizuku.fcmformojo.utils.FileUtils;
 /**
  * Created by Rikka on 2016/9/18.
  */
-final class NotificationBuilderImplN extends NotificationBuilderImpl {
+class NotificationBuilderImplN extends NotificationBuilderImpl {
 
     private static final String TAG = "NotificationBuilderImplN";
 
@@ -173,8 +173,8 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
      *
      * @return NotificationCompat.Builder
      **/
-    public static NotificationCompat.Builder getBuilder(Context context, @Nullable Chat chat) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+    public NotificationCompat.Builder getBuilder(Context context, @Nullable Chat chat) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "group_message_channel")
                 .setColor(context.getColor(R.color.colorNotification))
                 .setSmallIcon(FFMSettings.getNotificationAppName().equals("TIM") ? R.drawable.ic_noti_tim_24dp : R.drawable.ic_noti_qq_24dp)
                 .setVisibility(Notification.VISIBILITY_PRIVATE);
@@ -191,6 +191,9 @@ final class NotificationBuilderImplN extends NotificationBuilderImpl {
 
         // @消息当作好友消息处理
         boolean group = chat.getType() != 1 && !chat.getLastMessage().isAt();
+        if (!group) {
+            builder.setChannelId("friend_message_channel");
+        }
 
         // sound
         builder.setSound(FFMSettings.getSound(group));

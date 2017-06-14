@@ -39,15 +39,14 @@ public class NotificationBuilder {
     private NotificationBuilderImpl mImpl;
 
     private NotificationBuilderImpl getImpl() {
-        if (mImpl == null) {
-            mImpl = createImpl();
-        }
         return mImpl;
     }
 
-    private NotificationBuilderImpl createImpl() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    private NotificationBuilderImpl createImpl(Context context) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N) {
             return new NotificationBuilderImplN();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return new NotificationBuilderImplO(context);
         }
         return null;
     }
@@ -58,6 +57,7 @@ public class NotificationBuilder {
         mPersonIcons = new WeakReference[7];
         mGroupIcons = new WeakReference[7];
         mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mImpl = createImpl(context);
     }
 
     public int getSendersCount() {

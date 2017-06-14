@@ -1,12 +1,15 @@
 package moe.shizuku.fcmformojo;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Html;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -63,6 +66,32 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 return true;
             }
         });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            findPreference("edit_channel").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @TargetApi(Build.VERSION_CODES.O)
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                    intent.putExtra(Settings.EXTRA_CHANNEL_ID, "friend_message_channel");
+                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
+                    startActivity(intent);
+                    return true;
+                }
+            });
+
+            findPreference("edit_channel_group").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @TargetApi(Build.VERSION_CODES.O)
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                    intent.putExtra(Settings.EXTRA_CHANNEL_ID, "group_message_channel");
+                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
+                    startActivity(intent);
+                    return true;
+                }
+            });
+        }
     }
 
     @Override

@@ -66,4 +66,10 @@
     <string name="http_password">HTTP 密码</string>
     <string name="show_advanced_options">显示高级选项</string>
     <string name="summary_uri_when_authorization_set">%s (附加登录信息)</string>
+
+    <string name="notification_channel_friend_message">好友消息</string>
+    <string name="notification_channel_group_message">群组消息</string>
+
+    <string name="notification_style">通知样式</string>
+
 </resources>
