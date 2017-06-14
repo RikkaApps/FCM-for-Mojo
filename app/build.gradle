@@ -23,9 +23,14 @@ android {
         }
         release {
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             signingConfig signingConfigs.sign
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "ffm-${variant.versionCode}.apk"
         }
     }
 }
