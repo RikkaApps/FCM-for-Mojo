@@ -43,12 +43,12 @@ public class NotificationBuilder {
     }
 
     private NotificationBuilderImpl createImpl(Context context) {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N) {
-            return new NotificationBuilderImplN();
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return new NotificationBuilderImplO(context);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return new NotificationBuilderImplN();
         }
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public NotificationBuilder(Context context) {
