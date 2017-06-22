@@ -32,6 +32,18 @@ $client->load(
 为了安全，我们用 OKHTTP 保护 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 的后端，详见 [Haruue 的 pull request](https://github.com/RikkaW/FCM-for-Mojo/pull/4)。
 详细的 Nginx 配置可以查阅[官方文档](https://nginx.org/en/docs/http/ngx_http_auth_basic_module.html)
 
+
+更改 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 的监听地址到本机（这里假设你的 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 端口为 5000）：
+
+```
+$client->load("Openqq",data=>{
+    listen => [{
+    host =>"127.0.0.1",
+    port =>5000,
+    # 只监听本机 5000 端口
+});
+```
+
 在 Linux 下，使用 OpenSSL 生成一个密码：
 
 ```bash
@@ -47,18 +59,7 @@ Verifying - Password:
 <用户名>:<MD5 密码>
 ```
 
-接着，更改 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 的监听地址到本机：
-
-```
-$client->load("Openqq",data=>{
-    listen => [{
-    host =>"127.0.0.1",
-    port =>5000,
-    # 只监听本机 5000 端口
-});
-```
-
-修改你的 Nginx 配置（这里假设你的 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 端口为 5000）：
+修改你的 Nginx 配置：
 
 ```conf
 server {
