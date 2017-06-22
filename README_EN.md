@@ -66,4 +66,4 @@ server {
 }
 ```
 
-Setting up the username and password (what you input) in FCM for Mojo-WebQQ.
+Setting up the username and password (password what you input) in FCM for Mojo-WebQQ.
