@@ -29,19 +29,30 @@ For safe reason, use OKHTTP protect [Mojo-WebQQ](https://github.com/sjdy521/Mojo
 
 For more details about the Nginx configuration, see [Nginx official document](https://nginx.org/en/docs/http/ngx_http_auth_basic_module.html).
 
+Change your [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) configuration to listen localhost (Here we suppose your Mojo Web-QQ port is 5000):
+
+```perl
+$client->load("Openqq",data=>{
+    listen => [{
+    host =>"127.0.0.1",
+    port =>5000,
+    # Only listen localhost 5000 port
+});
+```
+
 Generate a key with OpenSSL in Linux:
 
 ```bash
 openssl passwd
 Password:
 Verifying - Password:
-<Generated password>
+<MD5 password>
 ```
 
 Create a file to save your password (Here we suppose you save it in ```/etc/nginx```):
 ```<Your username>:<Generated password>```
 
-Edit your Nginx configuration (Here we suppose your Mojo Web-QQ port is 5000):
+Edit your Nginx configuration:
 ```conf
 server {
   listen 6000;
@@ -50,7 +61,9 @@ server {
   location / {
     auth_basic <Any name here>;
     auth_basic_user_file /etc/nginx/passwd; # Password files
-    proxy_pass http://127.0.0.1:5000; # Proxy Mojo
+    proxy_pass http://127.0.0.1:5000; # Proxy Mojo Web-QQ port
   }
 }
 ```
+
+Setting up the username and password (what you input) in FCM for Mojo-WebQQ.
