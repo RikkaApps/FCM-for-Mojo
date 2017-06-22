@@ -25,7 +25,7 @@ $client->load(
 Then, continue with guidelines.
 
 # Add basic authenticate
-For safe reason, use OKHTTP protect [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) back end, see more in [haruue's pull request](https://github.com/RikkaW/FCM-for-Mojo/pull/4).
+For safe reason, use OKHTTP protect [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) back end, see more in [Haruue's pull request](https://github.com/RikkaW/FCM-for-Mojo/pull/4).
 
 For more details about the Nginx configuration, see [Nginx official document](https://nginx.org/en/docs/http/ngx_http_auth_basic_module.html).
 
