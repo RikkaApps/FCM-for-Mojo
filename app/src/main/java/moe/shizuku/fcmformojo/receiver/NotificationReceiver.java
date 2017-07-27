@@ -38,18 +38,21 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     public static Intent replyIntent(long senderId, int type) {
         return new Intent(ACTION_REPLY)
+                .setPackage(BuildConfig.APPLICATION_ID)
                 .putExtra(EXTRA_ID, senderId)
                 .putExtra(EXTRA_TYPE, type);
     }
 
     public static Intent contentIntent(long senderId, boolean all) {
         return new Intent(ACTION_CONTENT)
+                .setPackage(BuildConfig.APPLICATION_ID)
                 .putExtra(EXTRA_ID, senderId)
                 .putExtra(EXTRA_ALL, all);
     }
 
     public static Intent deleteIntent(long senderId, boolean all) {
         return new Intent(ACTION_DELETE)
+                .setPackage(BuildConfig.APPLICATION_ID)
                 .putExtra(EXTRA_ID, senderId)
                 .putExtra(EXTRA_ALL, all);
     }
