@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_format">通知 %d件</string>
+    <string name="messages_format">%2$dつ 連絡先からの %1$d件 メッセージ</string>
+    <string name="reply" formatted="false">%s に返信</string>
+    <string name="update_friend_face">連絡先のプロフィールを更新</string>
+	
+    <string name="view_token">トークンを表示</string>
+    <string name="view_token_summary">このアプリのトークンを表示する</string>
+
+    <string name="friend_messages">友達メッセージ</string>
+    <string name="group_messages">グループメッセージ</string>
+
+    <string name="server_url">サーバーのURL</string>
+
+    <string name="notification">通知</string>
+
+    <string name="priority">優先順位</string>
+    <string-array name="priority">
+        <item>最低</item>
+        <item>低い</item>
+        <item>デフォルト</item>
+        <item>高い</item>
+        <item>最高</item>
+    </string-array>
+
+    <string name="vibrate">バイブレート</string>
+    <string-array name="vibrate">
+        <item>無効</item>
+        <item>デフォルト</item>
+        <item>短い</item>
+        <item>长い</item>
+    </string-array>
+
+    <string name="led_light">LED</string>
+    <string name="sound">音</string>
+
+    <string name="select_qq">QQアプリを選択</string>
+    <string name="select_qq_summary">これは、通知がクリックされたときに使用されます。</string>
+
+    <string name="at_as_friend">君を\@たメッセージは友達からとして扱われます。</string>
+
+    <string name="share">共有</string>
+
+    <string name="open">開く…</string>
+
+    <string name="notification_app_name">通知アプリ名</string>
+    <string name="notification_app_name_summary">通知に表示されるアプリ名（/system/priv-appにインストールが必要）</string>
+
+    <string name="get_foreground">フォアグラウンドアプリを取得する方法</string>
+    <string-array name="get_foreground">
+        <item>フォアグランドアプリを検出しない</item>
+        <item>使用統計API（現在のユーザーのみ）</item>
+        <item>Shizuku（上級ユーザー向け）</item>
+    </string-array>
+
+    <string-array name="qq_package">
+        <item>QQ</item>
+        <item>TIM</item>
+        <item>QQ 轻聊版</item>
+        <item>QQ HD</item>
+        <item>QQ 国际版</item>
+        <item>QQ 日本版</item>
+    </string-array>
+    <string name="http_username">HTTP ユーザ</string>
+    <string name="http_password">HTTP パスワード</string>
+    <string name="show_advanced_options">高度なオプションを表示する</string>
+    <string name="summary_uri_when_authorization_set">%s（許可付き）</string>
+
+    <string name="notification_channel_friend_message">友達メッセージ</string>
+    <string name="notification_channel_group_message">グループメッセージ</string>
+
+    <string name="notification_style">通知スタイル</string>
+
+</resources>
