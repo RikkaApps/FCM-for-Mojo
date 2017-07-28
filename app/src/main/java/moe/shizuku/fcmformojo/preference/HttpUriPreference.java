@@ -10,8 +10,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.support.preference.DialogPreference;
-import moe.shizuku.support.preference.PreferenceDialogFragment;
+import moe.shizuku.preference.DialogPreference;
+import moe.shizuku.preference.PreferenceDialogFragment;
 import moe.shizuku.support.utils.Settings;
 
 /**

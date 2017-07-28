@@ -10,7 +10,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 26
         versionCode gitCommitCount
-        versionName "0.2.0"
+        versionName "0.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resConfigs "en", "zh-rCN"
     }
@@ -50,7 +50,9 @@ dependencies {
     implementation 'com.android.support:support-core-ui:26.0.0'
     implementation 'com.android.support:support-fragment:26.0.0'
     implementation 'com.android.support:recyclerview-v7:26.0.0'
-    implementation 'moe.shizuku.support:preference:1.1'
+    implementation 'moe.shizuku.preference:preference:2.0'
+    implementation 'moe.shizuku.preference:preference-dialog-android:2.0'
+    implementation 'moe.shizuku.preference:preference-simplemenu:2.0'
     implementation 'moe.shizuku.support:support-utils:1.1'
     implementation 'moe.shizuku.support:privileged-api:23'
     implementation 'com.google.code.gson:gson:2.8.1'

@@ -15,9 +15,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import moe.shizuku.fcmformojo.utils.ClipboardUtils;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
+import moe.shizuku.preference.Preference;
+import moe.shizuku.preference.PreferenceFragment;
 import moe.shizuku.privileged.api.PrivilegedAPIs;
-import moe.shizuku.support.preference.Preference;
-import moe.shizuku.support.preference.PreferenceFragment;
 
 /**
  * Created by Rikka on 2017/4/22.

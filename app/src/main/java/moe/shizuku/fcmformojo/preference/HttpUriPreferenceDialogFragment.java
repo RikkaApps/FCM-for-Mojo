@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.support.preference.PreferenceDialogFragment;
+import moe.shizuku.preference.PreferenceDialogFragment;
 
 /**
  * DialogFragment for {@link HttpUriPreference}
@@ -32,11 +32,11 @@ public class HttpUriPreferenceDialogFragment extends PreferenceDialogFragment {
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
         // bind view
-        advancedOptionsCheckBox = (CheckBox) view.findViewById(R.id.cb_advanced_options);
-        advancedOptionsContainer = (LinearLayout) view.findViewById(R.id.ll_advanced_options_container);
-        uriEditText = (EditText) view.findViewById(R.id.et_uri);
-        usernameEditText = (EditText) view.findViewById(R.id.et_http_username);
-        passwordEditText = (EditText) view.findViewById(R.id.et_http_password);
+        advancedOptionsCheckBox = view.findViewById(R.id.cb_advanced_options);
+        advancedOptionsContainer = view.findViewById(R.id.ll_advanced_options_container);
+        uriEditText = view.findViewById(R.id.et_uri);
+        usernameEditText = view.findViewById(R.id.et_http_username);
+        passwordEditText = view.findViewById(R.id.et_http_password);
         // default value
         uriEditText.setText(getHttpUriPreference().getUri());
         usernameEditText.setText(getHttpUriPreference().getUsername());
