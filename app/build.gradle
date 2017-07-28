@@ -12,7 +12,7 @@ android {
         versionCode gitCommitCount
         versionName "0.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        resConfigs "en", "zh-rCN"
+        resConfigs "en", "zh-rCN", "ja"
     }
     signingConfigs {
         sign
