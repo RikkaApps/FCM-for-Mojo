@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.util.UUID;
 
+import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
 import moe.shizuku.fcmformojo.interceptor.HttpBasicAuthorizationInterceptor;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
@@ -113,12 +114,12 @@ public class FFMApplication extends Application {
     }
 
     public String getForegroundPackage() {
-        switch (Settings.getString(GET_FOREGROUND, "disable")) {
-            case "usage_stats":
+        switch (FFMSettings.getForegroundImpl()) {
+            case ForegroundImpl.USAGE_STATS:
                 return UsageStatsUtils.getForegroundPackage(this);
-            case "privileged_server":
+            case ForegroundImpl.SHIZUKU:
                 return sPrivilegedAPIs.getForegroundPackageName();
-            case "disable":
+            case ForegroundImpl.NONE:
             default:
                 return null;
         }

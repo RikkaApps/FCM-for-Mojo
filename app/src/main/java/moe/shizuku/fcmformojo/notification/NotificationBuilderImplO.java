@@ -7,21 +7,18 @@ import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.fcmformojo.model.Chat;
 
 /**
  * Created by rikka on 2017/6/13.
  */
 
 @TargetApi(Build.VERSION_CODES.O)
-public class NotificationBuilderImplO extends NotificationBuilderImplN {
+public class NotificationBuilderImplO extends NotificationBuilderImplBase {
 
     public NotificationBuilderImplO(Context context) {
         super();
@@ -59,10 +56,4 @@ public class NotificationBuilderImplO extends NotificationBuilderImplN {
 
         notificationManager.createNotificationChannels(channels);
     }
-
-    /*@Override
-    public NotificationCompat.Builder getBuilder(Context context, @Nullable Chat chat) {
-        NotificationCompat.Builder builder = super.getBuilder(context, chat);
-        bu
-    }*/
 }

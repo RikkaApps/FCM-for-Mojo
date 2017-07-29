@@ -2,3 +2,4 @@
 *.apk
 *.iml
 /google-services.json
+/release/*.json

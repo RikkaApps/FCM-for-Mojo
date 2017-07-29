@@ -60,7 +60,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             e.printStackTrace();
 
             Log.e(TAG, "bad json: " + new JSONObject(data).toString());
-
         }
     }
 }

@@ -4,66 +4,63 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
 
-import java.io.File;
-
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.app.MessagingStyle;
 import moe.shizuku.fcmformojo.model.Chat;
+import moe.shizuku.fcmformojo.model.Message;
 import moe.shizuku.fcmformojo.receiver.NotificationReceiver;
-import moe.shizuku.fcmformojo.utils.FileUtils;
 
 /**
  * Created by Rikka on 2016/9/18.
  */
-class NotificationBuilderImplN extends NotificationBuilderImpl {
+class NotificationBuilderImplBase extends NotificationBuilderImpl {
 
-    private static final String TAG = "NotificationBuilderImplN";
+    private static final String TAG = "NotificationBuilderImplBase";
 
     private static final String KEY_TEXT_REPLY = "reply";
     private static final String GROUP_KEY = "messages";
+
     private static final int GROUP_ID = -10000;
     private static final int SYSTEM_MESSAGE_ID = -10001;
 
     private static final int MAX_MESSAGES = 8;
 
-    public NotificationBuilderImplN() {
+    public NotificationBuilderImplBase() {
     }
 
     @Override
     void notify(Context context, Chat chat, NotificationBuilder nb) {
         int id = (int) chat.getUid();
 
-        if (chat.isSystemMessage()) {
+        if (chat.isSystem()) {
             id = (int) chat.getId();
         }
 
         notifyGroupSummary(context, chat, nb);
 
-        NotificationCompat.Builder builder = getBuilder(context, chat)
-                .setLargeIcon(getLargeIcon(context, chat, nb))
+        NotificationCompat.Builder builder = createBuilder(context, chat)
+                .setLargeIcon(chat.getIcon(context))
                 .setContentTitle(chat.getName())
                 .setContentText(chat.getLastMessage().getContent())
-                .setGroup(chat.isSystemMessage() ? null : GROUP_KEY)
+                .setGroup(chat.isSystem() ? null : GROUP_KEY)
                 .setGroupSummary(false)
                 .setShowWhen(true)
                 .setWhen(chat.getLastMessage().getTimestamp())
                 .setStyle(getStyle(context, chat))
-                .setContentIntent(NotificationBuilder.getContentIntent(context, id, chat, false))
-                .setDeleteIntent(NotificationBuilder.getDeleteIntent(context, id, chat, false))
+                .setContentIntent(NotificationBuilder.createContentIntent(context, id, chat, false))
+                .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, id, chat, false))
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE);
 
-        if (!chat.isSystemMessage()) {
-            builder.addAction(getReplyAction(context, id, chat));
+        if (!chat.isSystem()) {
+            builder.addAction(createReplyAction(context, id, chat));
         } else {
             id = SYSTEM_MESSAGE_ID;
         }
@@ -74,26 +71,8 @@ class NotificationBuilderImplN extends NotificationBuilderImpl {
         notificationManager.notify(id, builder.build());
     }
 
-    private static Bitmap getLargeIcon(Context context, Chat chat, NotificationBuilder nb) {
-        if (chat.isSystemMessage()) {
-            return null;
-        }
-
-        if (chat.getType() == 1) {
-            File file = FileUtils.getCacheFile(context, "/head/" + chat.getLastMessage().getSenderUid());
-            if (file.exists()) {
-                return BitmapFactory.decodeFile(file.getAbsolutePath());
-            } else {
-                return nb.getLargeIcon(context, chat.getName().hashCode(), false);
-            }
-        } else if (chat.getType() != 1) {
-            return nb.getLargeIcon(context, chat.getName().hashCode(), true);
-        }
-        return null;
-    }
-
     private static NotificationCompat.Style getStyle(Context context, Chat chat) {
-        if (chat.getType() == 1 || chat.isSystemMessage()) {
+        if (chat.isFriend() || chat.isSystem()) {
             NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
             style.setBigContentTitle(chat.getName());
 
@@ -103,7 +82,7 @@ class NotificationBuilderImplN extends NotificationBuilderImpl {
                     continue;
                 }
 
-                Chat.Message message = chat.getMessages().get(i);
+                Message message = chat.getMessages().get(i);
                 sb.append(message.getContent()).append('\n');
             }
             style.bigText(sb.toString().trim());
@@ -119,7 +98,7 @@ class NotificationBuilderImplN extends NotificationBuilderImpl {
                     continue;
                 }
 
-                Chat.Message message = chat.getMessages().get(i);
+                Message message = chat.getMessages().get(i);
                 style.addMessage(message.getContent(), message.getTimestamp(), message.getSender());
             }
 
@@ -129,7 +108,7 @@ class NotificationBuilderImplN extends NotificationBuilderImpl {
         }
     }
 
-    private static NotificationCompat.Action getReplyAction(Context context, int id, Chat chat) {
+    private static NotificationCompat.Action createReplyAction(Context context, int id, Chat chat) {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, NotificationReceiver.replyIntent(chat.getId(), chat.getType()), PendingIntent.FLAG_UPDATE_CURRENT);
         String replyLabel = context.getString(R.string.reply, chat.getName());
         RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
@@ -137,30 +116,30 @@ class NotificationBuilderImplN extends NotificationBuilderImpl {
                 .build();
 
         return new NotificationCompat.Action.Builder(R.drawable.ic_reply_24dp,
-                        replyLabel, pendingIntent)
-                        .addRemoteInput(remoteInput)
-                        .build();
+                replyLabel, pendingIntent)
+                .addRemoteInput(remoteInput)
+                .build();
     }
 
     /**
      * 分组消息的头部
      **/
     private void notifyGroupSummary(Context context, Chat chat, NotificationBuilder nb) {
-        if (chat.isSystemMessage()) {
+        if (chat.isSystem()) {
             return;
         }
 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder builder = getBuilder(context, null)
+        NotificationCompat.Builder builder = createBuilder(context, null)
                 .setSubText(String.format(context.getString(R.string.messages_format), nb.getMessageCount(), nb.getSendersCount()))
                 .setShowWhen(true)
                 .setWhen(System.currentTimeMillis())
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(true)
-                .setContentIntent(NotificationBuilder.getContentIntent(context, 0, null, true))
-                .setDeleteIntent(NotificationBuilder.getDeleteIntent(context, 0, null, true));
+                .setContentIntent(NotificationBuilder.createContentIntent(context, 0, null, true))
+                .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, 0, null, true));
 
         notificationManager.notify(GROUP_ID, builder.build());
     }
@@ -173,7 +152,7 @@ class NotificationBuilderImplN extends NotificationBuilderImpl {
      *
      * @return NotificationCompat.Builder
      **/
-    public NotificationCompat.Builder getBuilder(Context context, @Nullable Chat chat) {
+    public NotificationCompat.Builder createBuilder(Context context, @Nullable Chat chat) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "group_message_channel")
                 .setColor(context.getColor(R.color.colorNotification))
                 .setSmallIcon(FFMSettings.getNotificationAppName().equals("TIM") ? R.drawable.ic_noti_tim_24dp : R.drawable.ic_noti_qq_24dp)
@@ -189,8 +168,8 @@ class NotificationBuilderImplN extends NotificationBuilderImpl {
             return builder;
         }
 
-        // @消息当作好友消息处理
-        boolean group = chat.getType() != 1 && !chat.getLastMessage().isAt();
+        // @ 消息当作好友消息处理
+        boolean group = chat.isGroup() && !chat.getLastMessage().isAt();
         if (!group) {
             builder.setChannelId("friend_message_channel");
         }
