@@ -45,9 +45,6 @@
 
     <string name="open">Open…</string>
 
-    <string name="notification_app_name">Notification app name</string>
-    <string name="notification_app_name_summary">App name displayed on the notification (require install to /system/priv-app)</string>
-
     <string name="get_foreground">How FFM get foreground package</string>
     <string-array name="get_foreground">
         <item>Do not check foreground package</item>
@@ -55,14 +52,6 @@
         <item>Shizuku (multi-user support)</item>
     </string-array>
 
-    <string-array name="qq_package">
-        <item>QQ</item>
-        <item>TIM</item>
-        <item>QQ Lite</item>
-        <item>QQ HD</item>
-        <item>QQ International</item>
-        <item>QQ Japan</item>
-    </string-array>
     <string name="http_username">HTTP Username</string>
     <string name="http_password">HTTP Password</string>
     <string name="show_advanced_options">Show advanced options</string>
@@ -76,5 +65,12 @@
     <string name="notification_fetching_list">Fetching friends and groups list…</string>
     <string name="notification_fetching">Fetching avatar…</string>
     <string name="notification_fetching_progress">%1$d of %2$d</string>
+
+    <string name="display_name_qq">QQ</string>
+    <string name="display_name_tim">TIM</string>
+    <string name="display_name_qql">QQ Lite</string>
+    <string name="display_name_qqhd">QQ HD</string>
+    <string name="display_name_qqi">QQ International</string>
+    <string name="display_name_qqjp">QQ Japan</string>
 
 </resources>

@@ -6,6 +6,8 @@ import android.support.annotation.StringDef;
 import java.lang.annotation.Retention;
 import java.util.UUID;
 
+import moe.shizuku.fcmformojo.profile.Profile;
+import moe.shizuku.fcmformojo.profile.ProfileList;
 import moe.shizuku.support.utils.Settings;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
@@ -20,19 +22,14 @@ public class FFMSettings {
     public static final String SERVER_HTTP_USERNAME = "server_http_username";
     public static final String SERVER_HTTP_PASSWORD = "server_http_password";
     public static final String QQ_PACKAGE = "qq_package";
-    public static final String NOTIFICATION_NAME = "notification_app_name";
     public static final String GET_FOREGROUND = "get_foreground";
 
     public static String getBaseUrl() {
         return Settings.getString(BASE_URL, "http://0.0.0.0:5000");
     }
 
-    public static String getQQPackageName() {
-        return Settings.getString(QQ_PACKAGE, "com.tencent.mobileqq");
-    }
-
-    public static String getNotificationAppName() {
-        return Settings.getString(NOTIFICATION_NAME, "QQ");
+    public static Profile getProfile() {
+        return ProfileList.getProfile(Settings.getString(QQ_PACKAGE, ""));
     }
 
     public static boolean getNotification(boolean group) {

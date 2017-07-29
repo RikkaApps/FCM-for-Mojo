@@ -23,16 +23,7 @@
         android:title="@string/select_qq"
         android:hint="@string/select_qq_summary"
         android:summary="%s"
-        android:entries="@array/qq_package"
-        android:entryValues="@array/qq_package_value"
         android:defaultValue="com.tencent.mobileqq"/>
-
-    <EditTextPreference
-        android:key="notification_app_name"
-        android:title="@string/notification_app_name"
-        android:summary="@string/notification_app_name_summary"
-        android:selectAllOnFocus="true"
-        android:defaultValue="QQ"/>
 
     <SimpleMenuPreference
         android:key="get_foreground"

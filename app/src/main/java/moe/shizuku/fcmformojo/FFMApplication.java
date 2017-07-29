@@ -12,6 +12,7 @@ import java.util.UUID;
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
 import moe.shizuku.fcmformojo.interceptor.HttpBasicAuthorizationInterceptor;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
+import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
 import moe.shizuku.privileged.api.PrivilegedAPIs;
 import moe.shizuku.privileged.api.receiver.TokenUpdateReceiver;

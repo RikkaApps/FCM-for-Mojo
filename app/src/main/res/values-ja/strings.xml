@@ -43,9 +43,6 @@
 
     <string name="open">開く…</string>
 
-    <string name="notification_app_name">通知アプリ名</string>
-    <string name="notification_app_name_summary">通知に表示されるアプリ名（/system/priv-appにインストールが必要）</string>
-
     <string name="get_foreground">フォアグラウンドアプリを取得する方法</string>
     <string-array name="get_foreground">
         <item>フォアグランドアプリを検出しない</item>
@@ -53,14 +50,6 @@
         <item>Shizuku（multi-user support）</item>
     </string-array>
 
-    <string-array name="qq_package">
-        <item>QQ</item>
-        <item>TIM</item>
-        <item>QQ 轻聊版</item>
-        <item>QQ HD</item>
-        <item>QQ 国际版</item>
-        <item>QQ 日本版</item>
-    </string-array>
     <string name="http_username">HTTP ユーザ</string>
     <string name="http_password">HTTP パスワード</string>
     <string name="show_advanced_options">高度なオプションを表示する</string>
@@ -70,5 +59,12 @@
     <string name="notification_channel_group_message">グループメッセージ</string>
 
     <string name="notification_style">通知スタイル</string>
+
+    <string name="display_name_qq">QQ</string>
+    <string name="display_name_tim">TIM</string>
+    <string name="display_name_qql">QQ 轻聊版</string>
+    <string name="display_name_qqhd">QQ HD</string>
+    <string name="display_name_qqi">QQ 国际版</string>
+    <string name="display_name_qqjp">QQ 日本版</string>
 
 </resources>

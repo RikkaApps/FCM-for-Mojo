@@ -46,9 +46,6 @@
 
     <string name="open">打开…</string>
 
-    <string name="notification_app_name">通知应用名</string>
-    <string name="notification_app_name_summary">显示在通知上的应用名称（需要安装到 /system/priv-app）</string>
-
     <string name="get_foreground">获取前台应用方式</string>
     <string-array name="get_foreground">
         <item>不检查前台应用</item>
@@ -56,14 +53,6 @@
         <item>Shizuku（支持多用户）</item>
     </string-array>
 
-    <string-array name="qq_package">
-        <item>QQ</item>
-        <item>TIM</item>
-        <item>QQ 轻聊版</item>
-        <item>QQ HD</item>
-        <item>QQ 国际版</item>
-        <item>QQ 日本版</item>
-    </string-array>
     <string name="http_username">HTTP 用户名</string>
     <string name="http_password">HTTP 密码</string>
     <string name="show_advanced_options">显示高级选项</string>
@@ -78,5 +67,12 @@
     <string name="notification_fetching_list">正在获取好友及群组列表…</string>
     <string name="notification_fetching">正在获取头像…</string>
     <string name="notification_fetching_progress">第 %1$d 个 共 %2$d 个</string>
+
+    <string name="display_name_qq">QQ</string>
+    <string name="display_name_tim">TIM</string>
+    <string name="display_name_qql">QQ 轻聊版</string>
+    <string name="display_name_qqhd">QQ HD</string>
+    <string name="display_name_qqi">QQ 国际版</string>
+    <string name="display_name_qqjp">QQ 日本版</string>
 
 </resources>

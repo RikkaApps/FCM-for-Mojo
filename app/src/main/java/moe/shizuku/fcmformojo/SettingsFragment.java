@@ -14,10 +14,16 @@ import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
+import moe.shizuku.fcmformojo.profile.Profile;
+import moe.shizuku.fcmformojo.profile.ProfileList;
 import moe.shizuku.fcmformojo.service.FFMIntentService;
 import moe.shizuku.fcmformojo.utils.ClipboardUtils;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
+import moe.shizuku.preference.ListPreference;
 import moe.shizuku.preference.Preference;
 import moe.shizuku.preference.PreferenceFragment;
 import moe.shizuku.privileged.api.PrivilegedAPIs;
@@ -34,6 +40,17 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         getPreferenceManager().setSharedPreferencesMode(Context.MODE_PRIVATE);
 
         addPreferencesFromResource(R.xml.preference);
+
+        List<CharSequence> names = new ArrayList<>();
+        List<CharSequence> packages = new ArrayList<>();
+        for (Profile profile : ProfileList.getProfile()) {
+            names.add(getContext().getString(profile.getDisplayName()));
+            packages.add(profile.getPackageName());
+        }
+
+        ListPreference qq = (ListPreference) findPreference("qq_package");
+        qq.setEntries(names.toArray(new CharSequence[names.size()]));
+        qq.setEntryValues(packages.toArray(new CharSequence[packages.size()]));
 
         findPreference("view_token").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
