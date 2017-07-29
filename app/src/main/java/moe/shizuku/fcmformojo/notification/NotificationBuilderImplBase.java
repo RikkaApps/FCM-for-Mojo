@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.Nullable;
@@ -16,12 +17,14 @@ import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.app.MessagingStyle;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Message;
+import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.receiver.NotificationReceiver;
 
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_FRIENDS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUPS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_GROUP_SUMMARY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_SYSTEM;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_INPUT_KEY;
 
 /**
  * Created by Rikka on 2016/9/18.
@@ -30,7 +33,6 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
 
     private static final String TAG = "NotificationBuilderImplBase";
 
-    private static final String KEY_TEXT_REPLY = "reply";
     private static final String GROUP_KEY = "messages";
 
     private static final int MAX_MESSAGES = 8;
@@ -54,8 +56,8 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 .setShowWhen(true)
                 .setWhen(chat.getLastMessage().getTimestamp())
                 .setStyle(getStyle(context, chat))
-                .setContentIntent(NotificationBuilder.createContentIntent(context, id, chat, false))
-                .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, id, chat, false))
+                .setContentIntent(NotificationBuilder.createContentIntent(context, id, chat))
+                .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, id, chat))
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE);
 
         if (!chat.isSystem()) {
@@ -107,15 +109,24 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         }
     }
 
+    /**
+     * 创建通知的回复动作。
+     *
+     * @param context Context
+     * @param id 唯一 id，也会被作为 PendingIntent 的 requestId
+     * @param chat 对应的 Chat
+     * @return NotificationCompat.Action
+     */
     private static NotificationCompat.Action createReplyAction(Context context, int id, Chat chat) {
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, NotificationReceiver.replyIntent(chat.getId(), chat.getType()), PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = NotificationReceiver.replyIntent(chat);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         String replyLabel = context.getString(R.string.reply, chat.getName());
-        RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+        RemoteInput remoteInput = new RemoteInput.Builder(NOTIFICATION_INPUT_KEY)
                 .setLabel(replyLabel)
                 .build();
 
-        return new NotificationCompat.Action.Builder(R.drawable.ic_reply_24dp,
-                replyLabel, pendingIntent)
+        return new NotificationCompat.Action.Builder(R.drawable.ic_reply_24dp, replyLabel, pendingIntent)
                 .addRemoteInput(remoteInput)
                 .build();
     }
@@ -137,8 +148,8 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 .setWhen(System.currentTimeMillis())
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(true)
-                .setContentIntent(NotificationBuilder.createContentIntent(context, 0, null, true))
-                .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, 0, null, true));
+                .setContentIntent(NotificationBuilder.createContentIntent(context, 0, null))
+                .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, 0, null));
 
         notificationManager.notify(NOTIFICATION_ID_GROUP_SUMMARY, builder.build());
     }
@@ -152,14 +163,16 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
      * @return NotificationCompat.Builder
      **/
     public NotificationCompat.Builder createBuilder(Context context, @Nullable Chat chat) {
+        Profile profile = FFMSettings.getProfile();
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_GROUPS)
-                .setColor(context.getColor(R.color.colorNotification))
-                .setSmallIcon(FFMSettings.getNotificationAppName().equals("TIM") ? R.drawable.ic_noti_tim_24dp : R.drawable.ic_noti_qq_24dp)
+                .setColor(context.getColor(profile.getNotificationColor()))
+                .setSmallIcon(profile.getNotificationIcon())
                 .setVisibility(Notification.VISIBILITY_PRIVATE);
 
         if (FFMApplication.get(context).isSystem()) {
             Bundle extras = new Bundle();
-            extras.putString("android.substName", FFMSettings.getNotificationAppName());
+            extras.putString("android.substName", context.getString(profile.getDisplayName()));
             builder.addExtras(extras);
         }
 

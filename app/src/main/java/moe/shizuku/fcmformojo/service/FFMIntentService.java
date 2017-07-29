@@ -10,8 +10,9 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.RemoteInput;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,23 +23,32 @@ import java.util.List;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.api.WebQQService;
+import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Chat.ChatType;
 import moe.shizuku.fcmformojo.model.Friend;
 import moe.shizuku.fcmformojo.model.Group;
+import moe.shizuku.fcmformojo.model.SendResult;
 import moe.shizuku.fcmformojo.notification.ChatIcon;
+import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REPLY;
+import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_ICON;
+import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CHAT;
+import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CONTENT;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_PROGRESS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_PROGRESS;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_INPUT_KEY;
 
 
 public class FFMIntentService extends IntentService {
 
     private static final String TAG = "FFMIntentService";
-
-    private static final String ACTION_UPDATE_ICON = "moe.shizuku.fcmformojo.service.action.UPDATE_ICON";
 
     private static final String URL_UID = "{uid}";
     private static final String URL_HEAD_FRIEND = "https://q1.qlogo.cn/g?b=qq&s=100&nk={uid}";
@@ -55,6 +65,14 @@ public class FFMIntentService extends IntentService {
         context.startService(intent);
     }
 
+    public static void startReply(Context context, CharSequence content, Chat chat) {
+        Intent intent = new Intent(context, FFMIntentService.class);
+        intent.setAction(ACTION_REPLY);
+        intent.putExtra(EXTRA_CONTENT, content);
+        intent.putExtra(EXTRA_CHAT, chat);
+        context.startService(intent);
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent == null) {
@@ -64,6 +82,10 @@ public class FFMIntentService extends IntentService {
         if (ACTION_UPDATE_ICON.equals(action)) {
             ResultReceiver receiver = intent.getParcelableExtra(Intent.EXTRA_RESULT_RECEIVER);
             handleUpdateIcon(receiver);
+        } else if (ACTION_REPLY.equals(action)) {
+            CharSequence content = intent.getCharSequenceExtra(EXTRA_CONTENT);
+            Chat chat = intent.getParcelableExtra(EXTRA_CHAT);
+            handleReply(content, chat);
         }
     }
 
@@ -193,5 +215,64 @@ public class FFMIntentService extends IntentService {
 
             return false;
         }
+    }
+
+    private void handleReply(CharSequence content, Chat chat) {
+        final long id = chat.getId();
+        int type = chat.getType();
+
+        if (content == null || id == 0) {
+            return;
+        }
+
+        Log.d("Reply", "try reply to " + id + " " + content.toString());
+
+        Retrofit retrofit = FFMApplication.getRetrofit(this);
+
+        WebQQService service = retrofit.create(WebQQService.class);
+        Call<SendResult> call;
+        switch (type) {
+            case ChatType.FRIEND:
+                call = service.sendFriendMessage(id, content.toString());
+                break;
+            case ChatType.GROUP:
+                call = service.sendGroupMessage(id, content.toString());
+                break;
+            case ChatType.DISCUSS:
+                call = service.sendDiscussMessage(id, content.toString());
+                break;
+            case ChatType.SYSTEM:
+            default:
+                return;
+        }
+
+        try {
+            Response<SendResult> response = call.execute();
+            if (response.isSuccessful()) {
+                final SendResult result = response.body();
+
+                if (response.body().getCode() != 0) {
+                    FFMApplication.get(this).runInMainThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(FFMIntentService.this,
+                                    result.getStatus(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        } catch (final Throwable t) {
+            t.printStackTrace();
+
+            FFMApplication.get(this).runInMainThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(FFMIntentService.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        NotificationBuilder nb = FFMApplication.get(this).getNotificationBuilder();
+        nb.clearMessages(id);
     }
 }

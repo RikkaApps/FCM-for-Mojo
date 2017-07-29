@@ -118,19 +118,19 @@ public class NotificationBuilder {
         getImpl().clear(chat, this);
     }
 
-    public static PendingIntent createContentIntent(Context context, int requestCode, @Nullable Chat chat, boolean all) {
+    public static PendingIntent createContentIntent(Context context, int requestCode, @Nullable Chat chat) {
         long id = chat == null ? 0 : chat.getId();
         if (id == -1 || id == -3) {
             return null;
         }
-        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.contentIntent(id, all), 0);
+        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.contentIntent(chat), 0);
     }
 
-    public static PendingIntent createDeleteIntent(Context context, int requestCode, @Nullable Chat chat, boolean all) {
+    public static PendingIntent createDeleteIntent(Context context, int requestCode, @Nullable Chat chat) {
         long id = chat == null ? 0 : chat.getId();
         if (id == -1 || id == -3) {
             return null;
         }
-        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.deleteIntent(id, all), 0);
+        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.deleteIntent(chat), 0);
     }
 }

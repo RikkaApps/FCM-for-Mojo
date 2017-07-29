@@ -10,6 +10,7 @@ import android.support.annotation.Keep;
 
 import java.lang.annotation.Retention;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class Chat implements Parcelable {
     /**
      * 返回该聊天的唯一 id（该 id 可能因为重新登陆而变化）。
      *
-     * @return id
+     * @return 唯一 id
      */
     public long getId() {
         return id;
@@ -178,7 +179,6 @@ public class Chat implements Parcelable {
         dest.writeLong(this.id);
         dest.writeLong(this.uid);
         dest.writeString(this.name);
-        dest.writeTypedList(this.messages);
     }
 
     protected Chat(Parcel in) {
@@ -186,7 +186,7 @@ public class Chat implements Parcelable {
         this.id = in.readLong();
         this.uid = in.readLong();
         this.name = in.readString();
-        this.messages = in.createTypedArrayList(Message.CREATOR);
+        this.messages = new ArrayList<>();
         this.icon = new WeakReference<>(null);
     }
 
