@@ -16,20 +16,33 @@ $client->load(
    data => {
         api_url => 'https://fcm.googleapis.com/fcm/send',
         api_key => 'AAAABvjXwsM:APA91bF0X8YKcyTJcUdTLB1lc6Xb-03eIHCLy7PKHCwVYCL6XqEB7eS8o3i0amPOPi-R4i_ldlVtnPcYLtf4DwS4qgTi5Ra8Uyl9pGT02iJDE9Ovc-5dUoNSpgWUUZPn0KN2gJjeYLhO',
-        registration_ids => ['输入你自己从 FCM for Mojo-WebQQ 中获取到的令牌']
+        registration_ids => ['FCM for Mojo-WebQQ 上显示的令牌']
         # ... #
     }
 );
 # ... #
 ```
-> 引用自（[Rikka 在 releases 中的说明](https://github.com/RikkaW/FCM-for-Mojo/releases/v0.1.0)）
+> 引用自 [Rikka 在 releases 中的说明](https://github.com/RikkaW/FCM-for-Mojo/releases/v0.1.0)
 
 然后依照原教程继续进行即可
 
-# [添加 HTTP 基本认证](https://github.com/RikkaW/FCM-for-Mojo/pull/4)
 
-为了安全，我们用 OKHTTP 保护 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 的后端，详见上述链接。
+# 添加 HTTP 基本认证
+
+为了安全，我们用 OKHTTP 保护 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 的后端，详见 [Haruue 的 pull request](https://github.com/RikkaW/FCM-for-Mojo/pull/4)。
 详细的 Nginx 配置可以查阅[官方文档](https://nginx.org/en/docs/http/ngx_http_auth_basic_module.html)
+
+
+更改 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 的监听地址到本机（这里假设你的 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 端口为 5000）：
+
+```
+$client->load("Openqq",data=>{
+    listen => [{
+    host =>"127.0.0.1",
+    port =>5000,
+    # 只监听本机 5000 端口
+});
+```
 
 在 Linux 下，使用 OpenSSL 生成一个密码：
 
@@ -37,20 +50,16 @@ $client->load(
 openssl passwd
 Password:
 Verifying - Password:
-<生成的密码>
+<MD5 密码>
 ```
 
-将密码复制下来，然后新建一个文件，这里我们假设你将密码文件放在 ```/etc/nginx/``` 下：
+将密码复制下来，然后新建一个文件（这里我们假设你将密码文件放在 ```/etc/nginx/``` 下）：
 
 ```
-vi /etc/nginx/passwd
+<用户名>:<MD5 密码>
 ```
 
-```
-<用户名>:<生成的密码>
-```
-
-以下的 Nginx 配置假设你指定的端口为 5000
+修改你的 Nginx 配置：
 
 ```conf
 server {
@@ -65,4 +74,4 @@ server {
 }
 ```
 
-然后在 FCM for Mojo Android 端上配置你的用户名和密码（你输入的密码，而不是生成的）即可
+然后在 FCM for Mojo Android 端上配置你的用户名和密码（你所输入的密码）即可
