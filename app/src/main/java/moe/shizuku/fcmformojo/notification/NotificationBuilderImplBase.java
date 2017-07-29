@@ -18,6 +18,11 @@ import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Message;
 import moe.shizuku.fcmformojo.receiver.NotificationReceiver;
 
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_FRIENDS;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUPS;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_GROUP_SUMMARY;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_SYSTEM;
+
 /**
  * Created by Rikka on 2016/9/18.
  */
@@ -28,13 +33,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
     private static final String KEY_TEXT_REPLY = "reply";
     private static final String GROUP_KEY = "messages";
 
-    private static final int GROUP_ID = -10000;
-    private static final int SYSTEM_MESSAGE_ID = -10001;
-
     private static final int MAX_MESSAGES = 8;
-
-    public NotificationBuilderImplBase() {
-    }
 
     @Override
     void notify(Context context, Chat chat, NotificationBuilder nb) {
@@ -62,7 +61,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         if (!chat.isSystem()) {
             builder.addAction(createReplyAction(context, id, chat));
         } else {
-            id = SYSTEM_MESSAGE_ID;
+            id = NOTIFICATION_ID_SYSTEM;
         }
 
         NotificationManager notificationManager =
@@ -141,7 +140,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 .setContentIntent(NotificationBuilder.createContentIntent(context, 0, null, true))
                 .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, 0, null, true));
 
-        notificationManager.notify(GROUP_ID, builder.build());
+        notificationManager.notify(NOTIFICATION_ID_GROUP_SUMMARY, builder.build());
     }
 
     /**
@@ -153,7 +152,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
      * @return NotificationCompat.Builder
      **/
     public NotificationCompat.Builder createBuilder(Context context, @Nullable Chat chat) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "group_message_channel")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_GROUPS)
                 .setColor(context.getColor(R.color.colorNotification))
                 .setSmallIcon(FFMSettings.getNotificationAppName().equals("TIM") ? R.drawable.ic_noti_tim_24dp : R.drawable.ic_noti_qq_24dp)
                 .setVisibility(Notification.VISIBILITY_PRIVATE);
@@ -171,7 +170,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         // @ 消息当作好友消息处理
         boolean group = chat.isGroup() && !chat.getLastMessage().isAt();
         if (!group) {
-            builder.setChannelId("friend_message_channel");
+            builder.setChannelId(NOTIFICATION_CHANNEL_FRIENDS);
         }
 
         // sound
@@ -216,13 +215,13 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
 
         boolean clearGroup = true;
         for (StatusBarNotification sbn : nb.getNotificationManager().getActiveNotifications()) {
-            if (sbn.getId() != SYSTEM_MESSAGE_ID
-                    && sbn.getId() != GROUP_ID) {
+            if (sbn.getId() != NOTIFICATION_ID_SYSTEM
+                    && sbn.getId() != NOTIFICATION_ID_GROUP_SUMMARY) {
                 clearGroup = false;
             }
         }
         if (clearGroup) {
-            nb.getNotificationManager().cancel(GROUP_ID);
+            nb.getNotificationManager().cancel(NOTIFICATION_ID_GROUP_SUMMARY);
         }
     }
 }

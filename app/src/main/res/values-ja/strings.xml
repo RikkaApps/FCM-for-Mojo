@@ -3,8 +3,7 @@
     <string name="message_format">通知 %d件</string>
     <string name="messages_format">%2$dつ 連絡先からの %1$d件 メッセージ</string>
     <string name="reply" formatted="false">%s に返信</string>
-    <string name="update_friend_face">連絡先のプロフィールを更新</string>
-	
+
     <string name="view_token">トークンを表示</string>
     <string name="view_token_summary">このアプリのトークンを表示する</string>
 
@@ -50,8 +49,8 @@
     <string name="get_foreground">フォアグラウンドアプリを取得する方法</string>
     <string-array name="get_foreground">
         <item>フォアグランドアプリを検出しない</item>
-        <item>使用統計API（現在のユーザーのみ）</item>
-        <item>Shizuku（上級ユーザー向け）</item>
+        <item>使用統計API（no multi-user support）</item>
+        <item>Shizuku（multi-user support）</item>
     </string-array>
 
     <string-array name="qq_package">

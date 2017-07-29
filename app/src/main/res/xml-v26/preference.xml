@@ -42,6 +42,11 @@
         android:entryValues="@array/get_foreground_value"
         android:defaultValue="disable"/>
 
+    <Preference
+        android:key="update_avatar"
+        android:title="@string/update_avatar"
+        android:summary="@string/update_avatar_summary"/>
+
     <PreferenceCategory
         android:title="@string/friend_messages">
 
@@ -53,11 +58,6 @@
         <Preference
             android:key="edit_channel"
             android:title="@string/notification_style"/>
-
-        <Preference
-            android:key="update_friend_face"
-            android:title="@string/update_friend_face"
-            android:dependency="notification"/>
 
     </PreferenceCategory>
 

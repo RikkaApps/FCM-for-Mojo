@@ -3,7 +3,9 @@
     <string name="message_format">%d 条消息</string>
     <string name="messages_format">来自 %2$d 个联系人的 %1$d 条消息</string>
     <string name="reply" formatted="false">回复给 %s</string>
-    <string name="update_friend_face">更新好友头像</string>
+
+    <string name="update_avatar">更新头像</string>
+    <string name="update_avatar_summary">更新好友及群组的头像（可能需要重启生效）</string>
 
     <string name="view_token">查看令牌</string>
     <string name="view_token_summary">查看此应用实例的令牌</string>
@@ -50,8 +52,8 @@
     <string name="get_foreground">获取前台应用方式</string>
     <string-array name="get_foreground">
         <item>不检查前台应用</item>
-        <item>使用情况访问（仅限当前用户）</item>
-        <item>Shizuku（为高级用户准备）</item>
+        <item>使用情况访问（不支持多用户）</item>
+        <item>Shizuku（支持多用户）</item>
     </string-array>
 
     <string-array name="qq_package">
@@ -69,7 +71,12 @@
 
     <string name="notification_channel_friend_message">好友消息</string>
     <string name="notification_channel_group_message">群组消息</string>
+    <string name="notification_channel_progress_message">进度</string>
 
     <string name="notification_style">通知样式</string>
+
+    <string name="notification_fetching_list">正在获取好友及群组列表…</string>
+    <string name="notification_fetching">正在获取头像…</string>
+    <string name="notification_fetching_progress">第 %1$d 个 共 %2$d 个</string>
 
 </resources>

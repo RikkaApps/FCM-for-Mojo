@@ -1,10 +1,15 @@
 package moe.shizuku.fcmformojo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.Keep;
+
 /**
  * TODO 这里的东西不是很合理
  */
 
-public class Message {
+@Keep
+public class Message implements Parcelable {
 
     private long msgId;
     private long senderUid;
@@ -75,4 +80,41 @@ public class Message {
     public long getTimestamp() {
         return timestamp;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.msgId);
+        dest.writeLong(this.senderUid);
+        dest.writeString(this.sender);
+        dest.writeString(this.content);
+        dest.writeLong(this.timestamp);
+        dest.writeByte(this.isAt ? (byte) 1 : (byte) 0);
+    }
+
+    protected Message(Parcel in) {
+        this.msgId = in.readLong();
+        this.senderUid = in.readLong();
+        this.sender = in.readString();
+        this.content = in.readString();
+        this.timestamp = in.readLong();
+        this.isAt = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<Message> CREATOR = new Parcelable.Creator<Message>() {
+        @Override
+        public Message createFromParcel(Parcel source) {
+            return new Message(source);
+        }
+
+        @Override
+        public Message[] newArray(int size) {
+            return new Message[size];
+        }
+    };
 }

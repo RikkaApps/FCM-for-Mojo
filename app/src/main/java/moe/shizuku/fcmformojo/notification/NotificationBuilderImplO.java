@@ -13,6 +13,10 @@ import java.util.List;
 
 import moe.shizuku.fcmformojo.R;
 
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_FRIENDS;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUPS;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_PROGRESS;
+
 /**
  * Created by rikka on 2017/6/13.
  */
@@ -29,7 +33,7 @@ public class NotificationBuilderImplO extends NotificationBuilderImplBase {
 
         List<NotificationChannel> channels = new ArrayList<>();
         NotificationChannel channel;
-        channel = new NotificationChannel("friend_message_channel",
+        channel = new NotificationChannel(NOTIFICATION_CHANNEL_FRIENDS,
                 context.getString(R.string.notification_channel_friend_message),
                 NotificationManager.IMPORTANCE_HIGH);
         channel.enableLights(true);
@@ -45,11 +49,19 @@ public class NotificationBuilderImplO extends NotificationBuilderImplBase {
         channel.setShowBadge(false);
         channels.add(channel);
 
-        channel = new NotificationChannel("group_message_channel",
+        channel = new NotificationChannel(NOTIFICATION_CHANNEL_GROUPS,
                 context.getString(R.string.notification_channel_group_message),
                 NotificationManager.IMPORTANCE_LOW);
         channel.enableLights(true);
         channel.setLightColor(context.getColor(R.color.colorNotification));
+        channel.enableVibration(false);
+        channel.setShowBadge(false);
+        channels.add(channel);
+
+        channel = new NotificationChannel(NOTIFICATION_CHANNEL_PROGRESS,
+                context.getString(R.string.notification_channel_progress_message),
+                NotificationManager.IMPORTANCE_LOW);
+        channel.enableLights(false);
         channel.enableVibration(false);
         channel.setShowBadge(false);
         channels.add(channel);

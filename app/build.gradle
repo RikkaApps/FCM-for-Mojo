@@ -28,6 +28,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+
+        disable 'MissingTranslation'
+    }
     applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "ffm-${variant.versionCode}.apk"

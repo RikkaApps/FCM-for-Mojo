@@ -2,7 +2,9 @@
     <string name="message_format">%d messages</string>
     <string name="messages_format">%1$d messages from %2$d chats</string>
     <string name="reply" formatted="false">Reply to %s</string>
-    <string name="update_friend_face">Update friend face</string>
+
+    <string name="update_avatar">Update avatar</string>
+    <string name="update_avatar_summary">Update friends and groups avatar (restart app maybe required to take effect)</string>
 
     <string name="view_token">View token</string>
     <string name="view_token_summary">View token of this app instance</string>
@@ -49,8 +51,8 @@
     <string name="get_foreground">How FFM get foreground package</string>
     <string-array name="get_foreground">
         <item>Do not check foreground package</item>
-        <item>Usage stats API (current user only)</item>
-        <item>Shizuku (for advanced users)</item>
+        <item>Usage stats API (no multi-user support)</item>
+        <item>Shizuku (multi-user support)</item>
     </string-array>
 
     <string-array name="qq_package">
@@ -67,7 +69,12 @@
     <string name="summary_uri_when_authorization_set">%s (with authorization)</string>
     <string name="notification_channel_friend_message">Friend messages</string>
     <string name="notification_channel_group_message">Group messages</string>
+    <string name="notification_channel_progress_message">Progress</string>
 
     <string name="notification_style">Notification style</string>
+
+    <string name="notification_fetching_list">Fetching friends and groups list…</string>
+    <string name="notification_fetching">Fetching avatar…</string>
+    <string name="notification_fetching_progress">%1$d of %2$d</string>
 
 </resources>

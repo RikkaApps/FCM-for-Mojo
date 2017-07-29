@@ -3,6 +3,8 @@ package moe.shizuku.fcmformojo.model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.Keep;
 
@@ -20,7 +22,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  */
 
 @Keep
-public class Chat {
+public class Chat implements Parcelable {
 
     /** 定义聊天类型 */
     @IntDef({
@@ -164,4 +166,39 @@ public class Chat {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.type);
+        dest.writeLong(this.id);
+        dest.writeLong(this.uid);
+        dest.writeString(this.name);
+        dest.writeTypedList(this.messages);
+    }
+
+    protected Chat(Parcel in) {
+        this.type = in.readInt();
+        this.id = in.readLong();
+        this.uid = in.readLong();
+        this.name = in.readString();
+        this.messages = in.createTypedArrayList(Message.CREATOR);
+        this.icon = new WeakReference<>(null);
+    }
+
+    public static final Parcelable.Creator<Chat> CREATOR = new Parcelable.Creator<Chat>() {
+        @Override
+        public Chat createFromParcel(Parcel source) {
+            return new Chat(source);
+        }
+
+        @Override
+        public Chat[] newArray(int size) {
+            return new Chat[size];
+        }
+    };
 }

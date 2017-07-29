@@ -10,9 +10,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Html;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
+import moe.shizuku.fcmformojo.service.FFMIntentService;
 import moe.shizuku.fcmformojo.utils.ClipboardUtils;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
 import moe.shizuku.preference.Preference;
@@ -58,10 +61,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             }
         });
 
-        findPreference("update_friend_face").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        findPreference("update_avatar").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                ((MainActivity) getActivity()).refreshHeads();
+                Toast.makeText(getContext(), "Progress will be shown via notification", Toast.LENGTH_SHORT).show();
+                FFMIntentService.startUpdateIcon(getContext(), null);
                 return true;
             }
         });
@@ -116,16 +120,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case FFMSettings.BASE_URL:
-                FFMApplication.get(getContext()).updateBaseUrl(FFMSettings.getBaseUrl());
+                FFMApplication.updateBaseUrl(getContext(), FFMSettings.getBaseUrl());
                 break;
             case FFMSettings.GET_FOREGROUND:
-                switch (sharedPreferences.getString(key, "disable")) {
-                    case "usage_stats":
+                switch (sharedPreferences.getString(key, ForegroundImpl.NONE)) {
+                    case ForegroundImpl.USAGE_STATS:
                         if (!UsageStatsUtils.granted(getContext())) {
                             getContext().startActivity(new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS));
                         }
                         break;
-                    case "privileged_server":
+                    case ForegroundImpl.SHIZUKU:
                         PrivilegedAPIs.setPermitNetworkThreadPolicy();
                         if (!FFMApplication.sPrivilegedAPIs.authorized()) {
                             FFMApplication.sPrivilegedAPIs.requstAuthorization(getActivity());

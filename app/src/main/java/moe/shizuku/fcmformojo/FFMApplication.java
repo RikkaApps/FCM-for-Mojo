@@ -41,6 +41,17 @@ public class FFMApplication extends Application {
         return (FFMApplication) context.getApplicationContext();
     }
 
+    public static Retrofit getRetrofit(Context context) {
+        return ((FFMApplication) context.getApplicationContext()).mRetrofit;
+    }
+
+    public static void updateBaseUrl(Context context, String url) {
+        FFMApplication application = (FFMApplication) context.getApplicationContext();
+        application.mRetrofit = application.mRetrofit.newBuilder()
+                .baseUrl(url)
+                .build();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -97,16 +108,6 @@ public class FFMApplication extends Application {
 
     public void runInMainThread(Runnable runnable) {
         mMainHandler.post(runnable);
-    }
-
-    public Retrofit getRetrofit() {
-        return mRetrofit;
-    }
-
-    public void updateBaseUrl(String url) {
-        mRetrofit = mRetrofit.newBuilder()
-                .baseUrl(url)
-                .build();
     }
 
     public NotificationBuilder getNotificationBuilder() {

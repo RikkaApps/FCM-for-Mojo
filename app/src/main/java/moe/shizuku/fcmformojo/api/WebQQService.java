@@ -3,6 +3,7 @@ package moe.shizuku.fcmformojo.api;
 import java.util.List;
 
 import moe.shizuku.fcmformojo.model.Friend;
+import moe.shizuku.fcmformojo.model.Group;
 import moe.shizuku.fcmformojo.model.SendResult;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -21,6 +22,12 @@ public interface WebQQService {
      */
     @GET("/openqq/get_friend_info")
     Call<List<Friend>> getFriendsInfo();
+
+    /**
+     * 查询群信息
+     */
+    @GET("/openqq/get_group_info")
+    Call<List<Group>> getGroupsInfo();
 
     /**
      * 发送好友消息
