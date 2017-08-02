@@ -88,7 +88,6 @@ public class NotificationReceiver extends BroadcastReceiver {
 
                 FFMApplication.get(context).getNotificationBuilder()
                         .clearMessages(chat.getId());
-                return;
             } else {
                 FFMApplication.get(context).getNotificationBuilder()
                         .clearMessages();

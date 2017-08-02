@@ -123,7 +123,7 @@ public class NotificationBuilder {
         if (id == -1 || id == -3) {
             return null;
         }
-        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.contentIntent(chat), 0);
+        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.contentIntent(chat), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public static PendingIntent createDeleteIntent(Context context, int requestCode, @Nullable Chat chat) {
@@ -131,6 +131,6 @@ public class NotificationBuilder {
         if (id == -1 || id == -3) {
             return null;
         }
-        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.deleteIntent(chat), 0);
+        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.deleteIntent(chat), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

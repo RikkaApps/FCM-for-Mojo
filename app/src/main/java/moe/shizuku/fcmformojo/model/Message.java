@@ -11,12 +11,12 @@ import android.support.annotation.Keep;
 @Keep
 public class Message implements Parcelable {
 
-    private long msgId;
-    private long senderUid;
-    private String sender;
-    private String content;
-    private long timestamp;
-    private boolean isAt;
+    private final long msgId;
+    private final long senderUid;
+    private final String sender;
+    private final String content;
+    private final long timestamp;
+    private final boolean isAt;
 
     public Message(PushMessage message) {
         this.msgId = message.getMsgId();

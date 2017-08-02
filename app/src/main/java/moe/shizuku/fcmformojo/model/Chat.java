@@ -11,6 +11,8 @@ import android.support.annotation.Keep;
 import java.lang.annotation.Retention;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,11 +46,11 @@ public class Chat implements Parcelable {
         int DISCUSS = 3;
     }
 
-    private @ChatType int type;
-    private long id;
-    private long uid;
-    private String name;
-    private List<Message> messages;
+    private final @ChatType int type;
+    private final long id;
+    private final long uid;
+    private final String name;
+    private final List<Message> messages;
     private WeakReference<Bitmap> icon;
 
     public Chat(PushMessage message) {
@@ -179,6 +181,7 @@ public class Chat implements Parcelable {
         dest.writeLong(this.id);
         dest.writeLong(this.uid);
         dest.writeString(this.name);
+        dest.writeTypedList(Collections.singletonList(getLastMessage()));
     }
 
     protected Chat(Parcel in) {
@@ -186,8 +189,7 @@ public class Chat implements Parcelable {
         this.id = in.readLong();
         this.uid = in.readLong();
         this.name = in.readString();
-        this.messages = new ArrayList<>();
-        this.icon = new WeakReference<>(null);
+        this.messages = in.createTypedArrayList(Message.CREATOR);
     }
 
     public static final Parcelable.Creator<Chat> CREATOR = new Parcelable.Creator<Chat>() {
