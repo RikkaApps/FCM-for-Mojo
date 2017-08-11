@@ -109,6 +109,10 @@ public class FFMIntentService extends IntentService {
             List<Friend> friends = retrofit.create(WebQQService.class).getFriendsInfo().execute().body();
             List<Group> groups = retrofit.create(WebQQService.class).getGroupsInfo().execute().body();
 
+            if (friends == null || groups == null) {
+                notificationManager.cancel(NOTIFICATION_ID_PROGRESS);
+                return;
+            }
             int count = friends.size() + groups.size();
 
             Bundle result = null;
