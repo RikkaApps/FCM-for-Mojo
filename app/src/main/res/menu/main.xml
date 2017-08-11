@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<item
+        android:id="@+id/action_open_source_license"
+        android:title="@string/action_open_source_license"
+        android:showAsAction="never"/>-->
+
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/action_about"
+        android:showAsAction="never"/>
+
+</menu>

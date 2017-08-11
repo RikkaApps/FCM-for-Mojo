@@ -67,4 +67,9 @@
     <string name="display_name_qqi">QQ 国际版</string>
     <string name="display_name_qqjp">QQ 日本版</string>
 
+    <string name="action_about">アプリについて</string>
+
+    <string name="about_icon_credits"><![CDATA[Thanks <a href="https://twitter.com/xiaoya_er">小雅</a> for illustrating app icon]]></string>
+
+
 </resources>

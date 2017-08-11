@@ -75,4 +75,8 @@
     <string name="display_name_qqi">QQ 国际版</string>
     <string name="display_name_qqjp">QQ 日本版</string>
 
+    <string name="action_about">关于</string>
+
+    <string name="about_icon_credits"><![CDATA[感谢 <a href="http://weibo.com/528556720">小雅</a> 制作应用图标]]></string>
+
 </resources>

@@ -73,4 +73,8 @@
     <string name="display_name_qqi">QQ International</string>
     <string name="display_name_qqjp">QQ Japan</string>
 
+    <string name="action_about">About</string>
+
+    <string name="about_icon_credits"><![CDATA[Thanks <a href="https://twitter.com/xiaoya_er">小雅</a> for illustrating app icon]]></string>
+
 </resources>
