@@ -4,6 +4,9 @@
     <string name="messages_format">%2$dつ 連絡先からの %1$d件 メッセージ</string>
     <string name="reply" formatted="false">%s に返信</string>
 
+    <string name="update_avatar">Update avatar</string>
+    <string name="update_avatar_summary">Update friends and groups avatar (restart app maybe required to take effect)</string>
+
     <string name="view_token">トークンを表示</string>
     <string name="view_token_summary">このアプリのトークンを表示する</string>
 
@@ -57,8 +60,14 @@
 
     <string name="notification_channel_friend_message">友達メッセージ</string>
     <string name="notification_channel_group_message">グループメッセージ</string>
+    <string name="notification_channel_progress_message">Progress</string>
+    <string name="notification_channel_server_message">Server messages</string>
 
     <string name="notification_style">通知スタイル</string>
+
+    <string name="notification_fetching_list">Fetching friends and groups list…</string>
+    <string name="notification_fetching">Fetching avatar…</string>
+    <string name="notification_fetching_progress">%1$d of %2$d</string>
 
     <string name="display_name_qq">QQ</string>
     <string name="display_name_tim">TIM</string>
@@ -68,5 +77,22 @@
     <string name="display_name_qqjp">QQ 日本版</string>
 
     <string name="action_about">アプリについて</string>
+
+    <string name="about_icon_credits"><![CDATA[Thanks <a href="https://twitter.com/xiaoya_er">小雅</a> for illustrating app icon]]></string>
+
+    <string name="message_image">[Image]</string>
+
+    <string name="notification_qr_code_downloaded">QR code downloaded</string>
+    <string name="notification_cannot_download">Can\'t download QR code</string>
+    <string name="notification_tap_open_qq">Tap to open %s to scan the QR code.</string>
+    <string name="notification_network_issue">It may be a network issue.</string>
+    <string name="notification_permission_issue">It may be required permission is not granted.</string>
+
+    <string name="open_in_browser">Open in browser</string>
+
+    <string name="cannot_request_permission">Can\'t request permission.</string>
+
+    <string name="notification_server_stop">Mojo-WebQQ stopped</string>
+    <string name="notification_need_restart">You need to restart it in your server.</string>
 
 </resources>
