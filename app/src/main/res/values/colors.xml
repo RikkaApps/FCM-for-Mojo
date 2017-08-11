@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#0288D1</color>
     <color name="colorAccent">#FFC400</color>
     <color name="colorNotification">#29B6FC</color>
-    <color name="colorSystemNotification">#5C6BC0</color>
+    <color name="colorServerNotification">#3F51B5</color>
 
     <color name="colorNotificationRed">#EF5350</color>
     <color name="colorNotificationOrange">#FFA726</color>

@@ -69,8 +69,4 @@
 
     <string name="action_about">アプリについて</string>
 
-    <string name="about_icon_credits"><![CDATA[Thanks <a href="https://twitter.com/xiaoya_er">小雅</a> for illustrating app icon]]></string>
-
-    <string name="message_image">[Image]</string>
-
 </resources>

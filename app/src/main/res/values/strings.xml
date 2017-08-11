@@ -59,6 +59,7 @@
     <string name="notification_channel_friend_message">Friend messages</string>
     <string name="notification_channel_group_message">Group messages</string>
     <string name="notification_channel_progress_message">Progress</string>
+    <string name="notification_channel_server_message">Server messages</string>
 
     <string name="notification_style">Notification style</string>
 
@@ -78,4 +79,18 @@
     <string name="about_icon_credits"><![CDATA[Thanks <a href="https://twitter.com/xiaoya_er">小雅</a> for illustrating app icon]]></string>
 
     <string name="message_image">[Image]</string>
+
+    <string name="notification_qr_code_downloaded">QR code downloaded</string>
+    <string name="notification_cannot_download">Can\'t download QR code</string>
+    <string name="notification_tap_open_qq">Tap to open %s to scan the QR code.</string>
+    <string name="notification_network_issue">It may be a network issue.</string>
+    <string name="notification_permission_issue">It may be required permission is not granted.</string>
+
+    <string name="open_in_browser">Open in browser</string>
+
+    <string name="cannot_request_permission">Can\'t request permission.</string>
+
+    <string name="notification_server_stop">Mojo-WebQQ stopped</string>
+    <string name="notification_need_restart">You need to restart it in your server.</string>
+
 </resources>

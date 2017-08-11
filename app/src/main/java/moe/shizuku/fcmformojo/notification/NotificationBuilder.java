@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.util.LongSparseArray;
 
 import java.util.ArrayList;
@@ -64,12 +65,16 @@ public class NotificationBuilder {
         return mNotificationManager;
     }
 
+    public NotificationCompat.Builder createBuilder(Context context, @Nullable Chat chat) {
+        return getImpl().createBuilder(context, chat);
+    }
+
     /**
      * 插入新消息
      */
     public void addMessage(Context context, PushChat pushChat) {
         if (pushChat.isSystem()) {
-            handleSystemMessage(context, pushChat);
+            getImpl().notifySystem(context, pushChat, this);
             return;
         }
 
@@ -80,7 +85,7 @@ public class NotificationBuilder {
         }
 
         Chat chat = mMessages.get(uid);
-        if (chat == null || pushChat.isSystem()) {
+        if (chat == null) {
             pushChat.setMessages(new ChatMessagesList());
         } else {
             pushChat.setMessages(chat.getMessages());
@@ -108,12 +113,6 @@ public class NotificationBuilder {
 
         return chat.getLatestMessage().isAt()
                 || FFMSettings.getNotificationEnabled(chat.getType() != ChatType.FRIEND);
-    }
-
-    private void handleSystemMessage(Context context, PushChat chat) {
-        switch (chat.getLatestMessage().getSender()) {
-
-        }
     }
 
     /**

@@ -61,6 +61,7 @@
     <string name="notification_channel_friend_message">好友消息</string>
     <string name="notification_channel_group_message">群组消息</string>
     <string name="notification_channel_progress_message">进度</string>
+    <string name="notification_channel_server_message">服务器消息</string>
 
     <string name="notification_style">通知样式</string>
 
@@ -80,5 +81,18 @@
     <string name="about_icon_credits"><![CDATA[感谢 <a href="http://weibo.com/528556720">小雅</a> 制作应用图标]]></string>
 
     <string name="message_image">[图片]</string>
+
+    <string name="notification_qr_code_downloaded">二维码已下载</string>
+    <string name="notification_cannot_download">无法下载二维码</string>
+    <string name="notification_tap_open_qq">点击打开 %s 来扫描二维码。</string>
+    <string name="notification_network_issue">这可能是网络问题。</string>
+    <string name="notification_permission_issue">这可能是因为需要的权限没有授予。</string>
+
+    <string name="open_in_browser">在浏览器中打开</string>
+
+    <string name="cannot_request_permission">无法申请权限。</string>
+
+    <string name="notification_server_stop">Mojo-WebQQ 已停止</string>
+    <string name="notification_need_restart">你需要在你的服务器上重启它。</string>
 
 </resources>

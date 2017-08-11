@@ -4,9 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Process;
 
+import java.io.File;
+
+import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.model.Chat;
+import moe.shizuku.privileged.api.PrivilegedAPIs;
 
 /**
  * Created by rikka on 2017/7/29.
@@ -53,5 +58,19 @@ public class TIMProfile implements Profile {
                 .putExtra("uin", Long.toString(chat.getUid()));
 
         context.startActivity(intent);
+    }
+
+    @Override
+    public void onStartQrCodeScanActivity(Context context) {
+        PrivilegedAPIs.setPermitNetworkThreadPolicy();
+        if (FFMApplication.sPrivilegedAPIs.authorized()
+                && PrivilegedAPIs.isRoot()) {
+            Intent intent = new Intent()
+                    .setClassName(getPackageName(), "com.tencent.biz.qrcode.activity.ScannerActivity");
+
+            FFMApplication.sPrivilegedAPIs.startActivity(intent, Process.myUserHandle().hashCode());
+        } else {
+            ProfileHelper.startActivity(context, this);
+        }
     }
 }

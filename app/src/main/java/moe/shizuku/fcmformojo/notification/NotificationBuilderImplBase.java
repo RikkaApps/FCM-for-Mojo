@@ -10,6 +10,7 @@ import android.service.notification.StatusBarNotification;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
+import android.support.v4.provider.DocumentFile;
 
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
@@ -19,9 +20,11 @@ import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Message;
 import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.receiver.NotificationReceiver;
+import moe.shizuku.fcmformojo.service.FFMIntentService;
 
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_FRIENDS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUPS;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_SERVER;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_GROUP_SUMMARY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_SYSTEM;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_INPUT_KEY;
@@ -64,6 +67,42 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(id, builder.build());
+    }
+
+    @Override
+    void notifySystem(Context context, Chat chat, NotificationBuilder nb) {
+        nb.clearMessages();
+
+        switch (chat.getLatestMessage().getSender()) {
+            case "login":
+                // 删掉下载的二维码
+                try {
+                    DocumentFile dir = FFMSettings.getDownloadDir(context);
+                    if (dir != null) {
+                        DocumentFile file = dir.findFile("webqq-qrcode.png");
+                        if (file != null) {
+                            file.delete();
+                        }
+                    }
+                } catch (Exception ignored) {
+                }
+                return;
+            case "input_qrcode":
+                FFMIntentService.startDownloadQrCode(context, chat.getLatestMessage().getContent());
+                break;
+            case "stop":
+                NotificationCompat.Builder builder = nb.createBuilder(context, null)
+                        .setChannelId(NOTIFICATION_CHANNEL_SERVER)
+                        .setContentTitle(context.getString(R.string.notification_server_stop))
+                        .setContentText(context.getString(R.string.notification_need_restart))
+                        .setColor(context.getColor(R.color.colorServerNotification))
+                        .setSmallIcon(R.drawable.ic_noti_24dp)
+                        .setWhen(System.currentTimeMillis())
+                        .setShowWhen(true);
+
+                nb.getNotificationManager().notify(NOTIFICATION_ID_SYSTEM, builder.build());
+                break;
+        }
     }
 
     private static NotificationCompat.Style getStyle(Context context, Chat chat) {
@@ -152,6 +191,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
      *
      * @return NotificationCompat.Builder
      **/
+    @Override
     public NotificationCompat.Builder createBuilder(Context context, @Nullable Chat chat) {
         Profile profile = FFMSettings.getProfile();
 

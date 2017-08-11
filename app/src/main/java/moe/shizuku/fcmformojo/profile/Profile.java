@@ -6,6 +6,8 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
+import java.io.File;
+
 import moe.shizuku.fcmformojo.model.Chat;
 
 /**
@@ -50,4 +52,11 @@ public interface Profile {
      * @param chat 对应的 Chat
      */
     void onStartChatActivity(Context context, @Nullable Chat chat);
+
+    /**
+     * 当二维码下载完成时被调用，需要在这里打开对应的 activity
+     *
+     * @param context Context
+     */
+    void onStartQrCodeScanActivity(Context context);
 }

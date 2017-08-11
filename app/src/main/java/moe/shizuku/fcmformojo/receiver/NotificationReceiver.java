@@ -15,6 +15,7 @@ import moe.shizuku.fcmformojo.service.FFMIntentService;
 
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_CONTENT;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_DELETE;
+import static moe.shizuku.fcmformojo.FFMStatic.ACTION_OPEN_SCAN;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REPLY;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CHAT;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_INPUT_KEY;
@@ -43,6 +44,11 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setPackage(BuildConfig.APPLICATION_ID);
     }
 
+    public static Intent openScanIntent() {
+        return new Intent(ACTION_OPEN_SCAN)
+                .setPackage(BuildConfig.APPLICATION_ID);
+    }
+
     @Override
     public void onReceive(final Context context, Intent intent) {
         if (intent == null) {
@@ -60,6 +66,9 @@ public class NotificationReceiver extends BroadcastReceiver {
                 break;
             case ACTION_DELETE:
                 handleDelete(context, chat);
+                break;
+            case ACTION_OPEN_SCAN:
+                handleOpenScan(context);
                 break;
         }
     }
@@ -95,5 +104,9 @@ public class NotificationReceiver extends BroadcastReceiver {
             FFMApplication.get(context).getNotificationBuilder()
                     .clearMessages();
         }
+    }
+
+    private void handleOpenScan(Context context) {
+        FFMSettings.getProfile().onStartQrCodeScanActivity(context);
     }
 }

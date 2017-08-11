@@ -1,7 +1,9 @@
 package moe.shizuku.fcmformojo;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.StringDef;
+import android.support.v4.provider.DocumentFile;
 
 import java.lang.annotation.Retention;
 import java.util.UUID;
@@ -23,6 +25,7 @@ public class FFMSettings {
     public static final String SERVER_HTTP_PASSWORD = "server_http_password";
     public static final String QQ_PACKAGE = "qq_package";
     public static final String GET_FOREGROUND = "get_foreground";
+    public static final String DOWNLOADS_URI = "downloads_uri";
 
     public static String getBaseUrl() {
         return Settings.getString(BASE_URL, "http://0.0.0.0:5000");
@@ -103,5 +106,26 @@ public class FFMSettings {
      */
     public static @ForegroundImpl String getForegroundImpl() {
         return Settings.getString(GET_FOREGROUND, ForegroundImpl.NONE);
+    }
+
+    public static void putDownloadUri(String uri) {
+        Settings.putString(DOWNLOADS_URI, uri);
+    }
+
+    public static DocumentFile getDownloadDir(Context context) {
+        String uri = Settings.getString(DOWNLOADS_URI, null);
+        if (uri == null) {
+            return null;
+        }
+
+        DocumentFile pickedDir = DocumentFile.fromTreeUri(context, Uri.parse(uri));
+        DocumentFile dir = pickedDir.findFile("FFM");
+
+        if (dir == null)
+            pickedDir = pickedDir.createDirectory("FFM");
+        else
+            pickedDir = dir;
+
+        return pickedDir;
     }
 }
