@@ -16,12 +16,18 @@ import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_MAX_MESSAGES;
 
 public class ChatMessagesList extends LinkedList<Message> {
 
+    private int size;
+
     public ChatMessagesList() {
         super();
+
+        size = 0;
     }
 
     public ChatMessagesList(@NonNull Collection<? extends Message> c) {
         super(c);
+
+        size = c.size();
     }
 
     @Override
@@ -29,6 +35,11 @@ public class ChatMessagesList extends LinkedList<Message> {
         if (size() >= NOTIFICATION_MAX_MESSAGES) {
             removeFirst();
         }
+        size++;
         return super.add(message);
+    }
+
+    public int getSize() {
+        return size;
     }
 }

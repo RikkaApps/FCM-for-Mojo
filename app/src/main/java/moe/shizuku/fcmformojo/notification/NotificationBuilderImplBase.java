@@ -120,7 +120,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 sb.append(message.getContent(context)).append('\n');
             }
             style.bigText(sb.toString().trim());
-            style.setSummaryText(context.getString(R.string.message_format, chat.getMessages().size()));
+            style.setSummaryText(context.getString(R.string.message_format, chat.getMessages().getSize()));
 
             return style;
         } else {
@@ -136,7 +136,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 style.addMessage(message.getContent(context), message.getTimestamp(), message.getSender());
             }
 
-            style.setSummaryText(context.getString(R.string.message_format, chat.getMessages().size()));
+            style.setSummaryText(context.getString(R.string.message_format, chat.getMessages().getSize()));
 
             return style;
         }
