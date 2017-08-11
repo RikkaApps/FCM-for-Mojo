@@ -49,7 +49,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         NotificationCompat.Builder builder = createBuilder(context, chat)
                 .setLargeIcon(chat.loadIcon(context))
                 .setContentTitle(chat.getName())
-                .setContentText(chat.getLatestMessage().getContent())
+                .setContentText(chat.getLatestMessage().getContent(context))
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(false)
                 .setShowWhen(true)
@@ -78,7 +78,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 }
 
                 Message message = chat.getMessages().get(i);
-                sb.append(message.getContent()).append('\n');
+                sb.append(message.getContent(context)).append('\n');
             }
             style.bigText(sb.toString().trim());
             style.setSummaryText(context.getString(R.string.message_format, chat.getMessages().size()));
@@ -94,7 +94,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 }
 
                 Message message = chat.getMessages().get(i);
-                style.addMessage(message.getContent(), message.getTimestamp(), message.getSender());
+                style.addMessage(message.getContent(context), message.getTimestamp(), message.getSender());
             }
 
             style.setSummaryText(context.getString(R.string.message_format, chat.getMessages().size()));

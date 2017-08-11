@@ -1,8 +1,11 @@
 package moe.shizuku.fcmformojo.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Keep;
+
+import moe.shizuku.fcmformojo.R;
 
 
 @Keep
@@ -29,6 +32,16 @@ public class Message implements Parcelable {
      */
     public String getContent() {
         return content;
+    }
+
+    /**
+     * 返回该条消息的内容，若为空返回 [图片]。
+     *
+     * @param context Context
+     * @return 消息内容
+     */
+    public String getContent(Context context) {
+        return content != null ? content : context.getString(R.string.message_image);
     }
 
     /**
