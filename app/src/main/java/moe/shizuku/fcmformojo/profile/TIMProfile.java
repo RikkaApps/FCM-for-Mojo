@@ -36,7 +36,7 @@ public class TIMProfile implements Profile {
 
     @Override
     public void onStartChatActivity(Context context, Chat chat) {
-        if (chat == null) {
+        if (chat == null || chat.getUid() == 0) {
             ProfileHelper.startActivity(context, this);
             return;
         }

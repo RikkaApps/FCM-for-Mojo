@@ -61,11 +61,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
             Log.d(TAG, json);
 
-            PushChat message = new Gson().fromJson(json, PushChat.class);
-            if (message != null) {
-                Log.d(TAG, message.toString());
-
-                mNotificationBuilder.addMessage(getApplicationContext(), message);
+            PushChat chat = new Gson().fromJson(json, PushChat.class);
+            if (chat != null) {
+                mNotificationBuilder.addMessage(getApplicationContext(), chat);
             }
         } catch (JsonSyntaxException e) {
             Log.e(TAG, "bad json: " + json, e);

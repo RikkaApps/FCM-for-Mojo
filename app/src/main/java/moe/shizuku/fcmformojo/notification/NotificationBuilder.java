@@ -68,13 +68,23 @@ public class NotificationBuilder {
      * 插入新消息
      */
     public void addMessage(Context context, PushChat pushChat) {
+        if (pushChat.isSystem()) {
+            handleSystemMessage(context, pushChat);
+            return;
+        }
+
         long uid = pushChat.getUid();
+        // 会出现没有 uid 的情况
+        if (uid == 0) {
+            uid = pushChat.getId();
+        }
 
         Chat chat = mMessages.get(uid);
         if (chat == null || pushChat.isSystem()) {
             pushChat.setMessages(new ChatMessagesList());
         } else {
             pushChat.setMessages(chat.getMessages());
+            pushChat.setIcon(chat.getIcon());
         }
         chat = pushChat;
         chat.getMessages().add(chat.getLatestMessage());
@@ -90,10 +100,6 @@ public class NotificationBuilder {
     }
 
     private boolean shouldNotify(Context context, Chat chat) {
-        if (chat.isSystem()) {
-            return true;
-        }
-
         String foreground = FFMApplication.get(context).getForegroundPackage();
         if (FFMSettings.getProfile().getPackageName().equals(foreground)) {
             clearMessages();
@@ -102,6 +108,12 @@ public class NotificationBuilder {
 
         return chat.getLatestMessage().isAt()
                 || FFMSettings.getNotificationEnabled(chat.getType() != ChatType.FRIEND);
+    }
+
+    private void handleSystemMessage(Context context, PushChat chat) {
+        switch (chat.getLatestMessage().getSender()) {
+
+        }
     }
 
     /**
@@ -135,16 +147,10 @@ public class NotificationBuilder {
     }
 
     public static PendingIntent createContentIntent(Context context, int requestCode, @Nullable Chat chat) {
-        if (chat != null && chat.isSystem()) {
-            return null;
-        }
         return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.contentIntent(chat), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public static PendingIntent createDeleteIntent(Context context, int requestCode, @Nullable Chat chat) {
-        if (chat != null && chat.isSystem()) {
-            return null;
-        }
         return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.deleteIntent(chat), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

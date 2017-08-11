@@ -39,9 +39,9 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
     @Override
     void notify(Context context, Chat chat, NotificationBuilder nb) {
         int id = (int) chat.getUid();
-
-        if (chat.isSystem()) {
-            id = NOTIFICATION_ID_SYSTEM;
+        // 会出现没有 uid 的情况
+        if (id == 0) {
+            id = (int) chat.getId();
         }
 
         notifyGroupSummary(context, chat, nb);
@@ -50,18 +50,15 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 .setLargeIcon(chat.loadIcon(context))
                 .setContentTitle(chat.getName())
                 .setContentText(chat.getLatestMessage().getContent())
-                .setGroup(chat.isSystem() ? null : GROUP_KEY)
+                .setGroup(GROUP_KEY)
                 .setGroupSummary(false)
                 .setShowWhen(true)
-                .setWhen(chat.getLatestMessage().getTimestamp())
+                .setWhen(chat.getLatestMessage().getTimestamp() * 1000)
                 .setStyle(getStyle(context, chat))
                 .setContentIntent(NotificationBuilder.createContentIntent(context, id, chat))
                 .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, id, chat))
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE);
-
-        if (!chat.isSystem()) {
-            builder.addAction(createReplyAction(context, id, chat));
-        }
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .addAction(createReplyAction(context, id, chat));
 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -70,9 +67,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
     }
 
     private static NotificationCompat.Style getStyle(Context context, Chat chat) {
-        if (chat.isSystem()) {
-            return null;
-        } else if (chat.isFriend()) {
+        if (chat.isFriend()) {
             NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
             style.setBigContentTitle(chat.getName());
 
@@ -112,13 +107,13 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
      * 创建通知的回复动作。
      *
      * @param context Context
-     * @param id 唯一 id，也会被作为 PendingIntent 的 requestId
+     * @param requestCode PendingIntent 的 requestId
      * @param chat 对应的 Chat
      * @return NotificationCompat.Action
      */
-    private static NotificationCompat.Action createReplyAction(Context context, int id, Chat chat) {
+    private static NotificationCompat.Action createReplyAction(Context context, int requestCode, Chat chat) {
         Intent intent = NotificationReceiver.replyIntent(chat);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         String replyLabel = context.getString(R.string.reply, chat.getName());
         RemoteInput remoteInput = new RemoteInput.Builder(NOTIFICATION_INPUT_KEY)
@@ -134,10 +129,6 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
      * 分组消息的头部
      **/
     private void notifyGroupSummary(Context context, Chat chat, NotificationBuilder nb) {
-        if (chat.isSystem()) {
-            return;
-        }
-
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -164,18 +155,9 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
     public NotificationCompat.Builder createBuilder(Context context, @Nullable Chat chat) {
         Profile profile = FFMSettings.getProfile();
 
-        int color, icon;
-        if (chat != null && chat.isSystem()) {
-            color = context.getColor(R.color.colorSystemNotification);
-            icon = R.drawable.ic_noti_24dp;
-        } else {
-            color = context.getColor(profile.getNotificationColor());
-            icon = profile.getNotificationIcon();
-        }
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_GROUPS)
-                .setColor(color)
-                .setSmallIcon(icon)
+                .setColor(context.getColor(profile.getNotificationColor()))
+                .setSmallIcon(profile.getNotificationIcon())
                 .setVisibility(Notification.VISIBILITY_PRIVATE);
 
         if (FFMApplication.get(context).isSystem()) {
@@ -232,7 +214,12 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
 
     @Override
     void clear(Chat chat, NotificationBuilder nb) {
-        nb.getNotificationManager().cancel((int) chat.getUid());
+        int id = (int) chat.getUid();
+        // 会出现没有 uid 的情况
+        if (chat.getUid() == 0) {
+            id = (int) chat.getId();
+        }
+        nb.getNotificationManager().cancel(id);
 
         boolean clearGroup = true;
         for (StatusBarNotification sbn : nb.getNotificationManager().getActiveNotifications()) {

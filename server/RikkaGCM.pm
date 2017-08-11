@@ -22,9 +22,9 @@ sub call {
 
             my %chat;
 
-            $chat{name}             = $msg->sender->displayname;
-            $chat{message}{sender}  = $msg->sender->displayname;
-            $chat{message}{content} = $msg->content;
+            $chat{message}{sender}    = $msg->sender->displayname;
+            $chat{message}{content}   = $msg->content;
+            $chat{message}{timestamp} = $msg->time;
 
             if ( $msg->is_at ) {
                 $chat{message}{isAt} = 1;
@@ -33,6 +33,7 @@ sub call {
                 $chat{type} = 0;
                 $chat{id}   = $msg->sender->id;
                 $chat{uid}  = $msg->sender->uid;
+                $chat{name} = $msg->sender->displayname;
             }
             elsif ( $msg->type eq 'group_message' ) {
                 if ( !$isAt ) {
@@ -55,9 +56,10 @@ sub call {
                     }
                     @{ $data->{allow_group} };
                 }
-                $json{type} = 1;
+                $chat{type} = 1;
                 $chat{id}   = $msg->group->id;
                 $chat{uid}  = $msg->group->uid;
+                $chat{name} = $msg->group->displayname;
             }
             elsif ( $msg->type eq 'discuss_message' ) {
                 return
@@ -78,9 +80,10 @@ sub call {
                       : $msg->discuss->displayname eq $_
                 }
                 @{ $data->{allow_discuss} };
-                $json{type} = 2;
+                $chat{type} = 2;
                 $chat{id}   = $msg->discuss->id;
                 $chat{uid}  = $msg->discuss->uid;
+                $chat{name} = $msg->discuss->displayname;
             }
             elsif ( $msg->type eq 'sess_message' ) {
             }
@@ -92,17 +95,6 @@ sub call {
                     registration_ids => $registration_ids,
                     priority         => 'high',
                     data             => \%chat,
-                },
-                sub {
-                    my $json = shift;
-                    if ( not defined $json ) {
-                        $client->debug( "[". __PACKAGE__. "]GCM消息推送失败: 返回结果异常" );
-                        return;
-                    }
-                    else {
-                        $client->debug( "[". __PACKAGE__. "]GCM消息推送完成：$json->{multicast_id}/$json->{success}/$json->{failure}"
-                        );
-                    }
                 }
             );
         }
@@ -120,8 +112,9 @@ sub call {
             }
 
             my %chat;
-            $chat{type} = 3;
-            $chat{message}{sender} = $event;
+            $chat{type}               = 3;
+            $chat{message}{sender}    = $event;
+            $chat{message}{timestamp} = time();
             if ( $event eq 'input_qrcode' ) {
                 $chat{message}{content} = $client->qrcode_upload_url;
             }
@@ -141,17 +134,6 @@ sub call {
                     collapse_key     => 'system_event',
                     priority         => 'high',
                     data             => \%chat,
-                },
-                sub {
-                    my $json = shift;
-                    if ( not defined $json ) {
-                        $client->debug( "[". __PACKAGE__ . "]GCM消息推送失败: 返回结果异常" );
-                        return;
-                    }
-                    else {
-                        $client->debug( "[". __PACKAGE__. "]GCM消息推送完成：$json->{multicast_id}/$json->{success}/$json->{failure}"
-                        );
-                    }
                 }
             );
         }

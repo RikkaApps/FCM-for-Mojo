@@ -59,7 +59,7 @@ public class Chat implements Parcelable {
     private ChatMessagesList messages = new ChatMessagesList();
 
     /** 图标 */
-    private WeakReference<Bitmap> icon;
+    private WeakReference<Bitmap> icon = new WeakReference<>(null);
 
     /**
      * 返回该聊天的聊天类型
@@ -146,6 +146,14 @@ public class Chat implements Parcelable {
         return type == ChatType.SYSTEM;
     }
 
+    public WeakReference<Bitmap> getIcon() {
+        return icon;
+    }
+
+    public void setIcon(WeakReference<Bitmap> icon) {
+        this.icon = icon;
+    }
+
     /**
      * 返回该聊天的头像，若本地没有头像将使用生成的头像。
      *
@@ -156,12 +164,10 @@ public class Chat implements Parcelable {
             return null;
         }
 
-        Bitmap bitmap = icon.get();
-        if (bitmap == null) {
-            bitmap = ChatIcon.getIcon(context, uid, type);
+        if (icon == null || icon.get() == null) {
+            icon = new WeakReference<>(ChatIcon.getIcon(context, uid, type));
         }
-        icon = new WeakReference<>(bitmap);
-        return bitmap;
+        return icon.get();
     }
 
     @Override
