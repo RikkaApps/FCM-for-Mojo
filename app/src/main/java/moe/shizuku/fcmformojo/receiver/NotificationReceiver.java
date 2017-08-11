@@ -3,7 +3,6 @@ package moe.shizuku.fcmformojo.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.RemoteInput;
@@ -11,7 +10,6 @@ import android.support.v4.app.RemoteInput;
 import moe.shizuku.fcmformojo.BuildConfig;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
-import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.service.FFMIntentService;
 
@@ -82,18 +80,10 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             FFMSettings.getProfile().onStartChatActivity(context, null);
         } else {
-            if (chat.getId() == -2) {
-                // TODO download image
-                context.startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(chat.getLastMessage().getContent())), context.getString(R.string.open)));
-
-                FFMApplication.get(context).getNotificationBuilder()
-                        .clearMessages(chat.getId());
-            } else {
-                FFMApplication.get(context).getNotificationBuilder()
+            FFMApplication.get(context).getNotificationBuilder()
                         .clearMessages();
 
-                FFMSettings.getProfile().onStartChatActivity(context, chat);
-            }
+            FFMSettings.getProfile().onStartChatActivity(context, chat);
         }
     }
 

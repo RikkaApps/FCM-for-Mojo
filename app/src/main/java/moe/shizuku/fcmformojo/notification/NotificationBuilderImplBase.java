@@ -25,6 +25,7 @@ import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUPS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_GROUP_SUMMARY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_SYSTEM;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_INPUT_KEY;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_MAX_MESSAGES;
 
 /**
  * Created by Rikka on 2016/9/18.
@@ -35,26 +36,24 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
 
     private static final String GROUP_KEY = "messages";
 
-    private static final int MAX_MESSAGES = 8;
-
     @Override
     void notify(Context context, Chat chat, NotificationBuilder nb) {
         int id = (int) chat.getUid();
 
         if (chat.isSystem()) {
-            id = (int) chat.getId();
+            id = NOTIFICATION_ID_SYSTEM;
         }
 
         notifyGroupSummary(context, chat, nb);
 
         NotificationCompat.Builder builder = createBuilder(context, chat)
-                .setLargeIcon(chat.getIcon(context))
+                .setLargeIcon(chat.loadIcon(context))
                 .setContentTitle(chat.getName())
-                .setContentText(chat.getLastMessage().getContent())
+                .setContentText(chat.getLatestMessage().getContent())
                 .setGroup(chat.isSystem() ? null : GROUP_KEY)
                 .setGroupSummary(false)
                 .setShowWhen(true)
-                .setWhen(chat.getLastMessage().getTimestamp())
+                .setWhen(chat.getLatestMessage().getTimestamp())
                 .setStyle(getStyle(context, chat))
                 .setContentIntent(NotificationBuilder.createContentIntent(context, id, chat))
                 .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, id, chat))
@@ -62,8 +61,6 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
 
         if (!chat.isSystem()) {
             builder.addAction(createReplyAction(context, id, chat));
-        } else {
-            id = NOTIFICATION_ID_SYSTEM;
         }
 
         NotificationManager notificationManager =
@@ -73,12 +70,14 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
     }
 
     private static NotificationCompat.Style getStyle(Context context, Chat chat) {
-        if (chat.isFriend() || chat.isSystem()) {
+        if (chat.isSystem()) {
+            return null;
+        } else if (chat.isFriend()) {
             NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
             style.setBigContentTitle(chat.getName());
 
             StringBuilder sb = new StringBuilder();
-            for (int i = chat.getMessages().size() - MAX_MESSAGES, count = 0; i < chat.getMessages().size() && count <= 8; i++, count ++) {
+            for (int i = chat.getMessages().size() - NOTIFICATION_MAX_MESSAGES, count = 0; i < chat.getMessages().size() && count <= 8; i++, count ++) {
                 if (i < 0) {
                     continue;
                 }
@@ -94,7 +93,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
             MessagingStyle style = new MessagingStyle(chat.getName());
             style.setConversationTitle(chat.getName());
 
-            for (int i = chat.getMessages().size() - MAX_MESSAGES, count = 0; i < chat.getMessages().size() && count <= 8; i++, count ++) {
+            for (int i = chat.getMessages().size() - NOTIFICATION_MAX_MESSAGES, count = 0; i < chat.getMessages().size() && count <= 8; i++, count ++) {
                 if (i < 0) {
                     continue;
                 }
@@ -165,9 +164,18 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
     public NotificationCompat.Builder createBuilder(Context context, @Nullable Chat chat) {
         Profile profile = FFMSettings.getProfile();
 
+        int color, icon;
+        if (chat != null && chat.isSystem()) {
+            color = context.getColor(R.color.colorSystemNotification);
+            icon = R.drawable.ic_noti_24dp;
+        } else {
+            color = context.getColor(profile.getNotificationColor());
+            icon = profile.getNotificationIcon();
+        }
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_GROUPS)
-                .setColor(context.getColor(profile.getNotificationColor()))
-                .setSmallIcon(profile.getNotificationIcon())
+                .setColor(color)
+                .setSmallIcon(icon)
                 .setVisibility(Notification.VISIBILITY_PRIVATE);
 
         if (FFMApplication.get(context).isSystem()) {
@@ -181,23 +189,23 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         }
 
         // @ 消息当作好友消息处理
-        boolean group = chat.isGroup() && !chat.getLastMessage().isAt();
+        boolean group = chat.isGroup() && !chat.getLatestMessage().isAt();
         if (!group) {
             builder.setChannelId(NOTIFICATION_CHANNEL_FRIENDS);
         }
 
         // sound
-        builder.setSound(FFMSettings.getSound(group));
+        builder.setSound(FFMSettings.getNotificationSound(group));
 
         // heads-up
-        int priority = FFMSettings.getPriority(group);
+        int priority = FFMSettings.getNotificationPriority(group);
         builder.setPriority(priority);
-        if (priority >= NotificationCompat.PRIORITY_HIGH || chat.getLastMessage().isAt()) {
+        if (priority >= NotificationCompat.PRIORITY_HIGH || chat.getLatestMessage().isAt()) {
             builder.setVibrate(new long[0]);
         }
 
         // vibrate
-        int vibrate = FFMSettings.getVibrate(group);
+        int vibrate = FFMSettings.getNotificationVibrate(group);
         if (vibrate != 0) {
             switch (vibrate) {
                 case 1:
@@ -214,7 +222,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         }
 
         // lights
-        if (FFMSettings.getLight(group)
+        if (FFMSettings.getNotificationLight(group)
                 && priority >= NotificationCompat.PRIORITY_DEFAULT) {
             builder.setLights(context.getColor(R.color.colorNotification), 1000, 1000);
         }

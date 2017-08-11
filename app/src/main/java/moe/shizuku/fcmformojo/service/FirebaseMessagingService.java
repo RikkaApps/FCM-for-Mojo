@@ -6,14 +6,15 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
+import java.util.Set;
 
-import moe.shizuku.fcmformojo.BuildConfig;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
-import moe.shizuku.fcmformojo.model.PushMessage;
+import moe.shizuku.fcmformojo.model.PushChat;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 
 /**
@@ -36,30 +37,38 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
-
-        String foreground = null;
-        try {
-            foreground = FFMApplication.get(this).getForegroundPackage();
-        } catch (Exception ignored) {
-        }
-
-        if (foreground != null
-                && foreground.equals(FFMSettings.getProfile().getPackageName())) {
-            mNotificationBuilder.clearMessages();
-            return;
-        }
+        String json = null;
 
         try {
-            PushMessage message = new Gson().fromJson(new JSONObject(data).toString(), PushMessage.class);
+            StringBuilder sb = new StringBuilder();
+            sb.append("{");
+            for (Map.Entry<String, String> e : data.entrySet()) {
+                sb.append("\"").append(e.getKey()).append("\"");
+                if (e.getValue().startsWith("{")) {
+                    sb.append(":").append(e.getValue());
+
+                } else {
+                    sb.append(":").append("\"").append(e.getValue()).append("\"");
+                }
+                sb.append(",");
+            }
+            if (data.entrySet().size() > 0) {
+                sb.deleteCharAt(sb.length() - 1);
+            }
+            sb.append("}");
+
+            json = sb.toString();
+
+            Log.d(TAG, json);
+
+            PushChat message = new Gson().fromJson(json, PushChat.class);
             if (message != null) {
                 Log.d(TAG, message.toString());
 
                 mNotificationBuilder.addMessage(getApplicationContext(), message);
             }
         } catch (JsonSyntaxException e) {
-            e.printStackTrace();
-
-            Log.e(TAG, "bad json: " + new JSONObject(data).toString());
+            Log.e(TAG, "bad json: " + json, e);
         }
     }
 }

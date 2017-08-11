@@ -10,13 +10,10 @@ import android.support.annotation.Keep;
 
 import java.lang.annotation.Retention;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 import moe.shizuku.fcmformojo.notification.ChatIcon;
+import moe.shizuku.fcmformojo.utils.ChatMessagesList;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
@@ -36,31 +33,33 @@ public class Chat implements Parcelable {
     })
     @Retention(SOURCE)
     public @interface ChatType {
-        /** 系统 */
-        int SYSTEM = 0;
         /** 好友 */
-        int FRIEND = 1;
+        int FRIEND = 0;
         /** 群 */
-        int GROUP = 2;
+        int GROUP = 1;
         /** 讨论组 */
-        int DISCUSS = 3;
+        int DISCUSS = 2;
+        /** 系统 */
+        int SYSTEM = 3;
     }
 
+    /** 类型 */
     private final @ChatType int type;
-    private final long id;
-    private final long uid;
-    private final String name;
-    private final List<Message> messages;
-    private WeakReference<Bitmap> icon;
 
-    public Chat(PushMessage message) {
-        this.type = message.getSenderType();
-        this.id = message.getSenderId();
-        this.uid = message.getUid();
-        this.name = message.getTitle();
-        this.messages = new LinkedList<>();
-        this.icon = new WeakReference<>(null);
-    }
+    /** 唯一 id */
+    private final long id;
+
+    /** 可见 id（如 QQ 号） */
+    private final long uid;
+
+    /** 名字 */
+    private final String name;
+
+    /** 消息们 */
+    private ChatMessagesList messages = new ChatMessagesList();
+
+    /** 图标 */
+    private WeakReference<Bitmap> icon;
 
     /**
      * 返回该聊天的聊天类型
@@ -103,8 +102,12 @@ public class Chat implements Parcelable {
      *
      * @return 消息列表
      */
-    public List<Message> getMessages() {
+    public ChatMessagesList getMessages() {
         return messages;
+    }
+
+    public void setMessages(ChatMessagesList messages) {
+        this.messages = messages;
     }
 
     /**
@@ -112,7 +115,7 @@ public class Chat implements Parcelable {
      *
      * @return 消息列表的最后一项
      */
-    public Message getLastMessage() {
+    public Message getLatestMessage() {
         return messages.get(messages.size() - 1);
     }
 
@@ -148,7 +151,7 @@ public class Chat implements Parcelable {
      *
      * @return 头像
      */
-    public Bitmap getIcon(Context context) {
+    public Bitmap loadIcon(Context context) {
         if (isSystem()) {
             return null;
         }
@@ -181,7 +184,7 @@ public class Chat implements Parcelable {
         dest.writeLong(this.id);
         dest.writeLong(this.uid);
         dest.writeString(this.name);
-        dest.writeTypedList(Collections.singletonList(getLastMessage()));
+        dest.writeTypedList(Collections.singletonList(getLatestMessage()));
     }
 
     protected Chat(Parcel in) {
@@ -189,7 +192,7 @@ public class Chat implements Parcelable {
         this.id = in.readLong();
         this.uid = in.readLong();
         this.name = in.readString();
-        this.messages = in.createTypedArrayList(Message.CREATOR);
+        this.messages = new ChatMessagesList(in.createTypedArrayList(Message.CREATOR));
     }
 
     public static final Parcelable.Creator<Chat> CREATOR = new Parcelable.Creator<Chat>() {

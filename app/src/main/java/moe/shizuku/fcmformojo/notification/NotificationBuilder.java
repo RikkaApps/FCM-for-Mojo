@@ -7,16 +7,21 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.util.LongSparseArray;
 
+import java.util.ArrayList;
+
+import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Chat.ChatType;
 import moe.shizuku.fcmformojo.model.Message;
-import moe.shizuku.fcmformojo.model.PushMessage;
+import moe.shizuku.fcmformojo.model.PushChat;
 import moe.shizuku.fcmformojo.receiver.NotificationReceiver;
+import moe.shizuku.fcmformojo.utils.ChatMessagesList;
 
 /**
  * 用来放消息内容，处理发通知，通知被点击被删除的东西。
  */
+
 public class NotificationBuilder {
 
     private NotificationManager mNotificationManager;
@@ -62,30 +67,41 @@ public class NotificationBuilder {
     /**
      * 插入新消息
      */
-    public void addMessage(Context context, PushMessage message) {
-        Chat chat = mMessages.get(message.getSenderId());
-        if (chat == null) {
-            chat = new Chat(message);
-            mMessages.put(message.getSenderId(), chat);
-        }
+    public void addMessage(Context context, PushChat pushChat) {
+        long uid = pushChat.getUid();
 
-        chat.getMessages().add(new Message(message));
+        Chat chat = mMessages.get(uid);
+        if (chat == null || pushChat.isSystem()) {
+            pushChat.setMessages(new ChatMessagesList());
+        } else {
+            pushChat.setMessages(chat.getMessages());
+        }
+        chat = pushChat;
+        chat.getMessages().add(chat.getLatestMessage());
+
+        mMessages.put(uid, chat);
 
         mMessageCount ++;
         mSendersCount = mMessages.size();
 
-        if (shouldNotify(chat)) {
+        if (shouldNotify(context, chat)) {
             getImpl().notify(context, chat, this);
         }
     }
 
-    public Chat getChat(long id) {
-        return mMessages.get(id);
-    }
+    private boolean shouldNotify(Context context, Chat chat) {
+        if (chat.isSystem()) {
+            return true;
+        }
 
-    private boolean shouldNotify(Chat chat) {
-        return chat.isSystem()
-                || FFMSettings.getNotification(chat.getType() != ChatType.FRIEND);
+        String foreground = FFMApplication.get(context).getForegroundPackage();
+        if (FFMSettings.getProfile().getPackageName().equals(foreground)) {
+            clearMessages();
+            return false;
+        }
+
+        return chat.getLatestMessage().isAt()
+                || FFMSettings.getNotificationEnabled(chat.getType() != ChatType.FRIEND);
     }
 
     /**
@@ -119,16 +135,14 @@ public class NotificationBuilder {
     }
 
     public static PendingIntent createContentIntent(Context context, int requestCode, @Nullable Chat chat) {
-        long id = chat == null ? 0 : chat.getId();
-        if (id == -1 || id == -3) {
+        if (chat != null && chat.isSystem()) {
             return null;
         }
         return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.contentIntent(chat), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public static PendingIntent createDeleteIntent(Context context, int requestCode, @Nullable Chat chat) {
-        long id = chat == null ? 0 : chat.getId();
-        if (id == -1 || id == -3) {
+        if (chat != null && chat.isSystem()) {
             return null;
         }
         return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.deleteIntent(chat), PendingIntent.FLAG_UPDATE_CURRENT);

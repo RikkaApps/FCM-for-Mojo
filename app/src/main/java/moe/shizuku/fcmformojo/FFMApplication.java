@@ -116,14 +116,19 @@ public class FFMApplication extends Application {
     }
 
     public String getForegroundPackage() {
-        switch (FFMSettings.getForegroundImpl()) {
-            case ForegroundImpl.USAGE_STATS:
-                return UsageStatsUtils.getForegroundPackage(this);
-            case ForegroundImpl.SHIZUKU:
-                return sPrivilegedAPIs.getForegroundPackageName();
-            case ForegroundImpl.NONE:
-            default:
-                return null;
+        try {
+            switch (FFMSettings.getForegroundImpl()) {
+                case ForegroundImpl.USAGE_STATS:
+                    return UsageStatsUtils.getForegroundPackage(this);
+                case ForegroundImpl.SHIZUKU:
+                    return sPrivilegedAPIs.getForegroundPackageName();
+                case ForegroundImpl.NONE:
+                default:
+                    return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

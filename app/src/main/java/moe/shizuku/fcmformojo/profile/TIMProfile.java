@@ -49,7 +49,7 @@ public class TIMProfile implements Profile {
                 .putExtra("entrance", 6)
                 .putExtra("key_notification_click_action", (String) null)
                 .putExtra("uinname", chat.getName())
-                .putExtra("uintype", chat.getType() - 1)
+                .putExtra("uintype", chat.getType())
                 .putExtra("uin", Long.toString(chat.getUid()));
 
         context.startActivity(intent);

@@ -32,25 +32,25 @@ public class FFMSettings {
         return ProfileList.getProfile(Settings.getString(QQ_PACKAGE, ""));
     }
 
-    public static boolean getNotification(boolean group) {
+    public static boolean getNotificationEnabled(boolean group) {
         return Settings.getBoolean(group ? "notification_group" : "notification", !group);
     }
 
-    public static int getPriority(boolean group) {
+    public static int getNotificationPriority(boolean group) {
         String value = Settings.getString(group ? "priority_group" : "priority", group ? "0" : "1");
         return Integer.parseInt(value);
     }
 
-    public static int getVibrate(boolean group) {
+    public static int getNotificationVibrate(boolean group) {
         String value = Settings.getString(group ? "vibrate_group" : "vibrate", "1");
         return Integer.parseInt(value);
     }
 
-    public static boolean getLight(boolean group) {
+    public static boolean getNotificationLight(boolean group) {
         return Settings.getBoolean(group ? "light_group" : "light", true);
     }
 
-    public static Uri getSound(boolean group) {
+    public static Uri getNotificationSound(boolean group) {
         return Uri.parse(Settings.getString(group ? "sound_group" : "sound", android.provider.Settings.System.DEFAULT_NOTIFICATION_URI.toString()));
     }
 

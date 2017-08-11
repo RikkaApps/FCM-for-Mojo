@@ -24,4 +24,6 @@ public class FFMStatic {
 
     public static final String NOTIFICATION_INPUT_KEY = "reply";
 
+    public static final int NOTIFICATION_MAX_MESSAGES = 8;
+
 }

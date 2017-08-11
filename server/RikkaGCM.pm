@@ -1,81 +1,64 @@
 package Mojo::Webqq::Plugin::RikkaGCM;
-our $AUTHOR = 'shizuku@shizuku.moe';
+our $AUTHOR = 'rikka@shizuku.moe';
 our $SITE = '';
 our $DESC = '';
 our $PRIORITY = 97;
 use List::Util qw(first);
+
 sub call {
     my $client = shift;
     my $data  = shift;
     $client->load("UploadQRcode") if !$client->is_load_plugin('UploadQRcode');
     my $api_url = $data->{api_url};
     my $api_key = $data->{api_key} or $client->die("[".__PACKAGE__."]必须指定api_key");
-    my $collapse_key = $data->{collapse_key};
     my $registration_ids = $data->{registration_ids} // [];
     if(ref $registration_ids ne 'ARRAY' or @{$registration_ids} == 0){
         $client->die("[".__PACKAGE__."]registration_ids无效");
     }
     $client->on(receive_message=>sub{
         my($client,$msg) = @_;
-        my $type = 'Mojo-Webqq';
-        my $msgId;
-        my $senderId;
-        my $title;
-        my $sender;
-        my $content;
-        my $senderType;
-        my $isAt = 0;
-        my $seuid = 0;
+
+		my %chat;
+        
+		$chat{name} = $msg->sender->displayname;
+        $chat{message}{sender} = $msg->sender->displayname;
+        $chat{message}{content} = $msg->content;
+			
         if($msg->is_at) {
-            $isAt=1;
+            $chat{message}{isAt}=1;
         }
         if($msg->type eq 'friend_message'){
-            $senderId = $msg->sender->id;
-            $uid = $msg->sender->uid;
-            $msgId = $msg->id;
-            $title = $msg->sender->displayname;
-            $sender = $msg->sender->displayname;
-            $content = $msg->content;
-            $senderType = '1';
+			$chat{type}=0;
+			$chat{id}=$msg->sender->id;
+			$chat{uid} = $msg->sender->uid;
         }
         elsif($msg->type eq 'group_message'){
             if(!$isAt) {
                 return if ref $data->{ban_group} eq "ARRAY" and @{$data->{ban_group}} and first {$_=~/^\d+$/?$msg->group->uid eq $_:$msg->group->displayname eq $_} @{$data->{ban_group}};
                 return if ref $data->{allow_group} eq "ARRAY" and  @{$data->{allow_group}} and !first {$_=~/^\d+$/?$msg->group->uid eq $_:$msg->group->displayname eq $_} @{$data->{allow_group}};
             }
-            $senderId = $msg->group->id;
-            $uid = $msg->group->uid;
-            $msgId = $msg->id;
-            $title = $msg->group->displayname;
-            $sender = $msg->sender->displayname;
-            $content = $msg->content;
-            $senderType = '2';
+			$json{type}=1;
+			$chat{id}=$msg->group->id;
+			$chat{uid} = $msg->group->uid;
         }
         elsif($msg->type eq 'discuss_message'){
             return if ref $data->{ban_discuss} eq "ARRAY" and @{$data->{ban_discuss}} and first {$_=~/^\d+$/?$msg->discuss->uid eq $_:$msg->discuss->displayname eq $_} @{$data->{ban_discuss}};
             return if ref $data->{allow_discuss} eq "ARRAY" and @{$data->{allow_discuss}} and !first {$_=~/^\d+$/?$msg->discuss->uid eq $_:$msg->discuss->displayname eq $_} @{$data->{allow_discuss}};
-            $senderId = $msg->discuss->id;
-            $uid = $msg->discuss->id;
-            $msgId= $msg->id;
-            $title = $msg->discuss->displayname;
-            $sender = $msg->sender->displayname;
-            $content = $msg->content;
-            $senderType = '3';
-        }
+			$json{type}=2;
+			$chat{id}=$msg->discuss->id;
+			$chat{uid} = $msg->discuss->uid;
+		}
         elsif($msg->type eq 'sess_message'){
-            
         }
-        return if !$title or !$content;
+
         $client->http_post($api_url, 
             {'Authorization'=>"key=$api_key",json=>1},
             json=>{
                 registration_ids=> $registration_ids,
-                $collapse_key?(collapse_key=> $collapse_key):(),
-                priority=> $data->{priority} // 'high',
-                data=>{isAt=>$isAt,type=>$type,title=>$title,sender=>$sender,content=>$content,uid=>$uid,senderId=>$senderId,msgId=>$msgId,senderType=>$senderType},
+                priority=> 'high',
+                data=>\%chat,
             },
             sub{
-                #"{"multicast_id":9016211065189210367,"success":1,"failure":0,"canonical_ids":0,"results":[{"message_id":"0:1484103730761325%9b9e6c13f9fd7ecd"}]}"
                 my $json = shift;
                 if(not defined $json){
                     $client->debug("[".__PACKAGE__."]GCM消息推送失败: 返回结果异常");
@@ -90,26 +73,17 @@ sub call {
 
     $client->on(all_event => sub{
         my($client,$event,@args) =@_;
-        my $type = 'Mojo-Sys';
-        my $content;
-        my $senderId = -1;
-        my $title;
-        if($event eq 'login'){
-            $senderId = -1;
-            $content = "登录成功";
-            $title = "登录事件";
+
+        if($event ne 'login' and $event ne 'input_qrcode' and $event ne 'stop'){
+			return;
         }
-        elsif($event eq 'input_qrcode'){
-            $senderId = -2;
-            $content = $client->qrcode_upload_url // '获取二维码url失败';
-            $title = "扫描二维码事件";
+		
+		my %chat;
+		$chat{type}=3;
+		$chat{message}{sender}=$event;
+        if($event eq 'input_qrcode'){
+			$chat{message}{content}=$client->qrcode_upload_url;
         }
-        elsif($event eq 'stop'){
-            $senderId = -3;
-            $content = "Mojo-Webqq已停止";
-            $title = "停止事件";
-        }
-        else{return}
         $client->http_post($api_url,
             {
                 'Authorization'=>"key=$api_key",
@@ -122,9 +96,9 @@ sub call {
             },
             json=>{
                 registration_ids=> $registration_ids,
-                $collapse_key?(collapse_key=> $collapse_key):(),
-                priority=> $data->{priority} // 'high',
-                data=>{type=>$type,title=>$title,content=>$content,senderId=>$senderId},
+                collapse_key=> 'system_event',
+                priority=> 'high',
+                data=>\%chat,
             },
             sub{
                 my $json = shift;
