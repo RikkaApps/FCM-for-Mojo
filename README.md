@@ -29,8 +29,8 @@ $client->load(
 
 # 添加 HTTP 基本认证
 
-为了安全，我们用 OKHTTP 保护 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 的后端，详见 [Haruue 的 pull request](https://github.com/RikkaW/FCM-for-Mojo/pull/4)。
-详细的 Nginx 配置可以查阅[官方文档](https://nginx.org/en/docs/http/ngx_http_auth_basic_module.html)
+ 来自 [Haruue 的 pull request](https://github.com/RikkaW/FCM-for-Mojo/pull/4)：
+> Mojo 的后端看起来基本上是完全开放的。暴露出端口很容易被……因此可以用 Nginx 之类的弄个反代加 basic auth 保护一下 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 的后端。详细的 Nginx 配置可以查阅 [Nginx 官方文档](https://nginx.org/en/docs/http/ngx_http_auth_basic_module.html)
 
 
 更改 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 的监听地址到本机（这里假设你的 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 端口为 5000）：
