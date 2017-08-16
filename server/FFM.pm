@@ -1,4 +1,4 @@
-package Mojo::Webqq::Plugin::RikkaGCM;
+package Mojo::Webqq::Plugin::FFM;
 our $AUTHOR   = 'rikka@shizuku.moe';
 our $SITE     = '';
 our $DESC     = '';
@@ -168,7 +168,7 @@ sub call {
         }
     );
 
-    package Mojo::Webqq::Plugin::RikkaGCM::App::Controller;
+    package Mojo::Webqq::Plugin::FFM::App::Controller;
     use Data::Dumper;
     use Mojo::JSON ();
     use Mojo::Util ();
@@ -204,13 +204,13 @@ sub call {
         return $hash;
     }
 
-    package Mojo::Webqq::Plugin::RikkaGCM::App;
+    package Mojo::Webqq::Plugin::FFM::App;
     use Encode ();
     use Data::Dumper;
     use Mojo::JSON qw(decode_json encode_json);
     use Mojolicious::Lite;
     no utf8;
-    app->controller_class('Mojo::Webqq::Plugin::RikkaGCM::App::Controller');
+    app->controller_class('Mojo::Webqq::Plugin::FFM::App::Controller');
     app->hook(
         after_render => sub {
             my ( $c, $output, $format ) = @_;
@@ -235,7 +235,7 @@ sub call {
 
         $registration_ids = $p;
         $conf->{registration_ids} = $registration_ids;
-        $ids = Mojo::Webqq::Plugin::RikkaGCM::makeIdArray(@$registration_ids);
+        $ids = Mojo::Webqq::Plugin::FFM::makeIdArray(@$registration_ids);
 
         #$client->print(Dumper($registration_ids));
         #$client->print(Dumper($conf));
@@ -262,9 +262,9 @@ sub call {
         $c->safe_render( json => { code => 0, status => "updated" } );
     };
 
-    package Mojo::Webqq::Plugin::RikkaGCM;
+    package Mojo::Webqq::Plugin::FFM;
     $server = Mojo::Webqq::Server->new();
-    $server->app( $server->build_app("Mojo::Webqq::Plugin::RikkaGCM::App") );
+    $server->app( $server->build_app("Mojo::Webqq::Plugin::FFM::App") );
     $server->app->secrets("hello world");
     $server->app->log( $client->log );
     if ( ref $data eq "HASH" and ref $data->{listen} eq "ARRAY" ) {
