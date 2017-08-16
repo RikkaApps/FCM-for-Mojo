@@ -63,3 +63,5 @@
 -keepattributes Exceptions
 
 -dontwarn okio.**
+
+-dontwarn javax.annotation.**
