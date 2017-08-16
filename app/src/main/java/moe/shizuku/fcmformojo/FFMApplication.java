@@ -19,6 +19,7 @@ import moe.shizuku.privileged.api.receiver.TokenUpdateReceiver;
 import moe.shizuku.support.utils.Settings;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static moe.shizuku.fcmformojo.FFMSettings.GET_FOREGROUND;
@@ -31,6 +32,7 @@ public class FFMApplication extends Application {
 
     private NotificationBuilder mNotificationBuilder;
     private Retrofit mRetrofit;
+    private Retrofit mRxRetrofit;
 
     public static PrivilegedAPIs sPrivilegedAPIs;
 
@@ -43,12 +45,21 @@ public class FFMApplication extends Application {
     }
 
     public static Retrofit getRetrofit(Context context) {
-        return ((FFMApplication) context.getApplicationContext()).mRetrofit;
+        return FFMApplication.get(context).mRetrofit;
+    }
+
+    public static Retrofit getRxRetrofit(Context context) {
+        return FFMApplication.get(context).mRxRetrofit;
     }
 
     public static void updateBaseUrl(Context context, String url) {
-        FFMApplication application = (FFMApplication) context.getApplicationContext();
+        FFMApplication application = FFMApplication.get(context);
+
         application.mRetrofit = application.mRetrofit.newBuilder()
+                .baseUrl(url)
+                .build();
+
+        application.mRxRetrofit = application.mRxRetrofit.newBuilder()
                 .baseUrl(url)
                 .build();
     }
@@ -70,6 +81,13 @@ public class FFMApplication extends Application {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(FFMSettings.getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+
+        mRxRetrofit = new Retrofit.Builder()
+                .baseUrl(FFMSettings.getBaseUrl())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
 

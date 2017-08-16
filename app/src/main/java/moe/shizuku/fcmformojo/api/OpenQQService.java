@@ -15,7 +15,7 @@ import retrofit2.http.POST;
  * Created by Rikka on 2017/4/21.
  */
 
-public interface WebQQService {
+public interface OpenQQService {
 
     /**
      * 获取好友数据
