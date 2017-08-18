@@ -1,0 +1,23 @@
+{
+  "name": "ffm",
+  "version": "0.3.0",
+  "description": "Controller service for mojo-webqq plugin openqq and ffm.",
+  "main": "index.js",
+  "dependencies": {
+    "carrier": "^0.3.0",
+    "http-proxy": "^1.16.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RikkaW/FCM-for-Mojo.git"
+  },
+  "author": "Rikka",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/RikkaW/FCM-for-Mojo/issues"
+  },
+  "homepage": "https://github.com/RikkaW/FCM-for-Mojo#readme"
+}
