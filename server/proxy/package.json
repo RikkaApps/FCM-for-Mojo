@@ -1,0 +1,22 @@
+{
+  "name": "ffm_proxy",
+  "version": "0.3.0",
+  "description": "Proxy for openqq and ffm.",
+  "main": "index.js",
+  "dependencies": {
+    "http-proxy": "^1.16.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RikkaW/FCM-for-Mojo.git"
+  },
+  "author": "Rikka",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/RikkaW/FCM-for-Mojo/issues"
+  },
+  "homepage": "https://github.com/RikkaW/FCM-for-Mojo#readme"
+}
