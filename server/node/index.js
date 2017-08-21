@@ -1,5 +1,6 @@
-var http = require('http');
+var https = require('https');
 var httpProxy = require('http-proxy');
+var fs = require('fs');
 var util = require('util');
 var child_process = require('child_process');
 var spawn = require('child_process').spawn;
@@ -60,7 +61,12 @@ proxy.on('error', function(err, req, res) {
     res.end(err.toString());
 });
 
-var server = http.createServer(function(req, res) {
+var options = {
+    key: fs.readFileSync('/path/to/key/example.com.key'),
+    cert: fs.readFileSync('/path/to/cert/example.com.crt'),
+};
+
+var server = https.createServer(options, function(req, res) {
     console.log(req.url);
 
     if (req.url === '/ffm/restart') {
