@@ -49,6 +49,8 @@ public class ServerStatusPreference extends Preference {
         @Override
         public void onReceive(Context context, Intent intent) {
             mFFMService = FFMApplication.getRxRetrofit(context).create(FFMService.class);
+
+            refresh();
         }
     };
 
@@ -56,8 +58,6 @@ public class ServerStatusPreference extends Preference {
         super(context, attrs, defStyleAttr, defStyleRes);
 
         mFFMService = FFMApplication.getRxRetrofit(context).create(FFMService.class);
-
-        refresh();
 
         LocalBroadcastManager.getInstance(context)
                 .registerReceiver(mRefreshBroadcastReceiver, new IntentFilter(ACTION_REFRESH_STATUS));
@@ -81,20 +81,26 @@ public class ServerStatusPreference extends Preference {
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
+        if (mViewHolder == null) {
+            refresh();
+        }
+
         mViewHolder = holder;
     }
 
     private void updateStatus(CharSequence text, @ColorInt int color, Drawable icon) {
-        TextView status = (TextView) mViewHolder.findViewById(android.R.id.text1);
-        if (icon != null) {
-            icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
-            status.setCompoundDrawablesRelative(icon, null, null, null);
-        } else {
-            status.setCompoundDrawablesRelative(null, null, null, null);
+        if (mViewHolder != null) {
+            TextView status = (TextView) mViewHolder.findViewById(android.R.id.text1);
+            if (icon != null) {
+                icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+                status.setCompoundDrawablesRelative(icon, null, null, null);
+            } else {
+                status.setCompoundDrawablesRelative(null, null, null, null);
+            }
+            status.setText(text);
+            status.setTextColor(color);
+            status.setCompoundDrawableTintList(ColorStateList.valueOf(color));
         }
-        status.setText(text);
-        status.setTextColor(color);
-        status.setCompoundDrawableTintList(ColorStateList.valueOf(color));
     }
 
     private void updateStatus(int count) {
