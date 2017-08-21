@@ -4,6 +4,7 @@ var util = require('util');
 var child_process = require('child_process');
 var spawn = require('child_process').spawn;
 var carrier = require('carrier');
+var auth = require('http-auth');
 
 var port = 5005;
 var openqq_port = 5003;
@@ -58,6 +59,10 @@ proxy.on('error', function(err, req, res) {
         'Content-Type': 'text/plain'
     });
     res.end(err.toString());
+});
+
+var basic = auth.basic({
+	file: __dirname + "/htpasswd"
 });
 
 var server = http.createServer(function(req, res) {
