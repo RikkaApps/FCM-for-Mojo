@@ -26,7 +26,7 @@ import java.util.List;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.fcmformojo.api.WebQQService;
+import moe.shizuku.fcmformojo.api.OpenQQService;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Chat.ChatType;
 import moe.shizuku.fcmformojo.model.Friend;
@@ -126,8 +126,8 @@ public class FFMIntentService extends IntentService {
         OkHttpClient client = new OkHttpClient();
 
         try {
-            List<Friend> friends = retrofit.create(WebQQService.class).getFriendsInfo().execute().body();
-            List<Group> groups = retrofit.create(WebQQService.class).getGroupsInfo().execute().body();
+            List<Friend> friends = retrofit.create(OpenQQService.class).getFriendsInfo().execute().body();
+            List<Group> groups = retrofit.create(OpenQQService.class).getGroupsInfo().execute().body();
 
             if (friends == null || groups == null) {
                 notificationManager.cancel(NOTIFICATION_ID_PROGRESS);
@@ -268,7 +268,7 @@ public class FFMIntentService extends IntentService {
 
         Retrofit retrofit = FFMApplication.getRetrofit(this);
 
-        WebQQService service = retrofit.create(WebQQService.class);
+        OpenQQService service = retrofit.create(OpenQQService.class);
         Call<SendResult> call;
         switch (type) {
             case ChatType.FRIEND:

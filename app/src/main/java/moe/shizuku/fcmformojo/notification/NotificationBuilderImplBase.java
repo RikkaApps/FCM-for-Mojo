@@ -41,11 +41,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
 
     @Override
     void notify(Context context, Chat chat, NotificationBuilder nb) {
-        int id = (int) chat.getUid();
-        // 会出现没有 uid 的情况
-        if (id == 0) {
-            id = (int) chat.getId();
-        }
+        int id = (int) chat.getUniqueId();
 
         notifyGroupSummary(context, chat, nb);
 
@@ -254,11 +250,8 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
 
     @Override
     void clear(Chat chat, NotificationBuilder nb) {
-        int id = (int) chat.getUid();
-        // 会出现没有 uid 的情况
-        if (chat.getUid() == 0) {
-            id = (int) chat.getId();
-        }
+        int id = (int) chat.getUniqueId();
+
         nb.getNotificationManager().cancel(id);
 
         boolean clearGroup = true;

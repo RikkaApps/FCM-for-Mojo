@@ -89,6 +89,19 @@ public class Chat implements Parcelable {
     }
 
     /**
+     * 范围一个唯一的 id，通常会使用 uid，uid 为 0 时使用 id。
+     *
+     * @return 唯一的 id
+     */
+    public long getUniqueId() {
+        if (getUid() == 0) {
+            return getId();
+        } else {
+            return getUid();
+        }
+    }
+
+    /**
      * 返回该聊天的名称（当前插件写法是优先使用备注名称）。
      *
      * @return 好友名称或群名称

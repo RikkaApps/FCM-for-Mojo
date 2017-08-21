@@ -6,9 +6,6 @@
     <string name="update_avatar">Update avatar</string>
     <string name="update_avatar_summary">Update friends and groups avatar (restart app maybe required to take effect)</string>
 
-    <string name="view_token">View token</string>
-    <string name="view_token_summary">View token of this app instance</string>
-
     <string name="friend_messages">Friend messages</string>
     <string name="group_messages">Group messages</string>
 
@@ -92,5 +89,14 @@
 
     <string name="notification_server_stop">Mojo-WebQQ stopped</string>
     <string name="notification_need_restart">You need to restart it in your server.</string>
+    <string name="action_upload_to_server">Upload to server</string>
+    <string name="manage_devices">Manage devices</string>
+    <string name="manage_devices_summary">Manage registered devices that will receive messages</string>
+    <string name="devices_name">%s</string>
+    <string name="devices_name_this">%s (this device)</string>
+    <string name="register_time">register time: %s</string>
+    <string name="manage_devices_header">You can manager devices that will receive messages here.\nTo add this device, please tap add button in toolbar.\nAfter editing, you need to tap upload button in the toolbar to upload new configuration to sever.</string>
+    <string name="action_add_this_device">Add this device</string>
+    <string name="delete">Delete</string>
 
 </resources>

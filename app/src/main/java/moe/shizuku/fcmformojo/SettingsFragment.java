@@ -52,32 +52,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         qq.setEntries(names.toArray(new CharSequence[names.size()]));
         qq.setEntryValues(packages.toArray(new CharSequence[packages.size()]));
 
-        findPreference("view_token").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                new AlertDialog.Builder(getContext())
-                        .setMessage(Html.fromHtml("<font face=\"monospace\">" + FirebaseInstanceId.getInstance().getToken() + "</font>", Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE))
-                        .setPositiveButton(android.R.string.copy, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ClipboardUtils.put(getContext(), FirebaseInstanceId.getInstance().getToken());
-                            }
-                        })
-                        .setNeutralButton(R.string.share, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
-                                                .putExtra(Intent.EXTRA_TEXT, FirebaseInstanceId.getInstance().getToken())
-                                                .setType("text/plain")
-                                        , getContext().getString(R.string.share)));
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .show();
-                return true;
-            }
-        });
-
         findPreference("update_avatar").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

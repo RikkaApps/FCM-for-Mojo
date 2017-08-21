@@ -14,4 +14,6 @@
     <color name="colorNotificationBlue">@color/colorNotification</color>
     <color name="colorNotificationPurple">#7E57C2</color>
 
+    <color name="cardBackground">#FFF</color>
+
 </resources>

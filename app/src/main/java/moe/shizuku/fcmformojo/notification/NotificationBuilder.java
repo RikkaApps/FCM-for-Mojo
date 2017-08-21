@@ -78,13 +78,9 @@ public class NotificationBuilder {
             return;
         }
 
-        long uid = pushChat.getUid();
-        // 会出现没有 uid 的情况
-        if (uid == 0) {
-            uid = pushChat.getId();
-        }
+        long id = pushChat.getUniqueId();
 
-        Chat chat = mMessages.get(uid);
+        Chat chat = mMessages.get(id);
         if (chat == null) {
             pushChat.setMessages(new ChatMessagesList());
         } else {
@@ -94,7 +90,7 @@ public class NotificationBuilder {
         chat = pushChat;
         chat.getMessages().add(chat.getLatestMessage());
 
-        mMessages.put(uid, chat);
+        mMessages.put(id, chat);
 
         mMessageCount ++;
         mSendersCount = mMessages.size();
