@@ -25,6 +25,7 @@ import moe.shizuku.fcmformojo.adapter.RegistrationIdsAdapter;
 import moe.shizuku.fcmformojo.api.FFMService;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.RegistrationId;
+import moe.shizuku.fcmformojo.utils.LocalBroadcast;
 import moe.shizuku.fcmformojo.viewholder.RegistrationIdViewHolder;
 import moe.shizuku.fcmformojo.viewholder.TitleViewHolder;
 import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
@@ -130,6 +131,8 @@ public class RegistrationIdsActivity extends BaseActivity {
                     @Override
                     public void accept(FFMResult registrationIds) throws Exception {
                         Toast.makeText(getApplicationContext(), "Succeed.", Toast.LENGTH_SHORT).show();
+
+                        LocalBroadcast.refreshStatus(getApplicationContext());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
