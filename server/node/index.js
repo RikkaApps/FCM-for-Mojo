@@ -1,5 +1,6 @@
 var http = require('http');
 var httpProxy = require('http-proxy');
+var auth = require('http-auth');
 var util = require('util');
 var child_process = require('child_process');
 var spawn = require('child_process').spawn;
@@ -16,6 +17,8 @@ process.argv.forEach(function(val, index, array) {
         ffm_port = val.substring("--ffm-port=".length, val.length);
     } else if (val.indexOf("--openqq-port=") === 0) {
         openqq_port = val.substring("--openqq-port=".length, val.length);
+    } else if (val.indexOf("--password-file=") === 0) {
+	password_file = val.substring("--password-file=".length, val.length);
     }
 });
 
@@ -67,6 +70,10 @@ proxy.on('error', function(err, req, res) {
         });
         res.end('webqq error');
     }
+});
+
+var basic = auth.basic({
+	file: __dirname + '/' + password_file
 });
 
 var server = http.createServer(function(req, res) {
