@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:paddingStart="@dimen/list_padding"
+    android:paddingEnd="@dimen/list_padding"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:minHeight="64dp"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_android_24dp"
+        android:tint="?android:textColorSecondary"
+        android:importantForAccessibility="no"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="32dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@android:id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Material.Menu"
+            tools:text="ONEPLUS A3010"/>
+
+        <TextView
+            android:id="@android:id/summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="italic"
+            tools:text="This device"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@android:id/button1"
+        android:layout_width="24dp"
+        android:layout_height="32dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete_24dp"
+        android:tint="?android:textColorSecondary"
+        android:contentDescription="@string/delete" />
+
+</LinearLayout>

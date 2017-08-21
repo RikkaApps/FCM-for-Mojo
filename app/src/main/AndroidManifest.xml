@@ -58,7 +58,12 @@
 
         <service
             android:name=".service.FFMIntentService"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity
+            android:name=".RegistrationIdsActivity"
+            android:label="@string/manage_devices" />
+
     </application>
 
 </manifest>

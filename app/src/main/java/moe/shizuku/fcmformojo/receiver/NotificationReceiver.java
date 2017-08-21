@@ -99,7 +99,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     private void handleDelete(Context context, @Nullable Chat chat) {
         if (chat != null) {
             FFMApplication.get(context).getNotificationBuilder()
-                    .clearMessages(chat.getId());
+                    .clearMessages(chat.getUniqueId());
         } else {
             FFMApplication.get(context).getNotificationBuilder()
                     .clearMessages();

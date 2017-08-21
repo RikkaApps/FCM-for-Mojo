@@ -7,9 +7,6 @@
     <string name="update_avatar">更新头像</string>
     <string name="update_avatar_summary">更新好友及群组的头像（可能需要重启生效）</string>
 
-    <string name="view_token">查看令牌</string>
-    <string name="view_token_summary">查看此应用实例的令牌</string>
-
     <string name="friend_messages">好友消息</string>
     <string name="group_messages">群组消息</string>
 
@@ -94,5 +91,13 @@
 
     <string name="notification_server_stop">Mojo-WebQQ 已停止</string>
     <string name="notification_need_restart">你需要在你的服务器上重启它。</string>
+    <string name="action_upload_to_server">上传到服务器</string>
+    <string name="manage_devices">管理设备</string>
+    <string name="manage_devices_summary">管理将会收到消息的设备</string>
+    <string name="devices_name_this">%s（这台设备）</string>
+    <string name="register_time">注册时间：%s</string>
+    <string name="manage_devices_header">在这里您可以管理会收到消息的设备。\n若要添加这台设备，请点击工具栏上的添加按钮。\n修改完成需要点击工具栏上的上传按钮将新的配置上传到服务器。</string>
+    <string name="action_add_this_device">添加这台设备</string>
+    <string name="delete">删除</string>
 
 </resources>
