@@ -3,22 +3,21 @@ package moe.shizuku.fcmformojo;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
-import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity {
+import moe.shizuku.fcmformojo.settings.MainSettingsFragment;
+
+public class MainActivity extends BaseActivity {
 
     private static final int REQUEST_CODE = 10000;
 
@@ -28,12 +27,12 @@ public class MainActivity extends FragmentActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, new SettingsFragment())
+                    .replace(android.R.id.content, new MainSettingsFragment())
                     .commit();
         }
 
         try {
-            StorageManager sm = (StorageManager)getSystemService(Context.STORAGE_SERVICE);
+            StorageManager sm = getSystemService(StorageManager.class);
             StorageVolume volume = sm.getPrimaryStorageVolume();
             Intent intent = volume.createAccessIntent(Environment.DIRECTORY_DOWNLOADS);
             startActivityForResult(intent, REQUEST_CODE);
@@ -74,5 +73,10 @@ public class MainActivity extends FragmentActivity {
                 break;
         }
         return super.onMenuItemSelected(featureId, item);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -50,7 +50,7 @@
         <item>Shizuku（支持多用户）</item>
     </string-array>
 
-    <string name="http_username">HTTP 用户名</string>
+    <string name="http_usernames">HTTP 用户名</string>
     <string name="http_password">HTTP 密码</string>
     <string name="show_advanced_options">显示高级选项</string>
     <string name="summary_uri_when_authorization_set">%s (附加登录信息)</string>
@@ -89,15 +89,34 @@
 
     <string name="cannot_request_permission">无法申请权限。</string>
 
-    <string name="notification_server_stop">Mojo-WebQQ 已停止</string>
-    <string name="notification_need_restart">你需要在你的服务器上重启它。</string>
+    <string name="notification_server_stop">Mojo-Webqq 已停止</string>
+    <string name="notification_tap_to_restart">你需要在你的服务器上重启它。</string>
     <string name="action_upload_to_server">上传到服务器</string>
     <string name="manage_devices">管理设备</string>
     <string name="manage_devices_summary">管理将会收到消息的设备</string>
+    <string name="devices_name">%s</string>
     <string name="devices_name_this">%s（这台设备）</string>
     <string name="register_time">注册时间：%s</string>
     <string name="manage_devices_header">在这里您可以管理会收到消息的设备。\n若要添加这台设备，请点击工具栏上的添加按钮。\n修改完成需要点击工具栏上的上传按钮将新的配置上传到服务器。</string>
     <string name="action_add_this_device">添加这台设备</string>
     <string name="delete">删除</string>
+    <string name="manage_webqq">管理 Mojo-Webqq</string>
+    <string name="manage_webqq_summary">管理服务器设置及管理 Mojo-Webqq 服务</string>
+    <string name="stop_webqq">停止</string>
+    <string name="restart_webqq">重启</string>
+    <string name="server_status">服务器状态</string>
+    <string name="server_settings">服务器设置</string>
+    <string name="server_settings_summary">更改服务器 URL、已注册的设备及控制 Mojo-Webqq</string>
+    <string name="notification_settings">通知设置</string>
+    <string name="notification_settings_summary">更改通知行为及样式</string>
+    <plurals name="status_running">
+        <item quantity="other">运行中，已注册 %d 台设备。</item>
+    </plurals>
+    <string name="status_running_no_device">运行中，但没有已注册的设备。</string>
+    <string name="status_webqq_dead">Mojo-Webqq 没有运行。</string>
+    <string name="status_webqq_error">运行中，但登陆二维码尚未被扫描或是其他错误。</string>
+    <string name="status_waiting_refresh">等待刷新…</string>
+    <string name="status_server_error">服务器错误。\n%1$d: %2$s</string>
+    <string name="status_cannot_connect_server_error">无法连接服务器：%s。</string>
 
 </resources>

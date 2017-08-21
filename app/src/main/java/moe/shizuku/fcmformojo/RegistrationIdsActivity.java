@@ -1,6 +1,11 @@
 package moe.shizuku.fcmformojo;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,6 +29,8 @@ import moe.shizuku.fcmformojo.viewholder.RegistrationIdViewHolder;
 import moe.shizuku.fcmformojo.viewholder.TitleViewHolder;
 import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
 
+import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_URL;
+
 public class RegistrationIdsActivity extends BaseActivity {
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
@@ -34,6 +41,13 @@ public class RegistrationIdsActivity extends BaseActivity {
     private boolean mRefreshed;
 
     private FFMService mFFMService;
+
+    private BroadcastReceiver mUrlChangedBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mFFMService = FFMApplication.getRxRetrofit(context).create(FFMService.class);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +73,15 @@ public class RegistrationIdsActivity extends BaseActivity {
 
         updateItems();
         requestRegistrationIds();
+
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(mUrlChangedBroadcastReceiver, new IntentFilter(ACTION_UPDATE_URL));
     }
 
     @Override
     protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this)
+                .unregisterReceiver(mUrlChangedBroadcastReceiver);
         mCompositeDisposable.clear();
         super.onDestroy();
     }
@@ -97,7 +116,7 @@ public class RegistrationIdsActivity extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Network error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 })
         );
@@ -115,7 +134,7 @@ public class RegistrationIdsActivity extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Network error.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 })
         );

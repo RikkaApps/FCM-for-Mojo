@@ -1,5 +1,6 @@
 package moe.shizuku.fcmformojo.receiver;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,16 +16,18 @@ import moe.shizuku.fcmformojo.service.FFMIntentService;
 
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_CONTENT;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_DELETE;
+import static moe.shizuku.fcmformojo.FFMStatic.ACTION_DISMISS_SYSTEM_NOTIFICATION;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_OPEN_SCAN;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REPLY;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CHAT;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_SYSTEM;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_INPUT_KEY;
 
 /**
  * Created by Rikka on 2017/4/19.
  */
 
-public class NotificationReceiver extends BroadcastReceiver {
+public class FFMBroadcastReceiver extends BroadcastReceiver {
 
     public static Intent replyIntent(Chat chat) {
         return new Intent(ACTION_REPLY)
@@ -49,6 +52,11 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setPackage(BuildConfig.APPLICATION_ID);
     }
 
+    public static Intent dismissSystemNotificationIntent() {
+        return new Intent(ACTION_DISMISS_SYSTEM_NOTIFICATION)
+                .setPackage(BuildConfig.APPLICATION_ID);
+    }
+
     @Override
     public void onReceive(final Context context, Intent intent) {
         if (intent == null) {
@@ -69,6 +77,9 @@ public class NotificationReceiver extends BroadcastReceiver {
                 break;
             case ACTION_OPEN_SCAN:
                 handleOpenScan(context);
+                break;
+            case ACTION_DISMISS_SYSTEM_NOTIFICATION:
+                handleDismissSystemNotification(context);
                 break;
         }
     }
@@ -108,5 +119,10 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     private void handleOpenScan(Context context) {
         FFMSettings.getProfile().onStartQrCodeScanActivity(context);
+    }
+
+    private void handleDismissSystemNotification(Context context) {
+        context.getSystemService(NotificationManager.class)
+                .cancel(NOTIFICATION_ID_SYSTEM);
     }
 }

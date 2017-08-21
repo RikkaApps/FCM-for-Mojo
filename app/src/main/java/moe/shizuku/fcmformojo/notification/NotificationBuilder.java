@@ -8,15 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.util.LongSparseArray;
 
-import java.util.ArrayList;
-
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Chat.ChatType;
-import moe.shizuku.fcmformojo.model.Message;
 import moe.shizuku.fcmformojo.model.PushChat;
-import moe.shizuku.fcmformojo.receiver.NotificationReceiver;
+import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
 import moe.shizuku.fcmformojo.utils.ChatMessagesList;
 
 /**
@@ -142,10 +139,10 @@ public class NotificationBuilder {
     }
 
     public static PendingIntent createContentIntent(Context context, int requestCode, @Nullable Chat chat) {
-        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.contentIntent(chat), PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, requestCode, FFMBroadcastReceiver.contentIntent(chat), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public static PendingIntent createDeleteIntent(Context context, int requestCode, @Nullable Chat chat) {
-        return PendingIntent.getBroadcast(context, requestCode, NotificationReceiver.deleteIntent(chat), PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, requestCode, FFMBroadcastReceiver.deleteIntent(chat), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

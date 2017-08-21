@@ -10,8 +10,13 @@ import android.support.annotation.Keep;
 public class FFMResult {
 
     private int code;
+    private String message;
 
     public int getCode() {
         return code;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

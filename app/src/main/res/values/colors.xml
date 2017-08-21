@@ -16,4 +16,9 @@
 
     <color name="cardBackground">#FFF</color>
 
+    <color name="serverRunning">#66BB6A</color>
+    <color name="serverProblem">#F57C00</color>
+    <color name="serverError">#C62828</color>
+    <color name="serverUnknown">#78909C</color>
+
 </resources>

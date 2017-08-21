@@ -3,8 +3,10 @@ package moe.shizuku.fcmformojo.service;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,6 +15,7 @@ import android.os.Environment;
 import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 import android.widget.Toast;
@@ -23,28 +26,32 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import io.reactivex.functions.Consumer;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.R;
+import moe.shizuku.fcmformojo.api.FFMService;
 import moe.shizuku.fcmformojo.api.OpenQQService;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Chat.ChatType;
+import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.Friend;
 import moe.shizuku.fcmformojo.model.Group;
 import moe.shizuku.fcmformojo.model.SendResult;
 import moe.shizuku.fcmformojo.notification.ChatIcon;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.profile.Profile;
-import moe.shizuku.fcmformojo.receiver.NotificationReceiver;
+import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_DOWNLOAD_QRCODE;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REPLY;
+import static moe.shizuku.fcmformojo.FFMStatic.ACTION_RESTART_WEBQQ;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_ICON;
+import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_URL;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CHAT;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CONTENT;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_URL;
@@ -64,8 +71,38 @@ public class FFMIntentService extends IntentService {
     private static final String URL_HEAD_FRIEND = "https://q1.qlogo.cn/g?b=qq&s=100&nk={uid}";
     private static final String URL_HEAD_GROUP = "http://p.qlogo.cn/gh/{uid}/{uid}/100";
 
+    private OpenQQService mOpenQQService;
+    private FFMService mFFMService;
+
+    private BroadcastReceiver mUrlChangedBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mOpenQQService = FFMApplication.getRetrofit(context).create(OpenQQService.class);
+            mFFMService = FFMApplication.getRxRetrofit(context).create(FFMService.class);
+        }
+    };
+
     public FFMIntentService() {
         super("FFMIntentService");
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        mOpenQQService = FFMApplication.getRetrofit(this).create(OpenQQService.class);
+        mFFMService = FFMApplication.getRxRetrofit(this).create(FFMService.class);
+
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(mUrlChangedBroadcastReceiver, new IntentFilter(ACTION_UPDATE_URL));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        LocalBroadcastManager.getInstance(this)
+                .unregisterReceiver(mUrlChangedBroadcastReceiver);
     }
 
     public static void startUpdateIcon(Context context, @Nullable ResultReceiver receiver) {
@@ -90,6 +127,14 @@ public class FFMIntentService extends IntentService {
         context.startService(intent);
     }
 
+    public static Intent restartIntent(Context context) {
+        return new Intent(context, FFMIntentService.class).setAction(ACTION_RESTART_WEBQQ);
+    }
+
+    public static void startRestart(Context context) {
+        context.startService(restartIntent(context));
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent == null) {
@@ -106,7 +151,27 @@ public class FFMIntentService extends IntentService {
         } else if (ACTION_DOWNLOAD_QRCODE.equals(action)) {
             String url = intent.getStringExtra(EXTRA_URL);
             handleDownloadQrCode(url);
+        } else if (ACTION_RESTART_WEBQQ.equals(action)) {
+            handleRestart();
         }
+    }
+
+    private void handleRestart() {
+        // TODO notify user if error
+        mFFMService.restart()
+                .subscribe(new Consumer<FFMResult>() {
+                    @Override
+                    public void accept(FFMResult result) throws Exception {
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable result) throws Exception {
+
+                    }
+                });
+
+        getSystemService(NotificationManager.class).cancel(NOTIFICATION_ID_SYSTEM);
     }
 
     private void handleUpdateIcon(ResultReceiver receiver) {
@@ -122,12 +187,11 @@ public class FFMIntentService extends IntentService {
 
         notificationManager.notify(NOTIFICATION_ID_PROGRESS, builder.build());
 
-        Retrofit retrofit = FFMApplication.getRetrofit(this);
         OkHttpClient client = new OkHttpClient();
 
         try {
-            List<Friend> friends = retrofit.create(OpenQQService.class).getFriendsInfo().execute().body();
-            List<Group> groups = retrofit.create(OpenQQService.class).getGroupsInfo().execute().body();
+            List<Friend> friends = mOpenQQService.getFriendsInfo().execute().body();
+            List<Group> groups = mOpenQQService.getGroupsInfo().execute().body();
 
             if (friends == null || groups == null) {
                 notificationManager.cancel(NOTIFICATION_ID_PROGRESS);
@@ -266,19 +330,16 @@ public class FFMIntentService extends IntentService {
 
         Log.d("Reply", "try reply to " + id + " " + content.toString());
 
-        Retrofit retrofit = FFMApplication.getRetrofit(this);
-
-        OpenQQService service = retrofit.create(OpenQQService.class);
         Call<SendResult> call;
         switch (type) {
             case ChatType.FRIEND:
-                call = service.sendFriendMessage(id, content.toString());
+                call = mOpenQQService.sendFriendMessage(id, content.toString());
                 break;
             case ChatType.GROUP:
-                call = service.sendGroupMessage(id, content.toString());
+                call = mOpenQQService.sendGroupMessage(id, content.toString());
                 break;
             case ChatType.DISCUSS:
-                call = service.sendDiscussMessage(id, content.toString());
+                call = mOpenQQService.sendDiscussMessage(id, content.toString());
                 break;
             case ChatType.SYSTEM:
             default:
@@ -356,7 +417,7 @@ public class FFMIntentService extends IntentService {
                 if (save(client, url, os, false)) {
                     builder.setContentTitle(getString(R.string.notification_qr_code_downloaded))
                             .setContentText(getString(R.string.notification_tap_open_qq, getString(profile.getDisplayName())))
-                            .setContentIntent(PendingIntent.getBroadcast(this, REQUEST_CODE_OPEN_SCAN, NotificationReceiver.openScanIntent(), 0));
+                            .setContentIntent(PendingIntent.getBroadcast(this, REQUEST_CODE_OPEN_SCAN, FFMBroadcastReceiver.openScanIntent(), PendingIntent.FLAG_UPDATE_CURRENT));
 
                     sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
                             .setData(Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/FFM/webqq-qrcode.png"))));

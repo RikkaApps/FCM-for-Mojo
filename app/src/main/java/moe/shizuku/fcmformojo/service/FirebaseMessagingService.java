@@ -1,5 +1,7 @@
 package moe.shizuku.fcmformojo.service;
 
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
@@ -16,6 +18,9 @@ import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.model.PushChat;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
+import moe.shizuku.fcmformojo.utils.LocalBroadcast;
+
+import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REFRESH_STATUS;
 
 /**
  * Created by Rikka on 2017/4/19.
@@ -64,6 +69,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             PushChat chat = new Gson().fromJson(json, PushChat.class);
             if (chat != null) {
                 mNotificationBuilder.addMessage(getApplicationContext(), chat);
+
+                if (chat.isSystem()) {
+                    LocalBroadcast.refreshStatus(this);
+                }
             }
         } catch (JsonSyntaxException e) {
             Log.e(TAG, "bad json: " + json, e);

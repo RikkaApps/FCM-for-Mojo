@@ -12,6 +12,10 @@ public class FFMStatic {
     public static final String ACTION_CONTENT = BuildConfig.APPLICATION_ID + ".action.CONTENT";
     public static final String ACTION_DELETE = BuildConfig.APPLICATION_ID + ".action.DELETE";
     public static final String ACTION_OPEN_SCAN = BuildConfig.APPLICATION_ID + ".action.OPEN_SCAN";
+    public static final String ACTION_REFRESH_STATUS = BuildConfig.APPLICATION_ID + ".action.REFRESH_STATUS";
+    public static final String ACTION_RESTART_WEBQQ = BuildConfig.APPLICATION_ID + ".action.RESTART_WEBQQ";
+    public static final String ACTION_DISMISS_SYSTEM_NOTIFICATION = BuildConfig.APPLICATION_ID + ".action.DISMISS_SYSTEM_NOTIFICATION";
+    public static final String ACTION_UPDATE_URL = BuildConfig.APPLICATION_ID + ".action.URL_UPDATED";
 
     public static final String EXTRA_CONTENT = BuildConfig.APPLICATION_ID + ".extra.CONTENT";
     public static final String EXTRA_CHAT = BuildConfig.APPLICATION_ID + ".extra.CHAT";
@@ -28,6 +32,8 @@ public class FFMStatic {
 
     public static final int REQUEST_CODE_OPEN_URI = 10000;
     public static final int REQUEST_CODE_OPEN_SCAN = 10001;
+    public static final int REQUEST_CODE_DISMISS_SYSTEM_NOTIFICATION = 10002;
+    public static final int REQUEST_CODE_RESTART_WEBQQ = 10003;
 
     public static final String NOTIFICATION_INPUT_KEY = "reply";
 

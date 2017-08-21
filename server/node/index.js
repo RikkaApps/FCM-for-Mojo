@@ -51,13 +51,22 @@ process.on('exit', function () {
     perl.kill('SIGINT');
 });
 
-var proxy = httpProxy.createProxyServer({});
+var proxy = httpProxy.createProxyServer({
+    proxyTimeout: 3000 // wait longer for webqq login
+});
 
 proxy.on('error', function(err, req, res) {
-    res.writeHead(500, {
-        'Content-Type': 'text/plain'
-    });
-    res.end(err.toString());
+    if (err.code === "ECONNREFUSED") {
+        res.writeHead(502, {
+            'Content-Type': 'text/plain'
+        });
+        res.end('webqq dead');
+    } else {
+        res.writeHead(502, {
+            'Content-Type': 'text/plain'
+        });
+        res.end('webqq error');
+    }
 });
 
 var server = http.createServer(function(req, res) {
@@ -67,12 +76,14 @@ var server = http.createServer(function(req, res) {
         if (restart()) {
             res.writeHead(200, {"Content-Type": "application/json"});
             res.end(JSON.stringify({
-                message : 'restarted'
+                code: 0
+                //message : 'restarted'
             }));
         } else {
             res.writeHead(200, {"Content-Type": "application/json"});
             res.end(JSON.stringify({
-                message : 'already running'
+                code: 1
+                //message : 'already running'
             }));
         }
     } else if (req.url === '/ffm/stop') {
@@ -81,12 +92,14 @@ var server = http.createServer(function(req, res) {
 
             res.writeHead(200, {"Content-Type": "application/json"});
             res.end(JSON.stringify({
-                message : 'send SIGINT'
+                code: 0
+                //message : 'send SIGINT'
             }));
         } else {
             res.writeHead(200, {"Content-Type": "application/json"});
             res.end(JSON.stringify({
-                message : 'not running'
+                code: 1
+                //message : 'not running'
             }));
         }
     } else if (req.url.indexOf('/openqq') === 0) {

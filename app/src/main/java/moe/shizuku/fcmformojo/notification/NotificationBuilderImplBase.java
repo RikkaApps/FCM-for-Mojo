@@ -19,7 +19,7 @@ import moe.shizuku.fcmformojo.app.MessagingStyle;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Message;
 import moe.shizuku.fcmformojo.profile.Profile;
-import moe.shizuku.fcmformojo.receiver.NotificationReceiver;
+import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
 import moe.shizuku.fcmformojo.service.FFMIntentService;
 
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_FRIENDS;
@@ -29,6 +29,8 @@ import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_GROUP_SUMMARY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_SYSTEM;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_INPUT_KEY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_MAX_MESSAGES;
+import static moe.shizuku.fcmformojo.FFMStatic.REQUEST_CODE_DISMISS_SYSTEM_NOTIFICATION;
+import static moe.shizuku.fcmformojo.FFMStatic.REQUEST_CODE_RESTART_WEBQQ;
 
 /**
  * Created by Rikka on 2016/9/18.
@@ -90,11 +92,17 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 NotificationCompat.Builder builder = nb.createBuilder(context, null)
                         .setChannelId(NOTIFICATION_CHANNEL_SERVER)
                         .setContentTitle(context.getString(R.string.notification_server_stop))
-                        .setContentText(context.getString(R.string.notification_need_restart))
+                        .setContentText(context.getString(R.string.notification_tap_to_restart))
                         .setColor(context.getColor(R.color.colorServerNotification))
                         .setSmallIcon(R.drawable.ic_noti_24dp)
                         .setWhen(System.currentTimeMillis())
-                        .setShowWhen(true);
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setVibrate(new long[0])
+                        .setOngoing(true)
+                        .setAutoCancel(true)
+                        .setShowWhen(true)
+                        .setContentIntent(PendingIntent.getService(context, REQUEST_CODE_RESTART_WEBQQ, FFMIntentService.restartIntent(context), PendingIntent.FLAG_ONE_SHOT))
+                        .addAction(R.drawable.ic_noti_dismiss_24dp, context.getString(android.R.string.cancel), PendingIntent.getBroadcast(context, REQUEST_CODE_DISMISS_SYSTEM_NOTIFICATION, FFMBroadcastReceiver.dismissSystemNotificationIntent(), 0));
 
                 nb.getNotificationManager().notify(NOTIFICATION_ID_SYSTEM, builder.build());
                 break;
@@ -147,7 +155,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
      * @return NotificationCompat.Action
      */
     private static NotificationCompat.Action createReplyAction(Context context, int requestCode, Chat chat) {
-        Intent intent = NotificationReceiver.replyIntent(chat);
+        Intent intent = FFMBroadcastReceiver.replyIntent(chat);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         String replyLabel = context.getString(R.string.reply, chat.getName());

@@ -50,7 +50,7 @@
         <item>Shizuku（multi-user support）</item>
     </string-array>
 
-    <string name="http_username">HTTP ユーザ</string>
+    <string name="http_usernames">HTTP ユーザ</string>
     <string name="http_password">HTTP パスワード</string>
     <string name="show_advanced_options">高度なオプションを表示する</string>
     <string name="summary_uri_when_authorization_set">%s（許可付き）</string>
@@ -89,8 +89,8 @@
 
     <string name="cannot_request_permission">Can\'t request permission.</string>
 
-    <string name="notification_server_stop">Mojo-WebQQ stopped</string>
-    <string name="notification_need_restart">You need to restart it in your server.</string>
+    <string name="notification_server_stop">Mojo-Webqq stopped</string>
+    <string name="notification_tap_to_restart">You need to restart it in your server.</string>
     <string name="action_upload_to_server">Upload to server</string>
     <string name="manage_devices">Manage devices</string>
     <string name="manage_devices_summary">Manage registered devices that will receive messages</string>
@@ -100,5 +100,22 @@
     <string name="manage_devices_header">You can manager devices that will receive messages here.\nTo add this device, please tap add button in toolbar.\nAfter editing, you need to tap upload button in the toolbar to upload new configuration to sever.</string>
     <string name="action_add_this_device">Add this device</string>
     <string name="delete">Delete</string>
-
+    <string name="manage_webqq">Mojo-Webqq control</string>
+    <string name="manage_webqq_summary">Manage server setting and manage Mojo-Webqq service</string>
+    <string name="stop_webqq">Stop</string>
+    <string name="restart_webqq">Restart</string>
+    <string name="server_status">Server status</string>
+    <string name="server_settings">Server settings</string>
+    <string name="server_settings_summary">Change server URL, registered devices and control Mojo-Webqq</string>
+    <string name="notification_settings">Notification settings</string>
+    <string name="notification_settings_summary">Change notification behavior and style</string>
+    <plurals name="status_running">
+        <item quantity="other">Running, %d devices registered.</item>
+    </plurals>
+    <string name="status_running_no_device">Running, but no device is registered.</string>
+    <string name="status_webqq_dead">Mojo-Webqq is not running.</string>
+    <string name="status_webqq_error">Running, but the log in QR code has not yet been scanned or other error.</string>
+    <string name="status_waiting_refresh">Waiting for refresh…</string>
+    <string name="status_server_error">Server error.\n%1$d: %2$s.</string>
+    <string name="status_cannot_connect_server_error">Can\'t connect to server: %s.</string>
 </resources>

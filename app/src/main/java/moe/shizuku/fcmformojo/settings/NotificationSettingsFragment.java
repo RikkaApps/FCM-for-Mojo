@@ -1,45 +1,42 @@
-package moe.shizuku.fcmformojo;
+package moe.shizuku.fcmformojo.settings;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.text.Html;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
-
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import moe.shizuku.fcmformojo.FFMApplication;
+import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
+import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.profile.ProfileList;
 import moe.shizuku.fcmformojo.service.FFMIntentService;
-import moe.shizuku.fcmformojo.utils.ClipboardUtils;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
 import moe.shizuku.preference.ListPreference;
 import moe.shizuku.preference.Preference;
-import moe.shizuku.preference.PreferenceFragment;
 import moe.shizuku.privileged.api.PrivilegedAPIs;
 
 /**
- * Created by Rikka on 2017/4/22.
+ * Created by rikka on 2017/8/21.
  */
 
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class NotificationSettingsFragment extends SettingsFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        getPreferenceManager().setSharedPreferencesName("settings");
-        getPreferenceManager().setSharedPreferencesMode(Context.MODE_PRIVATE);
+        super.onCreatePreferences(savedInstanceState, rootKey);
 
-        addPreferencesFromResource(R.xml.preference);
+        addPreferencesFromResource(R.xml.manage_notification);
 
         List<CharSequence> names = new ArrayList<>();
         List<CharSequence> packages = new ArrayList<>();
@@ -89,8 +86,19 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     }
 
     @Override
-    public DividerDecoration onCreateItemDecoration() {
-        return new CategoryDivideDividerDecoration();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        ActionBar actionBar = getActivity().getActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.notification_settings);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -110,9 +118,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case FFMSettings.BASE_URL:
-                FFMApplication.updateBaseUrl(getContext(), FFMSettings.getBaseUrl());
-                break;
             case FFMSettings.GET_FOREGROUND:
                 switch (sharedPreferences.getString(key, ForegroundImpl.NONE)) {
                     case ForegroundImpl.USAGE_STATS:

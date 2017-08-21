@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:hint="@string/http_username"
+                android:hint="@string/http_usernames"
                 android:inputType="textNoSuggestions"/>
 
             <EditText

@@ -6,6 +6,7 @@ import io.reactivex.Single;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.RegistrationId;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -21,4 +22,13 @@ public interface FFMService {
 
     @POST("/ffm/update_registration_ids")
     Single<FFMResult> updateRegistrationIds(@Body List<RegistrationId> registrationIds);
+
+    @GET("/ffm/restart")
+    Single<FFMResult> restart();
+
+    @GET("/ffm/stop")
+    Single<FFMResult> stop();
+
+    @GET("/ffm/get_registration_ids")
+    Single<Response<List<RegistrationId>>> getRegistrationIdsResponse();
 }
