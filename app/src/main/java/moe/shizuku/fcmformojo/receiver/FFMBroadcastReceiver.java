@@ -13,8 +13,10 @@ import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.service.FFMIntentService;
+import moe.shizuku.fcmformojo.utils.ClipboardUtils;
 
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_CONTENT;
+import static moe.shizuku.fcmformojo.FFMStatic.ACTION_COPY_TO_CLIPBOARD;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_DELETE;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_DISMISS_SYSTEM_NOTIFICATION;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_OPEN_SCAN;
@@ -57,6 +59,12 @@ public class FFMBroadcastReceiver extends BroadcastReceiver {
                 .setPackage(BuildConfig.APPLICATION_ID);
     }
 
+    public static Intent copyToClipboardIntent(String text) {
+        return new Intent(ACTION_COPY_TO_CLIPBOARD)
+                .putExtra(Intent.EXTRA_TEXT, text)
+                .setPackage(BuildConfig.APPLICATION_ID);
+    }
+
     @Override
     public void onReceive(final Context context, Intent intent) {
         if (intent == null) {
@@ -81,7 +89,15 @@ public class FFMBroadcastReceiver extends BroadcastReceiver {
             case ACTION_DISMISS_SYSTEM_NOTIFICATION:
                 handleDismissSystemNotification(context);
                 break;
+            case ACTION_COPY_TO_CLIPBOARD:
+                String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+                handleCopyToClipBoard(context, text);
+                break;
         }
+    }
+
+    private void handleCopyToClipBoard(Context context, String text) {
+        ClipboardUtils.put(context, text);
     }
 
     private void handleReply(final Context context, Bundle remoteInput, Chat chat) {

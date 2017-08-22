@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
@@ -41,7 +42,9 @@ import moe.shizuku.fcmformojo.model.SendResult;
 import moe.shizuku.fcmformojo.notification.ChatIcon;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.profile.Profile;
+import moe.shizuku.fcmformojo.profile.ProfileHelper;
 import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
+import moe.shizuku.fcmformojo.utils.FileUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -55,12 +58,15 @@ import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_URL;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CHAT;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CONTENT;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_URL;
+import static moe.shizuku.fcmformojo.FFMStatic.FILE_PROVIDER_AUTHORITY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_PROGRESS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_SERVER;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_PROGRESS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_SYSTEM;
+import static moe.shizuku.fcmformojo.FFMStatic.REQUEST_CODE_COPY;
 import static moe.shizuku.fcmformojo.FFMStatic.REQUEST_CODE_OPEN_URI;
 import static moe.shizuku.fcmformojo.FFMStatic.REQUEST_CODE_OPEN_SCAN;
+import static moe.shizuku.fcmformojo.FFMStatic.REQUEST_CODE_SEND;
 
 
 public class FFMIntentService extends IntentService {
@@ -390,52 +396,89 @@ public class FFMIntentService extends IntentService {
                 .setWhen(System.currentTimeMillis())
                 .setShowWhen(true);
 
-        NotificationCompat.Action action = null;
+        NotificationCompat.Action action;
 
         Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE_OPEN_URI, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent viewIntent = PendingIntent
+                .getActivity(this, REQUEST_CODE_OPEN_URI, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            action = new NotificationCompat.Action.Builder(R.drawable.ic_noti_open_24dp, getString(R.string.open_in_browser), pendingIntent)
+        PendingIntent copyIntent = PendingIntent
+                .getBroadcast(this, REQUEST_CODE_COPY, FFMBroadcastReceiver.copyToClipboardIntent(url), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            action = new NotificationCompat.Action.Builder(R.drawable.ic_noti_open_24dp, getString(R.string.open_in_browser), viewIntent)
+                    .build();
+        } else {
+            // 这个人没有浏览器..
+            action = new NotificationCompat.Action.Builder(R.drawable.ic_noti_copy_24dp, getString(R.string.copy_to_clipboard), copyIntent)
                     .build();
         }
 
-        OkHttpClient client = new OkHttpClient();
-
+        boolean installed = ProfileHelper.installed(this, profile);
+        OutputStream os = null;
+        Uri uri = null;
         try {
-            DocumentFile pickedDir = FFMSettings.getDownloadDir(this);
-
-            if (pickedDir != null) {
-                DocumentFile newFile = pickedDir.findFile("webqq-qrcode.png");
-                if (newFile != null) {
-                    newFile.delete();
+            // 当前用户没有安装选择的 QQ 时下载到私有位置
+            if (!installed) {
+                File file = FileUtils.getInternalCacheFile(this, "webqq-qrcode.png");
+                if (file.exists() || file.createNewFile()) {
+                    uri = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, file);
+                    os = new FileOutputStream(file);
                 }
-                DocumentFile file = pickedDir.createFile("image/png", "webqq-qrcode");
+            } else {
+                DocumentFile pickedDir = FFMSettings.getDownloadDir(this);
 
-                OutputStream os = getContentResolver().openOutputStream(file.getUri());
+                if (pickedDir != null) {
+                    DocumentFile newFile = pickedDir.findFile("webqq-qrcode.png");
+                    if (newFile != null) {
+                        newFile.delete();
+                    }
+                    DocumentFile file = pickedDir.createFile("image/png", "webqq-qrcode");
 
-                if (save(client, url, os, false)) {
-                    builder.setContentTitle(getString(R.string.notification_qr_code_downloaded))
-                            .setContentText(getString(R.string.notification_tap_open_qq, getString(profile.getDisplayName())))
-                            .setContentIntent(PendingIntent.getBroadcast(this, REQUEST_CODE_OPEN_SCAN, FFMBroadcastReceiver.openScanIntent(), PendingIntent.FLAG_UPDATE_CURRENT));
+                    uri = file.getUri();
+                    os = getContentResolver().openOutputStream(uri);
+                }
+            }
+        } catch (Exception ignored) {
+        }
 
+
+        if (os == null) {
+            builder.setContentTitle(getString(R.string.notification_cannot_download))
+                    .setContentText(getString(R.string.notification_permission_issue))
+                    .addAction(action);
+        } else {
+            OkHttpClient client = new OkHttpClient();
+
+            if (save(client, url, os, false)) {
+                builder.setContentTitle(getString(R.string.notification_qr_code_downloaded))
+                        .setContentText(getString(R.string.notification_tap_open_qq, getString(profile.getDisplayName())))
+                        .setContentIntent(PendingIntent.getBroadcast(this, REQUEST_CODE_OPEN_SCAN, FFMBroadcastReceiver.openScanIntent(), PendingIntent.FLAG_UPDATE_CURRENT));
+
+                // 当前用户没有安装选择的 QQ 时增加发送 action 和浏览器打开 action
+                if (!installed) {
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND)
+                            .putExtra(Intent.EXTRA_STREAM, uri)
+                            .setType("image/*");
+                    sendIntent = Intent.createChooser(sendIntent, getString(R.string.send_via));
+                    if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                        NotificationCompat.Action sendAction = new NotificationCompat.Action.Builder(
+                                R.drawable.ic_noti_send_24dp,
+                                getString(R.string.send),
+                                PendingIntent.getActivity(this, REQUEST_CODE_SEND, sendIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                                .build();
+                        builder.addAction(sendAction);
+                        builder.addAction(action);
+                    }
+                } else {
                     sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
                             .setData(Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/FFM/webqq-qrcode.png"))));
-
-                } else {
-                    builder.setContentTitle(getString(R.string.notification_cannot_download))
-                            .setContentText("可能是由于网络问题。")
-                            .addAction(action);
                 }
             } else {
                 builder.setContentTitle(getString(R.string.notification_cannot_download))
-                        .setContentText("可能是由于没有权限。")
+                        .setContentText(getString(R.string.notification_network_issue))
                         .addAction(action);
             }
-        } catch (Exception ignored) {
-            builder.setContentTitle(getString(R.string.notification_cannot_download))
-                    .setContentText("可能是由于没有权限。")
-                    .addAction(action);
         }
 
         notificationManager.notify(NOTIFICATION_ID_SYSTEM, builder.build());

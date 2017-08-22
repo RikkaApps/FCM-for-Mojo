@@ -84,9 +84,13 @@
     <string name="notification_tap_open_qq">点击打开 %s 来扫描二维码。</string>
     <string name="notification_network_issue">这可能是网络问题。</string>
     <string name="notification_permission_issue">这可能是因为需要的权限没有授予。</string>
-
+    <string name="notification_singing_in">登录中…</string>
+    <string name="notification_tap_open_qr_code_in_browser">点击在浏览器中打开二维码。</string>
+    <string name="notification_tap_copy_qr_code">点击复制二维码 URL。</string>
     <string name="open_in_browser">在浏览器中打开</string>
-
+    <string name="copy_to_clipboard">复制到剪贴板</string>
+    <string name="send">发送</string>
+    <string name="send_via">发送方式…</string>
     <string name="cannot_request_permission">无法申请权限。</string>
 
     <string name="notification_server_stop">Mojo-Webqq 已停止</string>
@@ -118,5 +122,6 @@
     <string name="status_waiting_refresh">等待刷新…</string>
     <string name="status_server_error">服务器错误。\n%1$d: %2$s</string>
     <string name="status_cannot_connect_server_error">无法连接服务器：%s。</string>
+    <string name="restart_webqq_summary">重启服务器上的 Mojo-Webqq（如果没有运行）</string>
 
 </resources>

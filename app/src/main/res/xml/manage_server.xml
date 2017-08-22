@@ -24,12 +24,10 @@
 
     </Preference>
 
-    <PreferenceCategory
-        android:title="@string/manage_webqq"/>
-
     <Preference
         android:key="restart_webqq"
-        android:title="@string/restart_webqq"/>
+        android:title="@string/restart_webqq"
+        android:summary="@string/restart_webqq_summary"/>
 
     <!--<Preference
         android:key="@string/stop_webqq"

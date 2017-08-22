@@ -16,6 +16,7 @@ public class FFMStatic {
     public static final String ACTION_RESTART_WEBQQ = BuildConfig.APPLICATION_ID + ".action.RESTART_WEBQQ";
     public static final String ACTION_DISMISS_SYSTEM_NOTIFICATION = BuildConfig.APPLICATION_ID + ".action.DISMISS_SYSTEM_NOTIFICATION";
     public static final String ACTION_UPDATE_URL = BuildConfig.APPLICATION_ID + ".action.URL_UPDATED";
+    public static final String ACTION_COPY_TO_CLIPBOARD = BuildConfig.APPLICATION_ID + ".action.COPY_TO_CLIPBOARD";
 
     public static final String EXTRA_CONTENT = BuildConfig.APPLICATION_ID + ".extra.CONTENT";
     public static final String EXTRA_CHAT = BuildConfig.APPLICATION_ID + ".extra.CHAT";
@@ -34,9 +35,13 @@ public class FFMStatic {
     public static final int REQUEST_CODE_OPEN_SCAN = 10001;
     public static final int REQUEST_CODE_DISMISS_SYSTEM_NOTIFICATION = 10002;
     public static final int REQUEST_CODE_RESTART_WEBQQ = 10003;
+    public static final int REQUEST_CODE_COPY = 10004;
+    public static final int REQUEST_CODE_SEND = 10005;
 
     public static final String NOTIFICATION_INPUT_KEY = "reply";
 
     public static final int NOTIFICATION_MAX_MESSAGES = 8;
+
+    public static final String FILE_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider";
 
 }

@@ -22,4 +22,8 @@ public class FileUtils {
             return new File(context.getCacheDir(), filename);
         }
     }
+
+    public static File getInternalCacheFile(Context context, String filename) {
+        return new File(context.getCacheDir(), filename);
+    }
 }

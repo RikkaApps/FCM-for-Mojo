@@ -6,10 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Process;
 
-import java.io.File;
-
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.R;
+import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.privileged.api.PrivilegedAPIs;
 
@@ -42,7 +41,7 @@ public class TIMProfile implements Profile {
     @Override
     public void onStartChatActivity(Context context, Chat chat) {
         if (chat == null || chat.getUid() == 0) {
-            ProfileHelper.startActivity(context, this);
+            ProfileHelper.startLauncherActivity(context, this);
             return;
         }
 
@@ -57,20 +56,17 @@ public class TIMProfile implements Profile {
                 .putExtra("uintype", chat.getType())
                 .putExtra("uin", Long.toString(chat.getUid()));
 
-        context.startActivity(intent);
+        if (!ShizukuCompat.startActivity(context, intent, getPackageName())) {
+            ProfileHelper.startLauncherActivity(context, this);
+        }
     }
 
     @Override
     public void onStartQrCodeScanActivity(Context context) {
-        PrivilegedAPIs.setPermitNetworkThreadPolicy();
-        if (FFMApplication.sPrivilegedAPIs.authorized()
-                && PrivilegedAPIs.isRoot()) {
-            Intent intent = new Intent()
-                    .setClassName(getPackageName(), "com.tencent.biz.qrcode.activity.ScannerActivity");
-
-            FFMApplication.sPrivilegedAPIs.startActivity(intent, Process.myUserHandle().hashCode());
-        } else {
-            ProfileHelper.startActivity(context, this);
+        Intent intent = new Intent()
+                .setClassName(getPackageName(), "com.tencent.biz.qrcode.activity.ScannerActivity");
+        if (!ShizukuCompat.startActivity(context, intent, getPackageName())) {
+            ProfileHelper.startLauncherActivity(context, this);
         }
     }
 }

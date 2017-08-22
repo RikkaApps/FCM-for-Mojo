@@ -1,9 +1,6 @@
 package moe.shizuku.fcmformojo.profile;
 
 import android.content.Context;
-import android.content.Intent;
-
-import java.io.File;
 
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.model.Chat;
@@ -36,11 +33,11 @@ public class QQiProfile implements Profile {
 
     @Override
     public void onStartChatActivity(Context context, Chat chat) {
-        ProfileHelper.startActivity(context, this);
+        ProfileHelper.startLauncherActivity(context, this);
     }
 
     @Override
     public void onStartQrCodeScanActivity(Context context) {
-        ProfileHelper.startActivity(context, this);
+        ProfileHelper.startLauncherActivity(context, this);
     }
 }
