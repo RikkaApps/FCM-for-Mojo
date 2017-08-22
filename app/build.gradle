@@ -15,6 +15,7 @@ android {
         resConfigs "en", "zh-rCN", "ja"
 
         resValue "string", "version_name", "${versionName} (${versionCode})"
+        buildConfigField "String", "DONATE_ALIPAY_URL", '"alipayqr://platformapi/startapp?saId=10000007&qrcode=https%3A%2F%2Fqr.alipay.com%2Faex01083scje5axcttivf13"'
     }
     signingConfigs {
         sign

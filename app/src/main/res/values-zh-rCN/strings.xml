@@ -123,5 +123,11 @@
     <string name="status_server_error">服务器错误。\n%1$d: %2$s</string>
     <string name="status_cannot_connect_server_error">无法连接服务器：%s。</string>
     <string name="restart_webqq_summary">重启服务器上的 Mojo-Webqq（如果没有运行）</string>
+    <string name="action_donate">捐赠</string>
+    <string name="donate_title">Pay Rikka NOW ////</string>
+    <string name="donate_message">做了很多事情的 Rikka 是不是应该得到很多钱钱呢，是就快点给 Rikka 钱钱吧（逃跑），但是只支持支付宝..</string>
+    <string name="donate_ok">好耶</string>
+    <string name="donate_no">坏耶</string>
+    <string name="donate_copy">复制账号</string>
 
 </resources>

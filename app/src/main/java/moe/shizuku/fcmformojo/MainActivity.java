@@ -3,7 +3,9 @@ package moe.shizuku.fcmformojo;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.storage.StorageManager;
@@ -15,7 +17,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.settings.MainSettingsFragment;
+import moe.shizuku.fcmformojo.utils.ClipboardUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -69,6 +73,28 @@ public class MainActivity extends BaseActivity {
                         .show();
                 ((TextView) dialog.findViewById(R.id.icon_credits)).setMovementMethod(LinkMovementMethod.getInstance());
                 ((TextView) dialog.findViewById(R.id.icon_credits)).setText(Html.fromHtml(getString(R.string.about_icon_credits), Html.FROM_HTML_MODE_COMPACT));
+
+                break;
+            case R.id.action_donate:
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.donate_title)
+                        .setMessage(R.string.donate_message)
+                        .setPositiveButton(R.string.donate_ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW,
+                                        Uri.parse(BuildConfig.DONATE_ALIPAY_URL));
+                                ShizukuCompat.startActivity(MainActivity.this, intent, "com.eg.android.AlipayGphone");
+                            }
+                        })
+                        .setNegativeButton(R.string.donate_no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ClipboardUtils.put(MainActivity.this, "rikka@xing.moe");
+                            }
+                        })
+                        .setNeutralButton(R.string.donate_copy, null)
+                        .show();
 
                 break;
         }
