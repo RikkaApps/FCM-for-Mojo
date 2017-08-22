@@ -123,15 +123,15 @@ public class NotificationBuilder {
     /**
      * 清空消息
      *
-     * @param senderId 消息发送人 id
+     * @param id 唯一的 id
      */
-    public void clearMessages(long senderId) {
-        Chat chat = mMessages.get(senderId);
+    public void clearMessages(long id) {
+        Chat chat = mMessages.get(id);
         if (chat == null) {
             return;
         }
         mMessageCount -= chat.getMessages().size();
-        mMessages.remove(senderId);
+        mMessages.remove(id);
 
         mSendersCount = mMessages.size();
 

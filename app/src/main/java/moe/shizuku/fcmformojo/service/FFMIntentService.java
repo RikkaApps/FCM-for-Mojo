@@ -373,7 +373,7 @@ public class FFMIntentService extends IntentService {
         }
 
         NotificationBuilder nb = FFMApplication.get(this).getNotificationBuilder();
-        nb.clearMessages(id);
+        nb.clearMessages(chat.getUniqueId());
     }
 
     private void handleDownloadQrCode(String url) {
