@@ -12,7 +12,7 @@ import java.util.UUID;
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
 import moe.shizuku.fcmformojo.interceptor.HttpBasicAuthorizationInterceptor;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
-import moe.shizuku.fcmformojo.profile.Profile;
+import moe.shizuku.fcmformojo.utils.URLFormatUtils;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
 import moe.shizuku.privileged.api.PrivilegedAPIs;
 import moe.shizuku.privileged.api.receiver.TokenUpdateReceiver;
@@ -55,6 +55,8 @@ public class FFMApplication extends Application {
     public static void updateBaseUrl(Context context, String url) {
         FFMApplication application = FFMApplication.get(context);
 
+        url = URLFormatUtils.addEndSlash(url);
+
         application.mRetrofit = application.mRetrofit.newBuilder()
                 .baseUrl(url)
                 .build();
@@ -78,14 +80,22 @@ public class FFMApplication extends Application {
                 .addInterceptor(new HttpBasicAuthorizationInterceptor())
                 .build();
 
+        String baseUrl = FFMSettings.getBaseUrl();
+
+        if (!URLFormatUtils.isValidURL(baseUrl)) {
+            baseUrl = "http://0.0.0.0/";
+        }
+
+        baseUrl = URLFormatUtils.addEndSlash(baseUrl);
+
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(FFMSettings.getBaseUrl())
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
 
         mRxRetrofit = new Retrofit.Builder()
-                .baseUrl(FFMSettings.getBaseUrl())
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)

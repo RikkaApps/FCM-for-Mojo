@@ -21,7 +21,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:inputType="textUri"/>
+            android:inputType="textUri"
+            android:hint="https://example.com:5004/"
+            tools:ignore="HardcodedText"/>
 
         <CheckBox
             android:id="@+id/cb_advanced_options"
