@@ -90,13 +90,13 @@ public class MainActivity extends BaseActivity {
                         .setNegativeButton(R.string.donate_no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                ClipboardUtils.put(MainActivity.this, "rikka@xing.moe");
+                                Toast.makeText(MainActivity.this, "QAQ", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNeutralButton(R.string.donate_copy, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(MainActivity.this, "QAQ", Toast.LENGTH_SHORT).show();
+                                ClipboardUtils.put(MainActivity.this, "rikka@xing.moe");
                             }
                         })
                         .show();
