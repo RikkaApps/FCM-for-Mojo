@@ -93,7 +93,12 @@ public class MainActivity extends BaseActivity {
                                 ClipboardUtils.put(MainActivity.this, "rikka@xing.moe");
                             }
                         })
-                        .setNeutralButton(R.string.donate_copy, null)
+                        .setNeutralButton(R.string.donate_copy, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(MainActivity.this, "QAQ", Toast.LENGTH_SHORT).show();
+                            }
+                        })
                         .show();
 
                 break;
