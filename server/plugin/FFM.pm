@@ -11,6 +11,10 @@ use Mojo::Webqq::Server;
 
 my $server;
 
+my $conf_file;
+my $conf;
+my $ids;
+
 sub makeIdArray {
     my @registration_ids = @_;
     my @ids;
@@ -20,16 +24,8 @@ sub makeIdArray {
     return \@ids;
 }
 
-sub call {
-    my $client = shift;
-    my $data   = shift;
-    $client->load("UploadQRcode") if !$client->is_load_plugin('UploadQRcode');
-    my $api_url = $data->{api_url};
-    my $api_key = $data->{api_key}
-      or $client->die( "[" . __PACKAGE__ . "] 必须指定 api_key" );
-    my $conf_file = $data->{conf_file}
-      or $client->die( "[" . __PACKAGE__ . "] 必须指定 conf_file" );
-
+sub loadConfig {
+    my $client    = shift;
     my $json_text = do {
         open( my $json_fh, "<:encoding(UTF-8)", $conf_file )
           or $client->die(
@@ -37,13 +33,26 @@ sub call {
         local $/;
         <$json_fh>;
     };
-    my $conf             = decode_json $json_text;
+    $conf = decode_json $json_text;
     my $registration_ids = $conf->{registration_ids};
 
-    my $ids = makeIdArray(@$registration_ids);
+    $ids = makeIdArray(@$registration_ids);
 
-    #$client->print(Dumper($ids));
-    #$client->print(Dumper($conf));
+    $client->print( "[" . __PACKAGE__ . "] config reloaded" );
+    $client->print( Dumper($conf) );
+}
+
+sub call {
+    my $client = shift;
+    my $data   = shift;
+    $client->load("UploadQRcode") if !$client->is_load_plugin('UploadQRcode');
+    my $api_url = $data->{api_url};
+    my $api_key = $data->{api_key}
+      or $client->die( "[" . __PACKAGE__ . "] 必须指定 api_key" );
+    $conf_file = $data->{conf_file}
+      or $client->die( "[" . __PACKAGE__ . "] 必须指定 conf_file" );
+
+    loadConfig($client);
 
     $client->on(
         receive_message => sub {
@@ -117,15 +126,22 @@ sub call {
             elsif ( $msg->type eq 'sess_message' ) {
             }
 
-            $client->http_post(
-                $api_url,
-                { 'Authorization' => "key=$api_key", json => 1 },
-                json => {
-                    registration_ids => $ids,
-                    priority         => 'high',
-                    data             => \%chat,
-                }
-            );
+            if ( @$ids == 0 ) {
+                $client->warn( "["
+                      . __PACKAGE__
+                      . "] can't push because registration_ids is empty, please add in client" );
+            }
+            else {
+                $client->http_post(
+                    $api_url,
+                    { 'Authorization' => "key=$api_key", json => 1 },
+                    json => {
+                        registration_ids => $ids,
+                        priority         => 'high',
+                        data             => \%chat,
+                    }
+                );
+            }
         }
     );
 
@@ -147,24 +163,31 @@ sub call {
             if ( $event eq 'input_qrcode' ) {
                 $chat{message}{content} = $client->qrcode_upload_url;
             }
-            $client->http_post(
-                $api_url,
-                {
-                    'Authorization'       => "key=$api_key",
-                    json                  => 1,
-                    blocking              => 1,
-                    ua_connect_timeout    => 5,
-                    ua_request_timeout    => 5,
-                    ua_inactivity_timeout => 5,
-                    ua_retry_times        => 1
-                },
-                json => {
-                    registration_ids => $ids,
-                    collapse_key     => 'system_event',
-                    priority         => 'high',
-                    data             => \%chat,
-                }
-            );
+            if ( @$ids == 0 ) {
+                $client->warn( "["
+                      . __PACKAGE__
+                      . "] can't push because registration_ids is empty, please add in client" );
+            }
+            else {
+                $client->http_post(
+                    $api_url,
+                    {
+                        'Authorization'       => "key=$api_key",
+                        json                  => 1,
+                        blocking              => 1,
+                        ua_connect_timeout    => 5,
+                        ua_request_timeout    => 5,
+                        ua_inactivity_timeout => 5,
+                        ua_retry_times        => 1
+                    },
+                    json => {
+                        registration_ids => $ids,
+                        collapse_key     => 'system_event',
+                        priority         => 'high',
+                        data             => \%chat,
+                    }
+                );
+            }
         }
     );
 
@@ -224,42 +247,12 @@ sub call {
             return if not defined $jsoncallback;
             $$output = "$jsoncallback($$output)";
         }
-    );
+    ); 
 
-    get '/ffm/get_registration_ids' =>
-      sub { $_[0]->safe_render( json => [@$registration_ids] ); };
+    get '/ffm/reload_config' => sub {
+        Mojo::Webqq::Plugin::FFM::loadConfig($client);
 
-    post '/ffm/update_registration_ids' => sub {
-        my $c = shift;
-        my $p = $c->req->json;
-
-        $registration_ids = $p;
-        $conf->{registration_ids} = $registration_ids;
-        $ids = Mojo::Webqq::Plugin::FFM::makeIdArray(@$registration_ids);
-
-        #$client->print(Dumper($registration_ids));
-        #$client->print(Dumper($conf));
-        #$client->print( Dumper($ids) );
-
-        #my $add_ids =$p->{registration_ids};
-
-        #my %hash;
-        #@hash{@$add_ids, @$registration_ids}++;
-        #my @ids = sort keys %hash;
-
-        #$registration_ids = \@ids;
-        #$conf->{registration_ids} = $registration_ids;
-
-        #$client->print(Dumper($conf));
-        #$client->print(Dumper($registration_ids));
-
-        open( my $json_fh, ">", $conf_file )
-          or $client->die(
-            "[" . __PACKAGE__ . "] 无法打开 conf_file \$filename\": $!\n" );
-
-        print $json_fh encode_json $conf ;
-
-        $c->safe_render( json => { code => 0, status => "updated" } );
+        $_[0]->safe_render( json => { code => 0, status => "reloaded" } );
     };
 
     package Mojo::Webqq::Plugin::FFM;

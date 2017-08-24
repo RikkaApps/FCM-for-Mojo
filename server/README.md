@@ -1,5 +1,5 @@
 #### 启动方式
-使用 `node node/index.js` 来开启，默认占用 3 个端口号 5003 5004 5005。若要修改端口号，请自行修改 `config.json`，其他内容（HTTPS，HTTP 基本验证等的设置方式）请[看这里](https://github.com/RikkaW/FCM-for-Mojo/wiki/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A7%A3%E9%87%8A)。
+使用 `node node/index.js` 来开启，默认占用 3 个端口号 5003 5004 5005。若要修改端口号，请自行修改 `config.js`，其他内容（HTTPS，HTTP 基本验证等的设置方式）请[看这里](https://github.com/RikkaW/FCM-for-Mojo/wiki/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A7%A3%E9%87%8A)。
 
 #### 文件们的作用
 * `config.json`
