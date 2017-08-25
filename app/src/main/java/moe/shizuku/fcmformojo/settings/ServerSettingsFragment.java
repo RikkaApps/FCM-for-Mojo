@@ -29,7 +29,6 @@ public class ServerSettingsFragment extends SettingsFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 FFMIntentService.startRestart(getContext());
-                preference.setEnabled(false);
                 return true;
             }
         });
@@ -55,8 +54,8 @@ public class ServerSettingsFragment extends SettingsFragment {
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case FFMSettings.BASE_URL:
-                FFMApplication.updateBaseUrl(getContext(), FFMSettings.getBaseUrl());
-                LocalBroadcast.updateUrl(getContext());
+                FFMApplication.updateBaseUrl(FFMSettings.getBaseUrl());
+                LocalBroadcast.refreshStatus(getContext());
                 break;
         }
     }

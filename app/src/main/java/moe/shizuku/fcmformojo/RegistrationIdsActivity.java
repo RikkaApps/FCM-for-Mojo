@@ -1,20 +1,12 @@
 package moe.shizuku.fcmformojo;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,7 +14,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.adapter.RegistrationIdsAdapter;
-import moe.shizuku.fcmformojo.api.FFMService;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.RegistrationId;
 import moe.shizuku.fcmformojo.utils.LocalBroadcast;
@@ -30,7 +21,7 @@ import moe.shizuku.fcmformojo.viewholder.RegistrationIdViewHolder;
 import moe.shizuku.fcmformojo.viewholder.TitleViewHolder;
 import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
 
-import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_URL;
+import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 
 public class RegistrationIdsActivity extends BaseActivity {
 
@@ -40,15 +31,6 @@ public class RegistrationIdsActivity extends BaseActivity {
     private RegistrationIdsAdapter mAdapter;
 
     private boolean mRefreshed;
-
-    private FFMService mFFMService;
-
-    private BroadcastReceiver mUrlChangedBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            mFFMService = FFMApplication.getRxRetrofit(context).create(FFMService.class);
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +52,12 @@ public class RegistrationIdsActivity extends BaseActivity {
 
         RecyclerViewHelper.fixOverScroll(mRecyclerView);
 
-        mFFMService = FFMApplication.getRxRetrofit(this).create(FFMService.class);
-
         updateItems();
         requestRegistrationIds();
-
-        LocalBroadcastManager.getInstance(this)
-                .registerReceiver(mUrlChangedBroadcastReceiver, new IntentFilter(ACTION_UPDATE_URL));
     }
 
     @Override
     protected void onDestroy() {
-        LocalBroadcastManager.getInstance(this)
-                .unregisterReceiver(mUrlChangedBroadcastReceiver);
         mCompositeDisposable.clear();
         super.onDestroy();
     }
@@ -106,7 +81,7 @@ public class RegistrationIdsActivity extends BaseActivity {
     }
 
     private void requestRegistrationIds() {
-        mCompositeDisposable.add(mFFMService.getRegistrationIds()
+        mCompositeDisposable.add(FFMService.getRegistrationIds()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<RegistrationId>>() {
@@ -124,7 +99,7 @@ public class RegistrationIdsActivity extends BaseActivity {
     }
 
     private void updateRegistrationIds() {
-        mCompositeDisposable.add(mFFMService.updateRegistrationIds(mAdapter.getRegistrationIds())
+        mCompositeDisposable.add(FFMService.updateRegistrationIds(mAdapter.getRegistrationIds())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<FFMResult>() {

@@ -17,16 +17,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.fcmformojo.api.FFMService;
 import moe.shizuku.fcmformojo.model.RegistrationId;
 import moe.shizuku.preference.Preference;
 import moe.shizuku.preference.PreferenceViewHolder;
 import retrofit2.Response;
 
+import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REFRESH_STATUS;
-import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_URL;
 
 /**
  * Created by rikka on 2017/8/21.
@@ -34,7 +32,6 @@ import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_URL;
 
 public class ServerStatusPreference extends Preference {
 
-    private FFMService mFFMService;
     private Disposable mDisposable;
     private PreferenceViewHolder mViewHolder;
 
@@ -45,24 +42,11 @@ public class ServerStatusPreference extends Preference {
         }
     };
 
-    private BroadcastReceiver mUrlChangedBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            mFFMService = FFMApplication.getRxRetrofit(context).create(FFMService.class);
-
-            refresh();
-        }
-    };
-
     public ServerStatusPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        mFFMService = FFMApplication.getRxRetrofit(context).create(FFMService.class);
-
         LocalBroadcastManager.getInstance(context)
                 .registerReceiver(mRefreshBroadcastReceiver, new IntentFilter(ACTION_REFRESH_STATUS));
-        LocalBroadcastManager.getInstance(context)
-                .registerReceiver(mUrlChangedBroadcastReceiver, new IntentFilter(ACTION_UPDATE_URL));
     }
 
     public ServerStatusPreference(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -147,7 +131,7 @@ public class ServerStatusPreference extends Preference {
             return;
         }
 
-        mDisposable = mFFMService.getRegistrationIdsResponse()
+        mDisposable = FFMService.getRegistrationIdsResponse()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Response<List<RegistrationId>>>() {
