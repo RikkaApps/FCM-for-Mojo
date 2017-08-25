@@ -31,7 +31,6 @@ import static moe.shizuku.fcmformojo.FFMSettings.GET_FOREGROUND;
 public class FFMApplication extends Application {
 
     private NotificationBuilder mNotificationBuilder;
-    private Retrofit mRetrofit;
     private Retrofit mRxRetrofit;
 
     public static PrivilegedAPIs sPrivilegedAPIs;
@@ -44,10 +43,6 @@ public class FFMApplication extends Application {
         return (FFMApplication) context.getApplicationContext();
     }
 
-    public static Retrofit getRetrofit(Context context) {
-        return FFMApplication.get(context).mRetrofit;
-    }
-
     public static Retrofit getRxRetrofit(Context context) {
         return FFMApplication.get(context).mRxRetrofit;
     }
@@ -56,10 +51,6 @@ public class FFMApplication extends Application {
         FFMApplication application = FFMApplication.get(context);
 
         url = URLFormatUtils.addEndSlash(url);
-
-        application.mRetrofit = application.mRetrofit.newBuilder()
-                .baseUrl(url)
-                .build();
 
         application.mRxRetrofit = application.mRxRetrofit.newBuilder()
                 .baseUrl(url)
@@ -87,12 +78,6 @@ public class FFMApplication extends Application {
         }
 
         baseUrl = URLFormatUtils.addEndSlash(baseUrl);
-
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build();
 
         mRxRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)

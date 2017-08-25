@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
@@ -83,7 +84,7 @@ public class FFMIntentService extends IntentService {
     private BroadcastReceiver mUrlChangedBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            mOpenQQService = FFMApplication.getRetrofit(context).create(OpenQQService.class);
+            mOpenQQService = FFMApplication.getRxRetrofit(context).create(OpenQQService.class);
             mFFMService = FFMApplication.getRxRetrofit(context).create(FFMService.class);
         }
     };
@@ -96,7 +97,7 @@ public class FFMIntentService extends IntentService {
     public void onCreate() {
         super.onCreate();
 
-        mOpenQQService = FFMApplication.getRetrofit(this).create(OpenQQService.class);
+        mOpenQQService = FFMApplication.getRxRetrofit(this).create(OpenQQService.class);
         mFFMService = FFMApplication.getRxRetrofit(this).create(FFMService.class);
 
         LocalBroadcastManager.getInstance(this)
@@ -164,18 +165,9 @@ public class FFMIntentService extends IntentService {
 
     private void handleRestart() {
         // TODO notify user if error
-        mFFMService.restart()
-                .subscribe(new Consumer<FFMResult>() {
-                    @Override
-                    public void accept(FFMResult result) throws Exception {
-
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable result) throws Exception {
-
-                    }
-                });
+        mFFMService
+                .restart()
+                .blockingGet();
 
         getSystemService(NotificationManager.class).cancel(NOTIFICATION_ID_SYSTEM);
     }
@@ -196,8 +188,8 @@ public class FFMIntentService extends IntentService {
         OkHttpClient client = new OkHttpClient();
 
         try {
-            List<Friend> friends = mOpenQQService.getFriendsInfo().execute().body();
-            List<Group> groups = mOpenQQService.getGroupsInfo().execute().body();
+            List<Friend> friends = mOpenQQService.getFriendsInfo().blockingGet();
+            List<Group> groups = mOpenQQService.getGroupsInfo().blockingGet();
 
             if (friends == null || groups == null) {
                 notificationManager.cancel(NOTIFICATION_ID_PROGRESS);
@@ -267,7 +259,7 @@ public class FFMIntentService extends IntentService {
 
                 Log.d(TAG, succeeded + " group " + uid);
             }
-        } catch (IOException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
 
@@ -336,7 +328,7 @@ public class FFMIntentService extends IntentService {
 
         Log.d("Reply", "try reply to " + id + " " + content.toString());
 
-        Call<SendResult> call;
+        Single<SendResult> call;
         switch (type) {
             case ChatType.FRIEND:
                 call = mOpenQQService.sendFriendMessage(id, content.toString());
@@ -353,11 +345,10 @@ public class FFMIntentService extends IntentService {
         }
 
         try {
-            Response<SendResult> response = call.execute();
-            if (response.isSuccessful()) {
-                final SendResult result = response.body();
+            final SendResult result = call.blockingGet();
 
-                if (response.body().getCode() != 0) {
+            if (result != null) {
+                if (result.getCode() != 0) {
                     FFMApplication.get(this).runInMainThread(new Runnable() {
                         @Override
                         public void run() {

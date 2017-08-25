@@ -2,10 +2,10 @@ package moe.shizuku.fcmformojo.api;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import moe.shizuku.fcmformojo.model.Friend;
 import moe.shizuku.fcmformojo.model.Group;
 import moe.shizuku.fcmformojo.model.SendResult;
-import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -21,13 +21,13 @@ public interface OpenQQService {
      * 获取好友数据
      */
     @GET("/openqq/get_friend_info")
-    Call<List<Friend>> getFriendsInfo();
+    Single<List<Friend>> getFriendsInfo();
 
     /**
      * 查询群信息
      */
     @GET("/openqq/get_group_info")
-    Call<List<Group>> getGroupsInfo();
+    Single<List<Group>> getGroupsInfo();
 
     /**
      * 发送好友消息
@@ -37,7 +37,7 @@ public interface OpenQQService {
      */
     @FormUrlEncoded
     @POST("/openqq/send_friend_message")
-    Call<SendResult> sendFriendMessage(@Field("id") long id, @Field("content") String content);
+    Single<SendResult> sendFriendMessage(@Field("id") long id, @Field("content") String content);
 
     /**
      * 发送好友消息
@@ -47,7 +47,7 @@ public interface OpenQQService {
      */
     @FormUrlEncoded
     @POST("/openqq/send_friend_message")
-    Call<SendResult> sendFriendMessageByUid(@Field("uid") int uid, @Field("content") String content);
+    Single<SendResult> sendFriendMessageByUid(@Field("uid") int uid, @Field("content") String content);
 
     /**
      * 发送群组消息
@@ -57,7 +57,7 @@ public interface OpenQQService {
      */
     @FormUrlEncoded
     @POST("/openqq/send_group_message")
-    Call<SendResult> sendGroupMessage(@Field("id") long id, @Field("content") String content);
+    Single<SendResult> sendGroupMessage(@Field("id") long id, @Field("content") String content);
 
     /**
      * 发送群组消息
@@ -67,7 +67,7 @@ public interface OpenQQService {
      */
     @FormUrlEncoded
     @POST("/openqq/send_group_message")
-    Call<SendResult> sendGroupMessageByUid(@Field("uid") int uid, @Field("content") String content);
+    Single<SendResult> sendGroupMessageByUid(@Field("uid") int uid, @Field("content") String content);
 
     /**
      * 发送讨论组消息
@@ -77,5 +77,5 @@ public interface OpenQQService {
      */
     @FormUrlEncoded
     @POST("/openqq/send_discuss_message")
-    Call<SendResult> sendDiscussMessage(@Field("id") long id, @Field("content") String content);
+    Single<SendResult> sendDiscussMessage(@Field("id") long id, @Field("content") String content);
 }
