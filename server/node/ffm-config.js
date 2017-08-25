@@ -33,6 +33,11 @@ function FFMConfig(file) {
 
     this.makeIds();
 
+    this.data.notifications = this.data.notifications || {
+        friend: true,
+        group: false
+    }
+
     //console.log('[FFM] ids: ' + this.ids);
 }
 

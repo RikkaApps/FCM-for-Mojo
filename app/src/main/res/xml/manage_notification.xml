@@ -29,7 +29,8 @@
         <SwitchPreference
             android:key="notification"
             android:title="@string/notification"
-            android:defaultValue="true"/>
+            android:defaultValue="true"
+            android:enabled="false"/>
 
         <SwitchPreference
             android:key="light"
@@ -72,7 +73,8 @@
             android:key="notification_group"
             android:summary="@string/at_as_friend"
             android:title="@string/notification"
-            android:defaultValue="false"/>
+            android:defaultValue="false"
+            android:enabled="false"/>
 
         <SwitchPreference
             android:key="light_group"

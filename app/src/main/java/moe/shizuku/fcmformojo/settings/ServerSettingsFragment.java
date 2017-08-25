@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.widget.Toast;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -26,8 +25,6 @@ import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
  */
 
 public class ServerSettingsFragment extends SettingsFragment {
-
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -52,12 +49,6 @@ public class ServerSettingsFragment extends SettingsFragment {
                 return true;
             }
         });
-    }
-
-    @Override
-    public void onDetach() {
-        mCompositeDisposable.clear();
-        super.onDetach();
     }
 
     private void restart() {

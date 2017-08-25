@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_upload"
+        android:icon="@drawable/ic_cloud_upload_24dp"
+        android:title="@string/action_upload_to_server"
+        android:showAsAction="ifRoom"/>
+
+</menu>

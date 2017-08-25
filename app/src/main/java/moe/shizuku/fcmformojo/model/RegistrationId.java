@@ -17,7 +17,7 @@ public class RegistrationId {
     private String name;
     private long time;
 
-    public RegistrationId(String id, String name, long time) {
+    RegistrationId(String id, String name, long time) {
         this.id = id;
         this.name = name;
         this.time = time;
