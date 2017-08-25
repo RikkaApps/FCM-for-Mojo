@@ -1,8 +1,12 @@
 package moe.shizuku.fcmformojo.profile;
 
+import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 
 import moe.shizuku.fcmformojo.R;
+import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.model.Chat;
 
 /**
@@ -31,13 +35,30 @@ public class QQiProfile implements Profile {
         return R.color.colorNotification;
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onStartChatActivity(Context context, Chat chat) {
-        ProfileHelper.startLauncherActivity(context, this);
+        Intent intent = new Intent()
+                .setComponent(ComponentName.unflattenFromString("com.tencent.mobileqqi/com.tencent.mobileqq.activity.ChatActivity"))
+                .setFlags(0x14000000)
+                .putExtra("entrance", 6)
+                .putExtra("key_notification_click_action", true)
+                .putExtra("uinname", chat.getName())
+                .putExtra("uintype", chat.getType())
+                .putExtra("uin", Long.toString(chat.getUid()));
+
+        if (!ShizukuCompat.startActivity(context, intent, getPackageName())) {
+            ProfileHelper.startLauncherActivity(context, this);
+        }
     }
 
     @Override
     public void onStartQrCodeScanActivity(Context context) {
-        ProfileHelper.startLauncherActivity(context, this);
+        Intent intent = new Intent()
+                .setClassName(getPackageName(), "com.tencent.biz.qrcode.activity.ScannerActivity")
+                .setComponent(ComponentName.unflattenFromString("com.tencent.mobileqqi/com.tencent.biz.qrcode.activity.ScannerActivity"));
+        if (!ShizukuCompat.startActivity(context, intent, getPackageName())) {
+            ProfileHelper.startLauncherActivity(context, this);
+        }
     }
 }
