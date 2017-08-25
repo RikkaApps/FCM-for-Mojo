@@ -129,5 +129,6 @@
     <string name="donate_ok">好耶</string>
     <string name="donate_no">坏耶</string>
     <string name="donate_copy">复制账号</string>
+    <string name="stop_webqq_summary">强行停止服务器上的 Mojo-Webqq</string>
 
 </resources>

@@ -130,4 +130,6 @@
     <string name="donate_ok">Pay NOW</string>
     <string name="donate_no">Bad Rikka</string>
     <string name="donate_copy">Copy</string>
+    <string name="stop_webqq_summary">Force stop Mojo-Webqq on server</string>
+
 </resources>
