@@ -36,7 +36,9 @@ function FFMConfig(file) {
     this.data.notifications = this.data.notifications || {
         friend: true,
         group: false
-    }
+    };
+
+    this.data.registration_ids = this.data.registration_ids || [];
 
     //console.log('[FFM] ids: ' + this.ids);
 }

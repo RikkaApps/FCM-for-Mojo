@@ -10,7 +10,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 26
         versionCode gitCommitCount
-        versionName "0.3.0-beta3"
+        versionName "0.3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resConfigs "en", "zh-rCN", "ja"
 

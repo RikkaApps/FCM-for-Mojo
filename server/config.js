@@ -3,25 +3,24 @@ var fs = require('fs');
 var config = {
     "mojo": {
         "webqq": {
-            /* openqq plugin local port */
+            // openqq plugin local port
             "openqq": 5003
         }
     },
 
-    /* local http server port, FFM plugin will send messages to this port */
+    // local http server port, FFM plugin will send messages to this port
 	"local_port": 5004,
 
-	/* client config file, must be a valid json, do not need to edit it manually */
+	// client config file, must be a valid json, do not need to edit it manually
 	"client_config": "client.json",
 
-	/* http server port for client */
+	// http server port for client
     "port": 5005,
 
     // hostname, 0.0.0.0 default (IPv4)
-    /*"hostname": "",*/
+    //"hostname": "",
 
-    /* basic auth config, see https://github.com/http-auth/http-auth#configurations
-    */
+    // basic auth config, see https://github.com/http-auth/http-auth#configuration
     /*"basic_auth": {
         "file": ""
     },*/
