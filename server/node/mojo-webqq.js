@@ -32,6 +32,10 @@ function MojoQQ(port, openqq_port) {
         }
     };
 
+    this.running = function() {
+        return this.proc !== null && !this.proc.killed;
+    };
+
     this.restart();
 }
 

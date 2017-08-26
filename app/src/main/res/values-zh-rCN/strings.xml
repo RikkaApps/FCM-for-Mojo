@@ -120,7 +120,6 @@
     <string name="status_webqq_dead">Mojo-Webqq 没有运行。</string>
     <string name="status_webqq_error">运行中，但登陆二维码尚未被扫描或是其他错误。</string>
     <string name="status_waiting_refresh">等待刷新…</string>
-    <string name="status_server_error">服务器错误。\n%1$d: %2$s</string>
     <string name="status_cannot_connect_server_error">无法连接服务器：%s。</string>
     <string name="restart_webqq_summary">重启服务器上的 Mojo-Webqq（如果没有运行）</string>
     <string name="action_donate">捐赠</string>
@@ -130,5 +129,6 @@
     <string name="donate_no">坏耶</string>
     <string name="donate_copy">复制账号</string>
     <string name="stop_webqq_summary">强行停止服务器上的 Mojo-Webqq</string>
+    <string name="version_not_match">服务器版本（%1$s）与客户端版本（%2$s）不匹配，部分功能可能不按预期工作。</string>
 
 </resources>

@@ -1,7 +1,7 @@
 {
   "name": "ffm",
-  "version": "0.3.0",
-  "description": "Controller for Mojo-Webqq and it's plugin openqq and ffm.",
+  "version": "0.3.1",
+  "description": "FFM",
   "main": "index.js",
   "dependencies": {
     "http-auth": "^3.2.3",

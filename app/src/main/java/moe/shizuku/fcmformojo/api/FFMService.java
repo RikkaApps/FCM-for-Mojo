@@ -4,9 +4,9 @@ import java.util.List;
 
 import io.reactivex.Single;
 import moe.shizuku.fcmformojo.model.FFMResult;
+import moe.shizuku.fcmformojo.model.FFMStatus;
 import moe.shizuku.fcmformojo.model.NotificationToggle;
 import moe.shizuku.fcmformojo.model.RegistrationId;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -31,8 +31,8 @@ public interface FFMService {
     @GET("/ffm/stop")
     Single<FFMResult> stop();
 
-    @GET("/ffm/get_registration_ids")
-    Single<Response<List<RegistrationId>>> getRegistrationIdsResponse();
+    @GET("/ffm/get_status")
+    Single<FFMStatus> getStatus();
 
     @GET("/ffm/get_notifications_toggle")
     Single<NotificationToggle> getNotificationsToggle();

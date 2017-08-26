@@ -8,20 +8,21 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import moe.shizuku.fcmformojo.BuildConfig;
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.fcmformojo.model.RegistrationId;
+import moe.shizuku.fcmformojo.model.FFMStatus;
 import moe.shizuku.preference.Preference;
 import moe.shizuku.preference.PreferenceViewHolder;
-import retrofit2.Response;
 
 import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REFRESH_STATUS;
@@ -70,11 +71,37 @@ public class ServerStatusPreference extends Preference {
         }
 
         mViewHolder = holder;
+        mViewHolder.itemView.setOnClickListener(null);
+
+        ((ViewGroup) mViewHolder.itemView).getChildAt(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refresh();
+            }
+        });
+    }
+
+    private void updateVersion(String server) {
+        if (mViewHolder != null) {
+            CardView versionCard = (CardView) ((ViewGroup) mViewHolder.itemView).getChildAt(1);
+
+            if (server != null
+                    && !server.equals(BuildConfig.VERSION_NAME)) {
+                TextView status = versionCard.findViewById(android.R.id.text2);
+                status.setText(getContext().getString(R.string.version_not_match, server, BuildConfig.VERSION_NAME));
+
+                versionCard.setVisibility(View.VISIBLE);
+            } else {
+                versionCard.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void updateStatus(CharSequence text, @ColorInt int color, Drawable icon) {
         if (mViewHolder != null) {
-            TextView status = (TextView) mViewHolder.findViewById(android.R.id.text1);
+            CardView statusCard = (CardView) ((ViewGroup) mViewHolder.itemView).getChildAt(0);
+            TextView status = statusCard.findViewById(android.R.id.text1);
+
             if (icon != null) {
                 icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
                 status.setCompoundDrawablesRelative(icon, null, null, null);
@@ -82,8 +109,7 @@ public class ServerStatusPreference extends Preference {
                 status.setCompoundDrawablesRelative(null, null, null, null);
             }
             status.setText(text);
-            status.setTextColor(color);
-            status.setCompoundDrawableTintList(ColorStateList.valueOf(color));
+            statusCard.setCardBackgroundColor(color);
         }
     }
 
@@ -105,18 +131,18 @@ public class ServerStatusPreference extends Preference {
         }
     }
 
-    private void updateStatus(int code, String body) {
-        Context context = getContext();
-        int color = context.getColor(R.color.serverProblem);
-        Drawable icon = context.getDrawable(R.drawable.ic_status_error_24dp);
-        if ("webqq dead".equals(body)) {
-            updateStatus(context.getString(R.string.status_webqq_dead), color, icon);
-        } else if ("webqq error".equals(body)) {
-            updateStatus(context.getString(R.string.status_webqq_error), color, icon);
+    private void updateStatus(FFMStatus status) {
+        if (status.isRunning()) {
+            updateStatus(status.getDevices());
         } else {
-            updateStatus(context.getString(R.string.status_server_error, code, body), color, icon);
+            Context context = getContext();
 
+            int color = context.getColor(R.color.serverProblem);
+            Drawable icon = context.getDrawable(R.drawable.ic_status_error_24dp);
+            updateStatus(context.getString(R.string.status_webqq_dead), color, icon);
         }
+
+        updateVersion(status.getVersion());
     }
 
     private void updateStatus(String error) {
@@ -131,28 +157,22 @@ public class ServerStatusPreference extends Preference {
             return;
         }
 
-        mDisposable = FFMService.getRegistrationIdsResponse()
+        mDisposable = FFMService.getStatus()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Response<List<RegistrationId>>>() {
+                .subscribe(new Consumer<FFMStatus>() {
                     @Override
-                    public void accept(Response<List<RegistrationId>> response) throws Exception {
-                        if (response.isSuccessful() && response.body() != null) {
-                            updateStatus(response.body().size());
-                        } else {
-                            updateStatus(response.code(), response.errorBody().string());
+                    public void accept(FFMStatus status) throws Exception {
+                        if (status != null) {
+                            updateStatus(status);
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         updateStatus(throwable.getMessage());
+                        updateVersion(null);
                     }
                 });
-    }
-
-    @Override
-    protected void onClick() {
-        refresh();
     }
 }

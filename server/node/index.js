@@ -6,6 +6,8 @@ var config = require('../config');
 
 var push = require('./push');
 
+var version = require('./package.json').version;
+
 var FFMConfig = require('./ffm-config');
 var ffmConfig = new FFMConfig(config.client_config);
 
@@ -52,6 +54,14 @@ function handle(req, res) {
             handlePost(req, res);
             break;
 
+        case '/ffm/get_status':
+            res.writeHead(200, {"Content-Type": "application/json"});
+            res.end(JSON.stringify({
+                devices: ffm.registration_ids.length,
+                version: version,
+                running: mojoQQ.running()
+            }));
+            break;
         case '/ffm/get_registration_ids':
             res.writeHead(200, {"Content-Type": "application/json"});
             res.end(JSON.stringify(ffm.registration_ids));
