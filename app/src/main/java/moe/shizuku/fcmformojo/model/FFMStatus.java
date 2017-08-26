@@ -1,9 +1,12 @@
 package moe.shizuku.fcmformojo.model;
 
+import android.support.annotation.Keep;
+
 /**
  * Created by rikka on 2017/8/26.
  */
 
+@Keep
 public class FFMStatus {
 
     private int devices;
