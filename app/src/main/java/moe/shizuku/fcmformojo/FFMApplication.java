@@ -93,7 +93,7 @@ public class FFMApplication extends Application {
     }
 
     private static void initShizuku(Context context) {
-        if (sPrivilegedAPIs == null) {
+        if (sPrivilegedAPIs != null) {
             return;
         }
 
