@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.compat.ShizukuCompat;
@@ -37,7 +38,12 @@ public class QQProfile implements Profile {
 
     @SuppressLint("WrongConstant")
     @Override
-    public void onStartChatActivity(Context context, Chat chat) {
+    public void onStartChatActivity(Context context, @Nullable Chat chat) {
+        if (chat == null || chat.getUid() == 0) {
+            ProfileHelper.startLauncherActivity(context, this);
+            return;
+        }
+
         Intent intent = new Intent("com.tencent.mobileqq.action.MAINACTIVITY")
                 .setComponent(ComponentName.unflattenFromString("com.tencent.mobileqq/com.tencent.mobileqq.activity.SplashActivity"))
                 .setFlags(0x14000000)
