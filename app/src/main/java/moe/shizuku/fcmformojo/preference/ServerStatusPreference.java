@@ -86,7 +86,7 @@ public class ServerStatusPreference extends Preference {
             CardView versionCard = (CardView) ((ViewGroup) mViewHolder.itemView).getChildAt(1);
 
             if (server != null
-                    && !server.equals(BuildConfig.VERSION_NAME)) {
+                    && !server.equals(BuildConfig.REQUIRE_SERVER_VERSION)) {
                 TextView status = versionCard.findViewById(android.R.id.text2);
                 status.setText(getContext().getString(R.string.version_not_match, server, BuildConfig.VERSION_NAME));
 

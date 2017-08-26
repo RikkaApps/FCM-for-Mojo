@@ -130,6 +130,6 @@
     <string name="donate_no">Bad Rikka</string>
     <string name="donate_copy">Copy</string>
     <string name="stop_webqq_summary">Force stop Mojo-Webqq on server</string>
-    <string name="version_not_match">Server version (%1$s) and client (%2$s) not matching, some features may not work as excepted.</string>
+    <string name="version_not_match">Server version (%1$s) do not match client requirement (%2$s), some features may not work as excepted.</string>
 
 </resources>

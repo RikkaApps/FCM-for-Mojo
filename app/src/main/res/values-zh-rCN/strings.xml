@@ -129,6 +129,6 @@
     <string name="donate_no">坏耶</string>
     <string name="donate_copy">复制账号</string>
     <string name="stop_webqq_summary">强行停止服务器上的 Mojo-Webqq</string>
-    <string name="version_not_match">服务器版本（%1$s）与客户端版本（%2$s）不匹配，部分功能可能不按预期工作。</string>
+    <string name="version_not_match">服务器版本（%1$s）与客户端需求的版本（%2$s）不匹配，部分功能可能不按预期工作。</string>
 
 </resources>
