@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import java.util.UUID;
 
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
@@ -129,6 +131,8 @@ public class FFMApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Fabric.with(this, new Crashlytics());
 
         mMainHandler = new Handler(getMainLooper());
 
