@@ -1,35 +1,51 @@
 # FCM for Mojo
-Push QQ Messages to Android devices according Firebase Cloud Message (FCM) with [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq).
-Design for Android 7.0+ specially, full use Android notification feature
-(Reply in notification and bundled notifications, etc.)
+借助 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 实现将 QQ 消息通过 Firebase Cloud Messaging (FCM) 推送至 Android 设备。
+专为 Android 7.0 以上设计，充分利用 Android 通知特性（直接回复，捆绑通知等）。
 
-[简体中文](/README_zh.md)
+[English](/README_en.md)
 
-# Docker
-It's very easy to install FFM by Docker. With [kotomei's guilde](https://github.com/kotomei/FCM-for-Mojo), you could finish it in a few minutes.
+# 配置方法
 
-# Step by Step
-## Mojo-Webqq
-FFM is depending on Mojo-Webqq, you need install [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) at first.
+## 服务端
 
-## Get Server
-You need [install Node.js with npm](https://nodejs.org/en/download/package-manager) and Git at first.
-And get server files from [releases](https://github.com/RikkaW/FCM-for-Mojo/releases). Then, install dependent modules runing node:
+### Docker
+通过 Docker 方式安装 FFM 十分简单.按照 [kotomei 的教程](https://github.com/kotomei/fcm-for-mojo/blob/master/README.md)，你只需几分钟就可以搞定。
+
+### 自行配置
+
+#### 依赖
+
+Mojo-Webqq：直接根据[官方教程](https://github.com/sjdy521/Mojo-Webqq#安装方法)即可
+
+Node.js：自己编译安装，或者直接[使用包管理器](https://nodejs.org/en/download/package-manager)
+
+#### 下载服务端
+
+需要自行把 <server.zip> 替换为 [latest release](https://github.com/RikkaW/FCM-for-Mojo/releases/latest) 中的 server.zip 的地址
+
 
 ```Shell
 mkdir ffm && cd ffm
-# Copy server.zip download link to here:
 wget <server.zip>
 unzip server.zip && cd node
 npm install && cd ..
+```
+
+#### 运行
+
+为避免错过二维码扫描通知而不知所措，建议在运行前先完成客户端配置的一部分（填写好服务器 URL）。
+
+```Shell
 node node/index.js
 ```
 
-Congratulation, HTTP FFM server running now at basic mode now!
-But that's not finished yet, we need something to protect your messages.
+### 安全性
 
-### HTTP Basic Authorization
-Generate a password with openssl:
+#### HTTP 基本认证
+
+HTTP 基本认证通过 [http-auth 模块](https://github.com/http-auth/http-auth) 实现，在[这里](https://github.com/http-auth/http-auth#configurations)可以看到所有可用选项，下文只说明最简单的配置方法。
+
+通过 OpenSSL，用密码来生成一个 MD5
 
 ```Shell
 $ openssl passwd
@@ -38,52 +54,33 @@ Verifying - Password:
 <MD5>
 ```
 
-Copy MD5 and create a file with:
+复制好 MD5，然后创建一个包含以下内容的文件：
 
 ```
-<username>:<MD5>
+<用户名>:<密码>
 ```
 
-Edit ```config.json```, finding the line with ```basic_auth```
-and del annotation (```/*``` and ```*/```) near that's line:
-
+编辑 ```config.js```，找到有 ```basic_auth``` 那几行并去掉附近的注释（即 ```/*``` 和 ```*/```）：
 ```js
 	"basic_auth": {
-		"file": "/path/to/passwd"
+		"file": "<密码文件路径>"
 	},
 ```
 
-### HTTPS
-Attention, you need **SSL certificates** to set up HTTPS.
+#### HTTPS
 
-Edit ```config.js```, finding the line with "```https```"
-and del annotation (```/*``` and ```*/```) near that's line:
+HTTPS 通过 [https 模块](https://nodejs.org/dist/latest/docs/api/https.html) 实现，在[这里](https://nodejs.org/dist/latest/docs/api/tls.html#tls_tls_createsecurecontext_options)可以看到所有可用选项，下文只说明最简单的配置方法。
 
+编辑 ```config.js```，找到有 ```https``` 的那几行并去掉附近的注释（即 ```/*``` 和 ```*/```）：
 ```js
 	"https": {
-			"key": fs.readFileSync("/path/to/privkey.pem"),
-			/* Add ca-cert here if you have
-			"ca": fs.readFileSync("/path/to/ca-cert.pem"), */
-			"cert": fs.readFileSync("/path/to/fullchain-or-server-cert.pem")
-		}
+		"key": fs.readFileSync("<证书私钥路径>"),
+		/* 如果你有 CA 证书，就加上这行
+		"ca": fs.readFileSync("<CA 证书路径>"), */
+		"cert": fs.readFileSync("<含完整证书链证书（fullchain）或服务端证书（server cert）的路径>")
+	}
 ```
 
-Run ```node node/index.js```. [download cilent](https://github.com/RikkaW/FCM-for-Mojo/releases) to  finish last configuration!
+## 客户端
 
-PS: You can find out more usage about the ```config.conf``` in [wiki](https://github.com/RikkaW/FCM-for-Mojo/wiki/usage-of-config).
-
-# [License](/LICENSE)
-```
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-```
+当服务端配置完成后，[下载客户端](https://github.com/RikkaW/FCM-for-Mojo/releases)并根据应用内提示配置（在管理设备里添加正在使用的设备）即可。
