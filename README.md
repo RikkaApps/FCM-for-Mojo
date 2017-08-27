@@ -4,22 +4,22 @@
 
 [English](/README_en.md)
 
-# 配置方法
+## 配置方法
 
-## 服务端
+### 服务端
 
-### Docker
+#### Docker
 通过 Docker 方式安装 FFM 十分简单.按照 [kotomei 的教程](https://github.com/kotomei/fcm-for-mojo/blob/master/README.md)，你只需几分钟就可以搞定。
 
-### 自行配置
+#### 自行配置
 
-#### 依赖
+##### 依赖
 
 Mojo-Webqq：直接根据[官方教程](https://github.com/sjdy521/Mojo-Webqq#安装方法)即可
 
 Node.js：自己编译安装，或者直接[使用包管理器](https://nodejs.org/en/download/package-manager)
 
-#### 下载服务端
+##### 下载服务端
 
 需要自行把 <server.zip> 替换为 [latest release](https://github.com/RikkaW/FCM-for-Mojo/releases/latest) 中的 server.zip 的地址
 
@@ -31,7 +31,7 @@ unzip server.zip && cd node
 npm install && cd ..
 ```
 
-#### 运行
+##### 运行
 
 为避免错过二维码扫描通知而不知所措，建议在运行前先完成客户端配置的一部分（填写好服务器 URL）。
 
@@ -39,9 +39,9 @@ npm install && cd ..
 node node/index.js
 ```
 
-### 安全性
+#### 安全性
 
-#### HTTP 基本认证
+##### HTTP 基本认证
 
 HTTP 基本认证通过 [http-auth 模块](https://github.com/http-auth/http-auth) 实现，在[这里](https://github.com/http-auth/http-auth#configurations)可以看到所有可用选项，下文只说明最简单的配置方法。
 
@@ -67,7 +67,7 @@ Verifying - Password:
 	},
 ```
 
-#### HTTPS
+##### HTTPS
 
 HTTPS 通过 [https 模块](https://nodejs.org/dist/latest/docs/api/https.html) 实现，在[这里](https://nodejs.org/dist/latest/docs/api/tls.html#tls_tls_createsecurecontext_options)可以看到所有可用选项，下文只说明最简单的配置方法。
 
@@ -81,6 +81,6 @@ HTTPS 通过 [https 模块](https://nodejs.org/dist/latest/docs/api/https.html) 
 	}
 ```
 
-## 客户端
+### 客户端
 
 当服务端配置完成后，[下载客户端](https://github.com/RikkaW/FCM-for-Mojo/releases)并根据应用内提示配置（在管理设备里添加正在使用的设备）即可。
