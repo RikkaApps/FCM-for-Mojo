@@ -2,8 +2,6 @@
 借助 [Mojo-WebQQ](https://github.com/sjdy521/Mojo-Webqq) 实现将 QQ 消息通过 Firebase Cloud Messaging (FCM) 推送至 Android 设备。
 专为 Android 7.0 以上设计，充分利用 Android 通知特性（直接回复，捆绑通知等）。
 
-[English](/README_en.md)
-
 ## 配置方法
 
 ### 服务端
