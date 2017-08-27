@@ -131,5 +131,8 @@
     <string name="donate_copy">Copy</string>
     <string name="stop_webqq_summary">Force stop Mojo-Webqq on server</string>
     <string name="version_not_match">Server version (%1$s) do not match client requirement (%2$s), some features may not work as excepted.</string>
-
+    <string name="config_not_uploaded_title">Settings have been changed</string>
+    <string name="config_not_uploaded_message">You will lost your changes if you do not upload them to server.</string>
+    <string name="config_not_uploaded_exit">Discard changes</string>
+    <string name="config_not_uploaded_upload">Upload</string>
 </resources>

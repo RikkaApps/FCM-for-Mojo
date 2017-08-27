@@ -1,5 +1,7 @@
 package moe.shizuku.fcmformojo;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.List;
+import java.util.Set;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -32,6 +34,8 @@ public class RegistrationIdsActivity extends BaseActivity {
 
     private boolean mRefreshed;
 
+    private Set<RegistrationId> mServerRegistrationIds;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +57,7 @@ public class RegistrationIdsActivity extends BaseActivity {
         RecyclerViewHelper.fixOverScroll(mRecyclerView);
 
         updateItems();
-        pullRegistrationIds();
+        fetchRegistrationIds();
     }
 
     @Override
@@ -62,7 +66,7 @@ public class RegistrationIdsActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    public void updateItems(List<RegistrationId> items) {
+    public void updateItems(Set<RegistrationId> items) {
         mRefreshed = true;
 
         mAdapter.getItems().clear();
@@ -80,13 +84,15 @@ public class RegistrationIdsActivity extends BaseActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    private void pullRegistrationIds() {
+    private void fetchRegistrationIds() {
         mCompositeDisposable.add(FFMService.getRegistrationIds()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<RegistrationId>>() {
+                .subscribe(new Consumer<Set<RegistrationId>>() {
                     @Override
-                    public void accept(List<RegistrationId> registrationIds) throws Exception {
+                    public void accept(Set<RegistrationId> registrationIds) throws Exception {
+                        mServerRegistrationIds = registrationIds;
+
                         updateItems(registrationIds);
                     }
                 }, new Consumer<Throwable>() {
@@ -98,13 +104,22 @@ public class RegistrationIdsActivity extends BaseActivity {
         );
     }
 
-    private void pushRegistrationIds() {
+    private void uploadRegistrationIds() {
+        if (mAdapter.getRegistrationIds().equals(mServerRegistrationIds)) {
+            Toast.makeText(getApplicationContext(), "Nothing changed.", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        final Set<RegistrationId> registrationIds = mAdapter.getRegistrationIds();
         mCompositeDisposable.add(FFMService.updateRegistrationIds(mAdapter.getRegistrationIds())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<FFMResult>() {
                     @Override
-                    public void accept(FFMResult registrationIds) throws Exception {
+                    public void accept(FFMResult result) throws Exception {
+                        mServerRegistrationIds = registrationIds;
+
                         Toast.makeText(getApplicationContext(), "Succeed.", Toast.LENGTH_SHORT).show();
 
                         LocalBroadcast.refreshStatus(getApplicationContext());
@@ -153,12 +168,42 @@ public class RegistrationIdsActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_upload:
-                pushRegistrationIds();
+                uploadRegistrationIds();
                 return true;
             case R.id.action_add:
                 addDevice();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mServerRegistrationIds != null
+                && !mAdapter.getRegistrationIds().equals(mServerRegistrationIds)) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.config_not_uploaded_title)
+                    .setMessage(R.string.config_not_uploaded_message)
+                    .setPositiveButton(R.string.config_not_uploaded_upload, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            uploadRegistrationIds();
+
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(R.string.config_not_uploaded_exit, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    })
+                    .setNeutralButton(android.R.string.cancel, null)
+                    .show();
+
+            return;
+        }
+
+        super.onBackPressed();
     }
 }

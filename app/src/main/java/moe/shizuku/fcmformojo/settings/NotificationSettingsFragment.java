@@ -102,13 +102,12 @@ public class NotificationSettingsFragment extends SettingsFragment {
             });
         }
 
-        pullNotificationsToggle();
-
+        fetchNotificationsToggle();
 
         Preference.OnPreferenceChangeListener pushListener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                pushNotificationsToggle(preference);
+                uploadNotificationsToggle(preference);
                 return true;
             }
         };
@@ -117,7 +116,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
         mGroupToggle.setOnPreferenceChangeListener(pushListener);
     }
 
-    private void pullNotificationsToggle() {
+    private void fetchNotificationsToggle() {
         mCompositeDisposable.add(FFMService
                 .getNotificationsToggle()
                 .subscribeOn(Schedulers.io())
@@ -141,7 +140,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
                 }));
     }
 
-    private void pushNotificationsToggle(final Preference preference) {
+    private void uploadNotificationsToggle(final Preference preference) {
         final NotificationToggle newNotificationToggle = NotificationToggle.create(mFriendToggle.isChecked(), mGroupToggle.isChecked());
         if (newNotificationToggle.equals(mServerNotificationToggle)) {
             return;

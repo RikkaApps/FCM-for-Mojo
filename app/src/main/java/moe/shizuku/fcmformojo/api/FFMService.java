@@ -1,6 +1,7 @@
 package moe.shizuku.fcmformojo.api;
 
 import java.util.List;
+import java.util.Set;
 
 import io.reactivex.Single;
 import moe.shizuku.fcmformojo.model.FFMResult;
@@ -19,11 +20,11 @@ import retrofit2.http.POST;
 public interface FFMService {
 
     @GET("/ffm/get_registration_ids")
-    Single<List<RegistrationId>> getRegistrationIds();
+    Single<Set<RegistrationId>> getRegistrationIds();
 
     @Headers("Content-Type: application/json")
     @POST("/ffm/update_registration_ids")
-    Single<FFMResult> updateRegistrationIds(@Body List<RegistrationId> registrationIds);
+    Single<FFMResult> updateRegistrationIds(@Body Set<RegistrationId> registrationIds);
 
     @GET("/ffm/restart")
     Single<FFMResult> restart();
