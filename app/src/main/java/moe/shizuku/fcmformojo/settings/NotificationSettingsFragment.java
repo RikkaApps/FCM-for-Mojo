@@ -10,13 +10,13 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.FFMApplication;
@@ -44,6 +44,8 @@ public class NotificationSettingsFragment extends SettingsFragment {
 
     private SwitchPreference mFriendToggle;
     private SwitchPreference mGroupToggle;
+
+    private NotificationToggle mServerNotificationToggle;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -100,6 +102,22 @@ public class NotificationSettingsFragment extends SettingsFragment {
             });
         }
 
+        pullNotificationsToggle();
+
+
+        Preference.OnPreferenceChangeListener pushListener = new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                pushNotificationsToggle(preference);
+                return true;
+            }
+        };
+
+        mFriendToggle.setOnPreferenceChangeListener(pushListener);
+        mGroupToggle.setOnPreferenceChangeListener(pushListener);
+    }
+
+    private void pullNotificationsToggle() {
         mCompositeDisposable.add(FFMService
                 .getNotificationsToggle()
                 .subscribeOn(Schedulers.io())
@@ -107,6 +125,8 @@ public class NotificationSettingsFragment extends SettingsFragment {
                 .subscribe(new Consumer<NotificationToggle>() {
                     @Override
                     public void accept(NotificationToggle toggle) throws Exception {
+                        mServerNotificationToggle = toggle;
+
                         mFriendToggle.setChecked(toggle.isFriendEnable());
                         mGroupToggle.setChecked(toggle.isGroupEnable());
 
@@ -121,48 +141,55 @@ public class NotificationSettingsFragment extends SettingsFragment {
                 }));
     }
 
+    private void pushNotificationsToggle(final Preference preference) {
+        final NotificationToggle newNotificationToggle = NotificationToggle.create(mFriendToggle.isChecked(), mGroupToggle.isChecked());
+        if (newNotificationToggle.equals(mServerNotificationToggle)) {
+            return;
+        }
+
+        preference.setEnabled(false);
+
+        mCompositeDisposable.add(FFMService
+                .updateNotificationsToggle(NotificationToggle.create(mFriendToggle.isChecked(), mGroupToggle.isChecked()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        preference.setEnabled(true);
+                    }
+                })
+                .subscribe(new Consumer<FFMResult>() {
+                    @Override
+                    public void accept(FFMResult result) throws Exception {
+                        mServerNotificationToggle = newNotificationToggle;
+
+                        //Toast.makeText(getContext(), "Succeed.", Toast.LENGTH_SHORT).show();
+
+                        Log.d("Sync", "updateNotificationsToggle success, new state: " + newNotificationToggle);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        Log.w("Sync", "updateNotificationsToggle failed", throwable);
+                    }
+                }));
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.upload, menu);
-
         ActionBar actionBar = getActivity().getActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.notification_settings);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_upload:
-                mCompositeDisposable.add(FFMService
-                        .updateNotificationsToggle(NotificationToggle.create(mFriendToggle.isChecked(), mGroupToggle.isChecked()))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<FFMResult>() {
-                            @Override
-                            public void accept(FFMResult result) throws Exception {
-                                Toast.makeText(getContext(), "Succeed.", Toast.LENGTH_SHORT).show();
-
-                                Log.d("Sync", "updateNotificationsToggle success");
-                            }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }));
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

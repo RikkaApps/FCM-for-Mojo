@@ -53,7 +53,7 @@ public class RegistrationIdsActivity extends BaseActivity {
         RecyclerViewHelper.fixOverScroll(mRecyclerView);
 
         updateItems();
-        requestRegistrationIds();
+        pullRegistrationIds();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class RegistrationIdsActivity extends BaseActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    private void requestRegistrationIds() {
+    private void pullRegistrationIds() {
         mCompositeDisposable.add(FFMService.getRegistrationIds()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -98,7 +98,7 @@ public class RegistrationIdsActivity extends BaseActivity {
         );
     }
 
-    private void updateRegistrationIds() {
+    private void pushRegistrationIds() {
         mCompositeDisposable.add(FFMService.updateRegistrationIds(mAdapter.getRegistrationIds())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -153,7 +153,7 @@ public class RegistrationIdsActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_upload:
-                updateRegistrationIds();
+                pushRegistrationIds();
                 return true;
             case R.id.action_add:
                 addDevice();

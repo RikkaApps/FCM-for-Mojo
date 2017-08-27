@@ -35,8 +35,7 @@
         <SwitchPreference
             android:key="light"
             android:title="@string/led_light"
-            android:defaultValue="true"
-            android:dependency="notification"/>
+            android:defaultValue="true"/>
 
         <SimpleMenuPreference
             android:key="vibrate"
@@ -44,16 +43,14 @@
             android:summary="%s"
             android:entries="@array/vibrate"
             android:entryValues="@array/vibrate_value"
-            android:defaultValue="1"
-            android:dependency="notification"/>
+            android:defaultValue="1"/>
 
         <RingtonePreference
             android:key="sound"
             android:title="@string/sound"
             android:summary="%s"
             android:ringtoneType="notification"
-            android:defaultValue="content://settings/system/notification_sound"
-            android:dependency="notification"/>
+            android:defaultValue="content://settings/system/notification_sound"/>
 
         <SimpleMenuPreference
             android:key="priority"
@@ -61,8 +58,7 @@
             android:summary="%s"
             android:entries="@array/priority"
             android:entryValues="@array/priority_value"
-            android:defaultValue="1"
-            android:dependency="notification"/>
+            android:defaultValue="1"/>
 
     </PreferenceCategory>
 
@@ -79,8 +75,7 @@
         <SwitchPreference
             android:key="light_group"
             android:title="@string/led_light"
-            android:defaultValue="true"
-            android:dependency="notification_group"/>
+            android:defaultValue="true"/>
 
         <SimpleMenuPreference
             android:key="vibrate_group"
@@ -88,16 +83,14 @@
             android:summary="%s"
             android:entries="@array/vibrate"
             android:entryValues="@array/vibrate_value"
-            android:defaultValue="1"
-            android:dependency="notification_group"/>
+            android:defaultValue="1"/>
 
         <RingtonePreference
             android:key="sound_group"
             android:title="@string/sound"
             android:summary="%s"
             android:ringtoneType="notification"
-            android:defaultValue="content://settings/system/notification_sound"
-            android:dependency="notification_group"/>
+            android:defaultValue="content://settings/system/notification_sound"/>
 
         <SimpleMenuPreference
             android:key="priority_group"
@@ -105,8 +98,7 @@
             android:summary="%s"
             android:entries="@array/priority"
             android:entryValues="@array/priority_value"
-            android:defaultValue="1"
-            android:dependency="notification_group"/>
+            android:defaultValue="1"/>
 
     </PreferenceCategory>
 

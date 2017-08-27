@@ -3,3 +3,4 @@
 *.iml
 /google-services.json
 /release/*.json
+fabric.properties
