@@ -1,7 +1,5 @@
 package moe.shizuku.fcmformojo;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +23,7 @@ import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
 
 import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 
-public class RegistrationIdsActivity extends BaseActivity {
+public class RegistrationIdsActivity extends AbsConfigurationsActivity {
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -104,35 +102,6 @@ public class RegistrationIdsActivity extends BaseActivity {
         );
     }
 
-    private void uploadRegistrationIds() {
-        if (mAdapter.getRegistrationIds().equals(mServerRegistrationIds)) {
-            Toast.makeText(getApplicationContext(), "Nothing changed.", Toast.LENGTH_SHORT).show();
-
-            return;
-        }
-
-        final Set<RegistrationId> registrationIds = mAdapter.getRegistrationIds();
-        mCompositeDisposable.add(FFMService.updateRegistrationIds(mAdapter.getRegistrationIds())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<FFMResult>() {
-                    @Override
-                    public void accept(FFMResult result) throws Exception {
-                        mServerRegistrationIds = registrationIds;
-
-                        Toast.makeText(getApplicationContext(), "Succeed.", Toast.LENGTH_SHORT).show();
-
-                        LocalBroadcast.refreshStatus(getApplicationContext());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                })
-        );
-    }
-
     private void addDevice() {
         RegistrationId registrationId = RegistrationId.create();
         if (registrationId == null) {
@@ -165,45 +134,48 @@ public class RegistrationIdsActivity extends BaseActivity {
     }
 
     @Override
+    public void uploadConfigurations() {
+        if (!isConfigurationsChanged()) {
+            Toast.makeText(getApplicationContext(), "Nothing changed.", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        final Set<RegistrationId> registrationIds = mAdapter.getRegistrationIds();
+        mCompositeDisposable.add(FFMService.updateRegistrationIds(registrationIds)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<FFMResult>() {
+                    @Override
+                    public void accept(FFMResult result) throws Exception {
+                        mServerRegistrationIds = registrationIds;
+
+                        Toast.makeText(getApplicationContext(), "Succeed.", Toast.LENGTH_SHORT).show();
+
+                        LocalBroadcast.refreshStatus(getApplicationContext());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Toast.makeText(getApplicationContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+        );
+    }
+
+    @Override
+    public boolean isConfigurationsChanged() {
+        return mServerRegistrationIds != null
+                && !mAdapter.getRegistrationIds().equals(mServerRegistrationIds);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_upload:
-                uploadRegistrationIds();
-                return true;
             case R.id.action_add:
                 addDevice();
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mServerRegistrationIds != null
-                && !mAdapter.getRegistrationIds().equals(mServerRegistrationIds)) {
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.config_not_uploaded_title)
-                    .setMessage(R.string.config_not_uploaded_message)
-                    .setPositiveButton(R.string.config_not_uploaded_upload, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            uploadRegistrationIds();
-
-                            finish();
-                        }
-                    })
-                    .setNegativeButton(R.string.config_not_uploaded_exit, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    })
-                    .setNeutralButton(android.R.string.cancel, null)
-                    .show();
-
-            return;
-        }
-
-        super.onBackPressed();
     }
 }

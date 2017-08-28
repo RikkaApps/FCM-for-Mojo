@@ -46,6 +46,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".BlacklistActivity"
+            android:label="@string/per_group_settings"/>
+
+
         <receiver
             android:name=".receiver.FFMBroadcastReceiver"
             android:exported="false">
@@ -70,8 +75,8 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
@@ -80,6 +85,7 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="14724a50f9b4697ae7e68998e3a3004758c84b56" />
+
     </application>
 
 </manifest>

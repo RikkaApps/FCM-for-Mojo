@@ -135,4 +135,7 @@
     <string name="config_not_uploaded_message">You will lost your changes if you do not upload them to server.</string>
     <string name="config_not_uploaded_exit">Discard changes</string>
     <string name="config_not_uploaded_upload">Upload</string>
+    <string name="per_group_settings">Per-group settings</string>
+    <string name="per_group_on">Only receive messages from enabled groups</string>
+    <string name="per_group_off">Receive messages from all groups</string>
 </resources>

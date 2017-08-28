@@ -94,7 +94,7 @@
     <string name="cannot_request_permission">无法申请权限。</string>
 
     <string name="notification_server_stop">Mojo-Webqq 已停止</string>
-    <string name="notification_tap_to_restart">你需要在你的服务器上重启它。</string>
+    <string name="notification_tap_to_restart">点击重启。</string>
     <string name="action_upload_to_server">上传到服务器</string>
     <string name="manage_devices">管理设备</string>
     <string name="manage_devices_summary">管理将会收到消息的设备</string>
@@ -134,4 +134,8 @@
     <string name="config_not_uploaded_message">若不将设置上传至服务器，您将丢失作出的修改。</string>
     <string name="config_not_exit">放弃修改</string>
     <string name="config_not_upload">上传</string>
+    <string name="per_group_settings">分群组设置</string>
+    <string name="per_group_on">只接受开启的群组的消息</string>
+    <string name="per_group_off">接收全部群组消息</string>
+
 </resources>
