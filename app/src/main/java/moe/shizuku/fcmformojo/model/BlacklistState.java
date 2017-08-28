@@ -58,7 +58,7 @@ public class BlacklistState {
         states.sort(new Comparator<Pair<Group, Boolean>>() {
             @Override
             public int compare(Pair<Group, Boolean> o1, Pair<Group, Boolean> o2) {
-                return Boolean.compare(o1.second, o2.second);
+                return Boolean.compare(o2.second, o1.second);
             }
         });
     }

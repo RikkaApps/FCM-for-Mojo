@@ -166,8 +166,6 @@ function onPostEnd(req, res, body) {
 }
 
 function onSendMessage(body) {
-    var send = true;
-
     var type = body.type;
     var isAt = false;
     if (type === 1 || type === 2) {
@@ -175,30 +173,35 @@ function onSendMessage(body) {
     }
 
     // 好友及群组开关
-    if (ffmConfig.data.notifications !== undefined) {
-        var friend = ffmConfig.data.notifications.friend;
-        var group = ffmConfig.data.notifications.group;
+    var friend = ffmConfig.data.notifications.friend;
+    var group = ffmConfig.data.notifications.group;
 
-        if ((type === 1 || type === 2) && (group === false && (!isAt || friend === false))) {
-            send = false;
-
-            if (debug) {
-                console.log('[FFM] do not send "' + body.message.content + '", because group toggle.')
-            }
+    if ((type === 1 || type === 2) && (group === false && (!isAt || friend === false))) {
+        if (debug) {
+            console.log('[FFM] do not send "' + body.message.content + '", because group toggle.')
         }
 
-        if (type === 0 && friend === false) {
-            send = false;
+        return;
+    }
 
-            if (debug) {
-                console.log('[FFM] do not send "' + body.message.content + '", because friend toggle.')
-            }
+    if (type === 0 && friend === false) {
+        if (debug) {
+            console.log('[FFM] do not send "' + body.message.content + '", because friend toggle.')
         }
+
+        return;
     }
 
-    if (send) {
-        push.send(body);
+    var blacklist = ffmConfig.data.group_blacklist;
+    if (type === 1 && blacklist.enabled && blacklist.list.indexOf(body.uid) !== -1) {
+        if (debug) {
+            console.log('[FFM] do not send "' + body.message.content + '", because group blacklist.')
+        }
+
+        return;
     }
+
+    push.send(body);
 }
 
 var requestListener = function(req, res) {
