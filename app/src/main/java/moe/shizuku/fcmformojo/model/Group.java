@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Keep;
 
 import java.lang.ref.WeakReference;
 
@@ -13,6 +14,7 @@ import moe.shizuku.fcmformojo.notification.ChatIcon;
  * Created by rikka on 2017/7/29.
  */
 
+@Keep
 public class Group {
 
     private long uid;
