@@ -6,10 +6,12 @@
 
 ### 服务端
 
-#### Docker
+有两种方式可以部署，只要选其中一种即可，推荐稍微麻烦一些但什么都是自己控制的自行配制的方式。
+
+#### 选项 1：Docker
 通过 Docker 方式安装 FFM 十分简单.按照 [kotomei 的教程](https://github.com/kotomei/fcm-for-mojo/blob/master/README.md)，你只需几分钟就可以搞定。
 
-#### 自行配置
+#### 选项 2：自行配置（推荐）
 
 ##### 依赖
 
