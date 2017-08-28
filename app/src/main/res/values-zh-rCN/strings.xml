@@ -94,7 +94,7 @@
     <string name="cannot_request_permission">无法申请权限。</string>
 
     <string name="notification_server_stop">Mojo-Webqq 已停止</string>
-    <string name="notification_tap_to_restart">你需要在你的服务器上重启它。</string>
+    <string name="notification_tap_to_restart">点击重启。</string>
     <string name="action_upload_to_server">上传到服务器</string>
     <string name="manage_devices">管理设备</string>
     <string name="manage_devices_summary">管理将会收到消息的设备</string>
