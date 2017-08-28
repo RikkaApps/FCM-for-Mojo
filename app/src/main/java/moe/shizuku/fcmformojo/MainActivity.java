@@ -61,6 +61,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
+        boolean isGooglePlay = "com.android.vending"
+                .equals(getPackageManager().getInstallerPackageName(BuildConfig.APPLICATION_ID));
+        menu.findItem(R.id.action_donate).setVisible(!isGooglePlay);
+
         return true;
     }
 
