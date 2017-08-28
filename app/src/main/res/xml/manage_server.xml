@@ -29,8 +29,9 @@
         android:title="@string/restart_webqq"
         android:summary="@string/restart_webqq_summary"/>
 
-    <!--<Preference
-        android:key="@string/stop_webqq"
-        android:title="@string/stop_webqq"/>-->
+    <Preference
+        android:key="stop_webqq"
+        android:title="@string/stop_webqq"
+        android:summary="@string/stop_webqq_summary"/>
 
 </PreferenceScreen>

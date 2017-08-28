@@ -121,7 +121,6 @@
     <string name="status_webqq_dead">Mojo-Webqq is not running.</string>
     <string name="status_webqq_error">Running, but the log in QR code has not yet been scanned or other error.</string>
     <string name="status_waiting_refresh">Waiting for refresh…</string>
-    <string name="status_server_error">Server error.\n%1$d: %2$s.</string>
     <string name="status_cannot_connect_server_error">Can\'t connect to server: %s.</string>
     <string name="restart_webqq_summary">Restart Mojo-Webqq on server (if not running)</string>
     <string name="action_donate">Donate</string>
@@ -130,4 +129,10 @@
     <string name="donate_ok">Pay NOW</string>
     <string name="donate_no">Bad Rikka</string>
     <string name="donate_copy">Copy</string>
+    <string name="stop_webqq_summary">Force stop Mojo-Webqq on server</string>
+    <string name="version_not_match">Server version (%1$s) do not match client requirement (%2$s), some features may not work as excepted.</string>
+    <string name="config_not_uploaded_title">Settings have been changed</string>
+    <string name="config_not_uploaded_message">You will lost your changes if you do not upload them to server.</string>
+    <string name="config_not_uploaded_exit">Discard changes</string>
+    <string name="config_not_uploaded_upload">Upload</string>
 </resources>

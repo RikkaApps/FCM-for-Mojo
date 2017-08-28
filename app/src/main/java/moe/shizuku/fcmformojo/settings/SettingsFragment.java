@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import io.reactivex.disposables.CompositeDisposable;
 import moe.shizuku.preference.PreferenceFragment;
 import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
 
@@ -16,6 +17,14 @@ import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
  */
 
 public abstract class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+
+    @Override
+    public void onDetach() {
+        mCompositeDisposable.clear();
+        super.onDetach();
+    }
 
     @CallSuper
     @Override

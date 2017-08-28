@@ -1,26 +1,17 @@
 package moe.shizuku.fcmformojo.service;
 
-import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.Map;
-import java.util.Set;
 
 import moe.shizuku.fcmformojo.FFMApplication;
-import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.model.PushChat;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.utils.LocalBroadcast;
-
-import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REFRESH_STATUS;
 
 /**
  * Created by Rikka on 2017/4/19.

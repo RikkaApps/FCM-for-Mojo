@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="moe.shizuku.fcmformojo">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -76,6 +77,9 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="14724a50f9b4697ae7e68998e3a3004758c84b56" />
     </application>
 
 </manifest>

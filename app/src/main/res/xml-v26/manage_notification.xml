@@ -3,28 +3,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <moe.shizuku.fcmformojo.preference.HttpUriPreference
-        android:key="server_url"
-        app:keyHttpUsername="server_http_username"
-        app:keyHttpPassword="server_http_password"
-        android:title="@string/server_url"
-        android:summary="%s"
-        app:summaryWhenAuthorizationSet="@string/summary_uri_when_authorization_set"
-        android:selectAllOnFocus="true"
-        android:defaultValue="http://0.0.0.0:5000"
-        android:layout="@layout/preference_server"/>
-
-    <Preference
-        android:key="view_token"
-        android:title="@string/manage_devices"
-        android:summary="@string/manage_devices_summary">
-
-        <intent
-            android:targetPackage="moe.shizuku.fcmformojo"
-            android:targetClass="moe.shizuku.fcmformojo.RegistrationIdsActivity"/>
-
-    </Preference>
-
     <SimpleMenuPreference
         android:key="qq_package"
         android:title="@string/select_qq"
@@ -51,7 +29,8 @@
         <SwitchPreference
             android:key="notification"
             android:title="@string/notification"
-            android:defaultValue="true"/>
+            android:defaultValue="true"
+            android:enabled="false"/>
 
         <Preference
             android:key="edit_channel"
@@ -66,7 +45,8 @@
             android:key="notification_group"
             android:summary="@string/at_as_friend"
             android:title="@string/notification"
-            android:defaultValue="false"/>
+            android:defaultValue="false"
+            android:enabled="false"/>
 
         <Preference
             android:key="edit_channel_group"

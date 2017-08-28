@@ -17,7 +17,7 @@ public class RegistrationId {
     private String name;
     private long time;
 
-    public RegistrationId(String id, String name, long time) {
+    RegistrationId(String id, String name, long time) {
         this.id = id;
         this.name = name;
         this.time = time;
@@ -42,5 +42,20 @@ public class RegistrationId {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RegistrationId that = (RegistrationId) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

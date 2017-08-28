@@ -27,6 +27,10 @@ public class FFMSettings {
     public static final String GET_FOREGROUND = "get_foreground";
     public static final String DOWNLOADS_URI = "downloads_uri";
 
+    public static void init(Context context) {
+        Settings.init(context);
+    }
+
     public static String getBaseUrl() {
         return Settings.getString(BASE_URL, "http://0.0.0.0:5000");
     }

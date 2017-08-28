@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Process;
+import android.support.annotation.Nullable;
 
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.R;
@@ -39,7 +40,7 @@ public class TIMProfile implements Profile {
     }
 
     @Override
-    public void onStartChatActivity(Context context, Chat chat) {
+    public void onStartChatActivity(Context context, @Nullable Chat chat) {
         if (chat == null || chat.getUid() == 0) {
             ProfileHelper.startLauncherActivity(context, this);
             return;
@@ -48,7 +49,7 @@ public class TIMProfile implements Profile {
         @SuppressLint("WrongConstant")
         Intent intent = new Intent("com.tencent.tim.action.MAINACTIVITY")
                 .setComponent(ComponentName.unflattenFromString("com.tencent.tim/com.tencent.mobileqq.activity.SplashActivity"))
-                .setFlags(335544320)
+                .setFlags(0x14000000)
                 .putExtra("open_chatfragment", true)
                 .putExtra("entrance", 6)
                 .putExtra("key_notification_click_action", (String) null)
