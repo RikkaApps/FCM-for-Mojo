@@ -1,9 +1,9 @@
 package moe.shizuku.fcmformojo.api;
 
-import java.util.List;
 import java.util.Set;
 
 import io.reactivex.Single;
+import moe.shizuku.fcmformojo.model.BlacklistState;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.FFMStatus;
 import moe.shizuku.fcmformojo.model.NotificationToggle;
@@ -41,4 +41,11 @@ public interface FFMService {
     @Headers("Content-Type: application/json")
     @POST("/ffm/update_notifications_toggle")
     Single<FFMResult> updateNotificationsToggle(@Body NotificationToggle notificationToggle);
+
+    @GET("/ffm/get_group_blacklist")
+    Single<BlacklistState> getGroupBlacklist();
+
+    @Headers("Content-Type: application/json")
+    @POST("/ffm/update_group_blacklist")
+    Single<FFMResult> updateGroupBlacklist(@Body BlacklistState notificationToggle);
 }

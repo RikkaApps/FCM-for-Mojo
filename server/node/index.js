@@ -46,29 +46,34 @@ proxy.on('error', function(err, req, res) {
 });
 
 function handle(req, res) {
-    var ffm = ffmConfig.data;
+    var data = ffmConfig.data;
     switch (req.url) {
         case '/ffm/send':
         case '/ffm/update_registration_ids':
         case '/ffm/update_notifications_toggle':
+        case '/ffm/update_group_blacklist':
             handlePost(req, res);
             break;
 
         case '/ffm/get_status':
             res.writeHead(200, {"Content-Type": "application/json"});
             res.end(JSON.stringify({
-                devices: ffm.registration_ids.length,
+                devices: data.registration_ids.length,
                 version: version,
                 running: mojoQQ.running()
             }));
             break;
         case '/ffm/get_registration_ids':
             res.writeHead(200, {"Content-Type": "application/json"});
-            res.end(JSON.stringify(ffm.registration_ids));
+            res.end(JSON.stringify(data.registration_ids));
             break;
         case '/ffm/get_notifications_toggle':
             res.writeHead(200, {"Content-Type": "application/json"});
-            res.end(JSON.stringify(ffm.notifications));
+            res.end(JSON.stringify(data.notifications));
+            break;
+        case '/ffm/get_group_blacklist':
+            res.writeHead(200, {"Content-Type": "application/json"});
+            res.end(JSON.stringify(data.group_blacklist));
             break;
         case '/ffm/restart':
             res.writeHead(200, {"Content-Type": "application/json"});
@@ -137,6 +142,14 @@ function onPostEnd(req, res, body) {
 
             if (debug) {
                 console.log('[FFM] new notification toggle ' + JSON.stringify(body));
+            }
+            break;
+        case '/ffm/update_group_blacklist':
+            ffmConfig.data.group_blacklist = body;
+            ffmConfig.save();
+
+            if (debug) {
+                console.log('[FFM] new group blacklist ' + JSON.stringify(body));
             }
             break;
         default:

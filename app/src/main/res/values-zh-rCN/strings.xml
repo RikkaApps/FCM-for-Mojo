@@ -134,4 +134,8 @@
     <string name="config_not_uploaded_message">若不将设置上传至服务器，您将丢失作出的修改。</string>
     <string name="config_not_exit">放弃修改</string>
     <string name="config_not_upload">上传</string>
+    <string name="per_group_settings">分群组设置</string>
+    <string name="per_group_on">只接受开启的群组的消息</string>
+    <string name="per_group_off">接收全部群组消息</string>
+
 </resources>

@@ -49,6 +49,16 @@
             android:enabled="false"/>
 
         <Preference
+            android:key="group_blacklist"
+            android:title="@string/per_group_settings">
+
+            <intent
+                android:targetPackage="moe.shizuku.fcmformojo"
+                android:targetClass="moe.shizuku.fcmformojo.BlacklistActivity"/>
+
+        </Preference>
+
+        <Preference
             android:key="edit_channel_group"
             android:title="@string/notification_style"/>
 

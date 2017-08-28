@@ -40,6 +40,11 @@ function FFMConfig(file) {
 
     this.data.registration_ids = this.data.registration_ids || [];
 
+    this.data.group_blacklist = this.data.group_blacklist || {
+        enabled: false,
+        list: []
+    };
+
     //console.log('[FFM] ids: ' + this.ids);
 }
 

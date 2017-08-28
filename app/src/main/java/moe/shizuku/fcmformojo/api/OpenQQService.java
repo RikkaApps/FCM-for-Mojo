@@ -30,6 +30,12 @@ public interface OpenQQService {
     Single<List<Group>> getGroupsInfo();
 
     /**
+     * 查询群信息（不包含群成员）
+     */
+    @GET("/openqq/get_group_basic_info")
+    Single<List<Group>> getGroupsBasicInfo();
+
+    /**
      * 发送好友消息
      *
      * @param id 好友的id（每次扫描登录可能会变化）

@@ -150,7 +150,7 @@ public class FFMIntentService extends IntentService {
 
         try {
             List<Friend> friends = OpenQQService.getFriendsInfo().blockingGet();
-            List<Group> groups = OpenQQService.getGroupsInfo().blockingGet();
+            List<Group> groups = OpenQQService.getGroupsBasicInfo().blockingGet();
 
             if (friends == null || groups == null) {
                 notificationManager.cancel(NOTIFICATION_ID_PROGRESS);
