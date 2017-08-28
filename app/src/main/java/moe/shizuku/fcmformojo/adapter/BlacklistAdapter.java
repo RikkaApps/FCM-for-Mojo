@@ -2,8 +2,8 @@ package moe.shizuku.fcmformojo.adapter;
 
 import android.util.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import moe.shizuku.fcmformojo.model.BlacklistState;
 import moe.shizuku.fcmformojo.model.Group;
@@ -35,7 +35,7 @@ public class BlacklistAdapter extends BaseRecyclerViewAdapter {
     }
 
     public BlacklistState collectCurrentData() {
-        List<Long> list = new ArrayList<>();
+        Set<Long> list = new HashSet<>();
         for (Pair<Group, Boolean> state : this.<Pair<Group, Boolean>>getItems()) {
             if (!state.second) {
                 list.add(state.first.getUid());

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by rikka on 2017/8/28.
@@ -16,10 +17,10 @@ import java.util.List;
 public class BlacklistState {
 
     private boolean enabled;
-    private List<Long> list;
+    private Set<Long> list;
     private transient List<Pair<Group, Boolean>> states;
 
-    public BlacklistState(boolean enabled, List<Long> list) {
+    public BlacklistState(boolean enabled, Set<Long> list) {
         this.enabled = enabled;
         this.list = list;
     }
@@ -28,7 +29,7 @@ public class BlacklistState {
         return enabled;
     }
 
-    public List<Long> getList() {
+    public Set<Long> getList() {
         return list;
     }
 
