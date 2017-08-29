@@ -1,4 +1,4 @@
-# FCM for Mojo
+﻿# FCM for Mojo
 借助 [Mojo-Webqq](https://github.com/sjdy521/Mojo-Webqq) 实现将 QQ 消息通过 Firebase Cloud Messaging (FCM) 推送至 Android 设备。
 
 ## 特点
@@ -42,7 +42,7 @@ npm install && cd ..
 node node/index.js
 ```
 
-#### 安全性
+#### 安全性（可选）
 
 ##### HTTP 基本认证
 
