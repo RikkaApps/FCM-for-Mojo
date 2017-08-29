@@ -193,7 +193,7 @@ function onSendMessage(body) {
     }
 
     var blacklist = ffmConfig.data.group_blacklist;
-    if (type === 1 && blacklist.enabled && blacklist.list.indexOf(body.uid) !== -1) {
+    if (type === 1 && !isAt && blacklist.enabled && blacklist.list.indexOf(body.uid) !== -1) {
         if (debug) {
             console.log('[FFM] do not send "' + body.message.content + '", because group blacklist.')
         }
