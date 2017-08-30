@@ -22,6 +22,13 @@ Mojo-Webqq：直接根据[官方教程](https://github.com/sjdy521/Mojo-Webqq#�
 
 Node.js：自己编译安装，或者直接[使用包管理器](https://nodejs.org/en/download/package-manager)
 
+**在 Mojo-Webqq 更新至 2.1.3 之前需要手动把 [FFM.pm](https://github.com/RikkaW/FCM-for-Mojo/blob/master/server/plugin/FFM.pm) 放到正确的位置 (通常在 `/usr/local/share/perl/<版本号>/Mojo/Webqq/Plugin`)**
+
+```Shell
+cd /usr/local/share/perl/<版本号>/Mojo/Webqq/Plugin # 也可能在别的地方
+wget https://github.com/RikkaW/FCM-for-Mojo/blob/master/server/plugin/FFM.pm
+```
+
 ##### 下载服务端
 
 需要自行把 <server.zip> 替换为 [latest release](https://github.com/RikkaW/FCM-for-Mojo/releases/latest) 中的 server.zip 的地址
