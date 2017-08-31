@@ -224,12 +224,9 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         // sound
         builder.setSound(FFMSettings.getNotificationSound(!isFriend));
 
-        // heads-up
+        // priority
         int priority = FFMSettings.getNotificationPriority(!isFriend);
         builder.setPriority(priority);
-        if (priority >= NotificationCompat.PRIORITY_HIGH || chat.getLatestMessage().isAt()) {
-            builder.setVibrate(new long[0]);
-        }
 
         // vibrate
         int vibrate = FFMSettings.getNotificationVibrate(!isFriend);
@@ -237,7 +234,6 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
             case Vibrate.DISABLED:
                 break;
             case Vibrate.DEFAULT:
-                builder.setVibrate(null);
                 builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
                 break;
             case Vibrate.SHORT:
