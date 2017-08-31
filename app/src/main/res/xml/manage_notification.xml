@@ -72,15 +72,18 @@
             android:defaultValue="false"
             android:enabled="false"/>
 
-        <Preference
+        <moe.shizuku.fcmformojo.preference.StateInformationPreference
             android:key="group_blacklist"
-            android:title="@string/per_group_settings">
+            android:title="@string/per_group_settings"
+            android:summaryOn="@string/per_group_on"
+            android:summaryOff="@string/per_group_off"
+            android:widgetLayout="@null">
 
             <intent
                 android:targetPackage="moe.shizuku.fcmformojo"
                 android:targetClass="moe.shizuku.fcmformojo.BlacklistActivity"/>
 
-        </Preference>
+        </moe.shizuku.fcmformojo.preference.StateInformationPreference>
 
         <SwitchPreference
             android:key="light_group"

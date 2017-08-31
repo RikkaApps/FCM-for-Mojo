@@ -107,6 +107,8 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
                         mRefreshed = true;
 
                         invalidateOptionsMenu();
+
+                        FFMSettings.putLocalPerGroupSettingsEnabled(state.isEnabled());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -144,6 +146,8 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
                     @Override
                     public void accept(FFMResult result) throws Exception {
                         mServerBlacklistState = blacklistState;
+
+                        FFMSettings.putLocalPerGroupSettingsEnabled(blacklistState.isEnabled());
 
                         Toast.makeText(getApplicationContext(), "Succeed.", Toast.LENGTH_SHORT).show();
                     }

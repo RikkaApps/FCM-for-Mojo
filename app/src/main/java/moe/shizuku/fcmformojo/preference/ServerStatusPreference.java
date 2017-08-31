@@ -19,6 +19,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.BuildConfig;
+import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.model.FFMStatus;
 import moe.shizuku.preference.Preference;
@@ -132,6 +133,8 @@ public class ServerStatusPreference extends Preference {
     }
 
     private void updateStatus(FFMStatus status) {
+        FFMSettings.putLocalPerGroupSettingsEnabled(status.getGroupBlacklist().isEnabled());
+
         if (status.isRunning()) {
             updateStatus(status.getDevices());
         } else {

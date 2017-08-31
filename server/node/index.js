@@ -59,6 +59,10 @@ function handle(req, res) {
             res.writeHead(200, {"Content-Type": "application/json"});
             res.end(JSON.stringify({
                 devices: data.registration_ids.length,
+                group_blacklist: {
+                    enabled: data.group_blacklist.enabled,
+                    count: data.group_blacklist.list.length
+                },
                 version: version,
                 running: mojoQQ.running()
             }));

@@ -27,6 +27,7 @@ public class FFMSettings {
     public static final String QQ_PACKAGE = "qq_package";
     public static final String GET_FOREGROUND = "get_foreground";
     public static final String DOWNLOADS_URI = "downloads_uri";
+    public static final String LOCAL_PER_GROUP_ENABLED = "group_blacklist";
 
     public static void init(Context context) {
         Settings.init(context);
@@ -146,5 +147,13 @@ public class FFMSettings {
             pickedDir = dir;
 
         return pickedDir;
+    }
+
+    public static void putLocalPerGroupSettingsEnabled(boolean enabled) {
+        Settings.putBoolean(LOCAL_PER_GROUP_ENABLED, enabled);
+    }
+
+    public static boolean isLocalPerGroupSettingsEnabled() {
+        return Settings.getBoolean(LOCAL_PER_GROUP_ENABLED, false);
     }
 }

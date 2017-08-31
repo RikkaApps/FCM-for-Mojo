@@ -198,6 +198,9 @@ public class NotificationSettingsFragment extends SettingsFragment {
         super.onResume();
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
+
+        ((SwitchPreference) findPreference(FFMSettings.LOCAL_PER_GROUP_ENABLED))
+                .setChecked(FFMSettings.isLocalPerGroupSettingsEnabled());
     }
 
     @Override
