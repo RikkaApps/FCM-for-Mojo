@@ -1,9 +1,10 @@
-﻿# FCM for Mojo
+# FCM for Mojo
 借助 [Mojo-Webqq](https://github.com/sjdy521/Mojo-Webqq) 实现将 QQ 消息通过 Firebase Cloud Messaging (FCM) 推送至 Android 设备。
 
 ## 特点
 * 专为 Android 7.0 以上设计，充分利用 Android 通知特性（直接回复，捆绑通知等）。
 * 不同于大部分应用接收推送后只在客户端决定是否通知，FFM 服务端可以根据客户端配置决定是否推送，避免非必要唤醒，花费更少电量。
+* 支持戳通知直接进入对应聊天（仅 QQ、TIM、QQi、QQL，且可能需要 root 运行的 shizuku）。
 
 ## 配置方法
 
@@ -11,7 +12,7 @@
 
 有两种方式可以部署，只要选其中一种即可，推荐稍微麻烦一些但什么都是自己控制的自行配制的方式。
 
-#### 选项 1：Docker
+#### 选项 1：Docker（不推荐）
 通过 Docker 方式安装 FFM 十分简单.按照 [kotomei 的教程](https://github.com/kotomei/fcm-for-mojo/blob/master/README.md)，你只需几分钟就可以搞定。
 
 #### 选项 2：自行配置（推荐）
@@ -22,17 +23,9 @@ Mojo-Webqq：直接根据[官方教程](https://github.com/sjdy521/Mojo-Webqq#�
 
 Node.js：自己编译安装，或者直接[使用包管理器](https://nodejs.org/en/download/package-manager)
 
-**在 Mojo-Webqq 更新至 2.1.3 之前需要手动把 [FFM.pm](https://github.com/RikkaW/FCM-for-Mojo/blob/master/server/plugin/FFM.pm) 放到正确的位置 (通常在 `/usr/local/share/perl/<版本号>/Mojo/Webqq/Plugin`)**
-
-```Shell
-cd /usr/local/share/perl/<版本号>/Mojo/Webqq/Plugin # 也可能在别的地方
-wget https://github.com/RikkaW/FCM-for-Mojo/blob/master/server/plugin/FFM.pm
-```
-
-##### 下载服务端
+##### 下载（或更新）服务端
 
 需要自行把 <server.zip> 替换为 [latest release](https://github.com/RikkaW/FCM-for-Mojo/releases/latest) 中的 server.zip 的地址
-
 
 ```Shell
 mkdir ffm && cd ffm
