@@ -2,6 +2,7 @@ package moe.shizuku.fcmformojo;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
 import android.support.v4.provider.DocumentFile;
 
@@ -48,7 +49,21 @@ public class FFMSettings {
         return Integer.parseInt(value);
     }
 
-    public static int getNotificationVibrate(boolean group) {
+    @IntDef({
+            Vibrate.DISABLED,
+            Vibrate.DEFAULT,
+            Vibrate.SHORT,
+            Vibrate.LONG,
+    })
+    @Retention(SOURCE)
+    public @interface Vibrate {
+        int DISABLED = 0;
+        int DEFAULT = 1;
+        int SHORT = 2;
+        int LONG = 3;
+    }
+
+    public static @Vibrate int getNotificationVibrate(boolean group) {
         String value = Settings.getString(group ? "vibrate_group" : "vibrate", "1");
         return Integer.parseInt(value);
     }

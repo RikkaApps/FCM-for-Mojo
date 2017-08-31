@@ -14,6 +14,7 @@ import android.support.v4.provider.DocumentFile;
 
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
+import moe.shizuku.fcmformojo.FFMSettings.Vibrate;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.app.MessagingStyle;
 import moe.shizuku.fcmformojo.model.Chat;
@@ -215,40 +216,40 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         }
 
         // @ 消息当作好友消息处理
-        boolean group = chat.isGroup() && !chat.getLatestMessage().isAt();
-        if (!group) {
+        boolean isFriend = chat.isFriend() || (chat.isGroup() && chat.getLatestMessage().isAt());
+        if (isFriend) {
             builder.setChannelId(NOTIFICATION_CHANNEL_FRIENDS);
         }
 
         // sound
-        builder.setSound(FFMSettings.getNotificationSound(group));
+        builder.setSound(FFMSettings.getNotificationSound(!isFriend));
 
         // heads-up
-        int priority = FFMSettings.getNotificationPriority(group);
+        int priority = FFMSettings.getNotificationPriority(!isFriend);
         builder.setPriority(priority);
         if (priority >= NotificationCompat.PRIORITY_HIGH || chat.getLatestMessage().isAt()) {
             builder.setVibrate(new long[0]);
         }
 
         // vibrate
-        int vibrate = FFMSettings.getNotificationVibrate(group);
-        if (vibrate != 0) {
-            switch (vibrate) {
-                case 1:
-                    builder.setVibrate(null);
-                    builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
-                    break;
-                case 2:
-                    builder.setVibrate(new long[]{0, 100, 0, 100});
-                    break;
-                case 3:
-                    builder.setVibrate(new long[]{0, 1000});
-                    break;
-            }
+        int vibrate = FFMSettings.getNotificationVibrate(!isFriend);
+        switch (vibrate) {
+            case Vibrate.DISABLED:
+                break;
+            case Vibrate.DEFAULT:
+                builder.setVibrate(null);
+                builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+                break;
+            case Vibrate.SHORT:
+                builder.setVibrate(new long[]{0, 100, 0, 100});
+                break;
+            case Vibrate.LONG:
+                builder.setVibrate(new long[]{0, 1000});
+                break;
         }
 
         // lights
-        if (FFMSettings.getNotificationLight(group)
+        if (FFMSettings.getNotificationLight(!isFriend)
                 && priority >= NotificationCompat.PRIORITY_DEFAULT) {
             builder.setLights(context.getColor(R.color.colorNotification), 1000, 1000);
         }
