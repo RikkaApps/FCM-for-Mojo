@@ -133,7 +133,9 @@ public class ServerStatusPreference extends Preference {
     }
 
     private void updateStatus(FFMStatus status) {
-        FFMSettings.putLocalPerGroupSettingsEnabled(status.getGroupBlacklist().isEnabled());
+        if (status.getGroupBlacklist() != null) {
+            FFMSettings.putLocalPerGroupSettingsEnabled(status.getGroupBlacklist().isEnabled());
+        }
 
         if (status.isRunning()) {
             updateStatus(status.getDevices());
