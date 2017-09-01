@@ -138,5 +138,10 @@
     <string name="dialog_no_google_title">找不到 Google 服务框架</string>
     <string name="dialog_no_google_message">没有安装 Google 服务框架或已安装但被禁用。\\nFFM 依赖需要 Google 服务框架的 Firebase 云消息传递。</string>
     <string name="dialog_no_google_exit">退出 FFM</string>
+    <string name="toast_succeeded">成功。</string>
+    <string name="toast_something_wroing">出错了：\\n%s</string>
+    <string name="toast_nothing_changed">没有改动。</string>
+    <string name="toast_token_exists">已添加过这台设备。</string>
+    <string name="toast_token_requesting">无法获取令牌，正在尝试请求…</string>
 
 </resources>

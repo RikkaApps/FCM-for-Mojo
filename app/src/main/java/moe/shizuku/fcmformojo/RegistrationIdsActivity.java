@@ -32,7 +32,6 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    private RecyclerView mRecyclerView;
     private RegistrationIdsAdapter mAdapter;
 
     private boolean mRefreshed;
@@ -48,16 +47,16 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mRecyclerView = findViewById(android.R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = findViewById(android.R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mAdapter = new RegistrationIdsAdapter();
         mAdapter.addRule(RegistrationId.class, RegistrationIdViewHolder.CREATOR);
         mAdapter.addRule(CharSequence.class, TitleViewHolder.CREATOR);
 
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
 
-        RecyclerViewHelper.fixOverScroll(mRecyclerView);
+        RecyclerViewHelper.fixOverScroll(recyclerView);
 
         updateItems();
         fetchRegistrationIds();
@@ -101,7 +100,7 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
                     }
                 })
         );
@@ -112,7 +111,7 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
         if (registrationId != null) {
             addDevice(registrationId);
         } else {
-            Toast.makeText(this, "Token is null, try requesting...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_token_requesting, Toast.LENGTH_SHORT).show();
 
             mCompositeDisposable.add(Single
                     .fromCallable(new Callable<String>() {
@@ -133,7 +132,7 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
                         public void accept(Throwable throwable) throws Exception {
                             throwable.printStackTrace();
 
-                            Toast.makeText(RegistrationIdsActivity.this, "Something wrong: \n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegistrationIdsActivity.this, getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
 
                             Crashlytics.log("requesting token");
                             Crashlytics.logException(throwable);
@@ -145,7 +144,7 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
     private void addDevice(RegistrationId registrationId) {
         for (RegistrationId id : mAdapter.getRegistrationIds()) {
             if (id.getId().equals(registrationId.getId())) {
-                Toast.makeText(this, "Can't add because token already exists.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.toast_token_exists, Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -170,7 +169,7 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
     @Override
     public void uploadConfigurations() {
         if (!isConfigurationsChanged()) {
-            Toast.makeText(getApplicationContext(), "Nothing changed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.toast_nothing_changed, Toast.LENGTH_SHORT).show();
 
             return;
         }
@@ -184,14 +183,14 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
                     public void accept(FFMResult result) throws Exception {
                         mServerRegistrationIds = registrationIds;
 
-                        Toast.makeText(getApplicationContext(), "Succeed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.toast_succeeded, Toast.LENGTH_SHORT).show();
 
                         LocalBroadcast.refreshStatus(getApplicationContext());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
                     }
                 })
         );

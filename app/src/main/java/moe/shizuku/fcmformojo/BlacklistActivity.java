@@ -34,7 +34,6 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
     private View mToggleContainer;
     private CompoundButton mToggle;
 
-    private RecyclerView mRecyclerView;
     private BlacklistAdapter mAdapter;
 
     private BlacklistState mServerBlacklistState;
@@ -50,15 +49,15 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mRecyclerView = findViewById(android.R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = findViewById(android.R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mAdapter = new BlacklistAdapter();
         mAdapter.addRule(Pair.class, BlacklistItemViewHolder.CREATOR);
 
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
 
-        RecyclerViewHelper.fixOverScroll(mRecyclerView);
+        RecyclerViewHelper.fixOverScroll(recyclerView);
 
         mToggle = findViewById(android.R.id.switch_widget);
         mToggle.setEnabled(false);
@@ -113,7 +112,7 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Something went wrong:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
                     }
                 }));
     }
@@ -133,7 +132,7 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
     @Override
     public void uploadConfigurations() {
         if (!isConfigurationsChanged()) {
-            Toast.makeText(getApplicationContext(), "Nothing changed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.toast_nothing_changed, Toast.LENGTH_SHORT).show();
 
             return;
         }
@@ -149,12 +148,12 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
 
                         FFMSettings.putLocalPerGroupSettingsEnabled(blacklistState.isEnabled());
 
-                        Toast.makeText(getApplicationContext(), "Succeed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.toast_succeeded, Toast.LENGTH_SHORT).show();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
                     }
                 })
         );
