@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ResultReceiver;
@@ -342,11 +343,14 @@ public class FFMIntentService extends IntentService {
                 .setChannelId(NOTIFICATION_CHANNEL_SERVER)
                 .setColor(getColor(R.color.colorServerNotification))
                 .setSmallIcon(R.drawable.ic_noti_download_24dp)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVibrate(new long[0])
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
                 .setShowWhen(true);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setVibrate(new long[0]);
+        }
 
         NotificationCompat.Action action;
 

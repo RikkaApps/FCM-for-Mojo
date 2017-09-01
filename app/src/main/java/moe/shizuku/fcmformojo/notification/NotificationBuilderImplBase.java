@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.Nullable;
@@ -97,13 +98,16 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                         .setColor(context.getColor(R.color.colorServerNotification))
                         .setSmallIcon(R.drawable.ic_noti_24dp)
                         .setWhen(System.currentTimeMillis())
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setVibrate(new long[0])
                         .setOngoing(true)
                         .setAutoCancel(true)
                         .setShowWhen(true)
                         .setContentIntent(PendingIntent.getService(context, REQUEST_CODE_RESTART_WEBQQ, FFMIntentService.restartIntent(context), PendingIntent.FLAG_ONE_SHOT))
                         .addAction(R.drawable.ic_noti_dismiss_24dp, context.getString(android.R.string.cancel), PendingIntent.getBroadcast(context, REQUEST_CODE_DISMISS_SYSTEM_NOTIFICATION, FFMBroadcastReceiver.dismissSystemNotificationIntent(), 0));
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    builder.setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setVibrate(new long[0]);
+                }
 
                 nb.getNotificationManager().notify(NOTIFICATION_ID_SYSTEM, builder.build());
                 break;
@@ -221,33 +225,36 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
             builder.setChannelId(NOTIFICATION_CHANNEL_FRIENDS);
         }
 
-        // sound
-        builder.setSound(FFMSettings.getNotificationSound(!isFriend));
+        // support library still set them on O
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            // sound
+            builder.setSound(FFMSettings.getNotificationSound(!isFriend));
 
-        // priority
-        int priority = FFMSettings.getNotificationPriority(!isFriend);
-        builder.setPriority(priority);
+            // priority
+            int priority = FFMSettings.getNotificationPriority(!isFriend);
+            builder.setPriority(priority);
 
-        // vibrate
-        int vibrate = FFMSettings.getNotificationVibrate(!isFriend);
-        switch (vibrate) {
-            case Vibrate.DISABLED:
-                break;
-            case Vibrate.DEFAULT:
-                builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
-                break;
-            case Vibrate.SHORT:
-                builder.setVibrate(new long[]{0, 100, 0, 100});
-                break;
-            case Vibrate.LONG:
-                builder.setVibrate(new long[]{0, 1000});
-                break;
-        }
+            // vibrate
+            int vibrate = FFMSettings.getNotificationVibrate(!isFriend);
+            switch (vibrate) {
+                case Vibrate.DISABLED:
+                    break;
+                case Vibrate.DEFAULT:
+                    builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+                    break;
+                case Vibrate.SHORT:
+                    builder.setVibrate(new long[]{0, 100, 0, 100});
+                    break;
+                case Vibrate.LONG:
+                    builder.setVibrate(new long[]{0, 1000});
+                    break;
+            }
 
-        // lights
-        if (FFMSettings.getNotificationLight(!isFriend)
-                && priority >= NotificationCompat.PRIORITY_DEFAULT) {
-            builder.setLights(context.getColor(R.color.colorNotification), 1000, 1000);
+            // lights
+            if (FFMSettings.getNotificationLight(!isFriend)
+                    && priority >= NotificationCompat.PRIORITY_DEFAULT) {
+                builder.setLights(context.getColor(R.color.colorNotification), 1000, 1000);
+            }
         }
 
         return builder;
