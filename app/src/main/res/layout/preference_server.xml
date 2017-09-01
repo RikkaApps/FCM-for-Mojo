@@ -84,7 +84,7 @@
             android:textColor="?android:textColorPrimaryInverse"
             android:fontFamily="sans-serif-medium"
             android:textSize="16sp"
-            tools:text="@string/version_not_match"
+            tools:text="@string/status_version_not_match"
             android:drawablePadding="32dp"
             android:drawableStart="@drawable/ic_status_error_24dp"
             android:drawableTint="?android:textColorPrimaryInverse"/>

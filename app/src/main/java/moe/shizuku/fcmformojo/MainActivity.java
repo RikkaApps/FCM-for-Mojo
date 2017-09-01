@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.dialog_no_google_title)
                     .setMessage(R.string.dialog_no_google_message)
-                    .setPositiveButton(R.string.dialog_no_google_button_exit, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.dialog_no_google_exit, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
@@ -116,9 +116,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.action_donate:
                 new AlertDialog.Builder(this)
-                        .setTitle(R.string.donate_title)
-                        .setMessage(R.string.donate_message)
-                        .setPositiveButton(R.string.donate_ok, new DialogInterface.OnClickListener() {
+                        .setTitle(R.string.dialog_donate_title)
+                        .setMessage(R.string.dialog_donate_message)
+                        .setPositiveButton(R.string.dialog_donate_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Intent intent = new Intent(Intent.ACTION_VIEW,
@@ -126,13 +126,13 @@ public class MainActivity extends BaseActivity {
                                 ShizukuCompat.startActivity(MainActivity.this, intent, "com.eg.android.AlipayGphone");
                             }
                         })
-                        .setNegativeButton(R.string.donate_no, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.dialog_donate_no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Toast.makeText(MainActivity.this, "QAQ", Toast.LENGTH_SHORT).show();
                             }
                         })
-                        .setNeutralButton(R.string.donate_copy, new DialogInterface.OnClickListener() {
+                        .setNeutralButton(R.string.dialog_donate_copy, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ClipboardUtils.put(MainActivity.this, "rikka@xing.moe");

@@ -129,7 +129,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 sb.append(message.getContent(context)).append('\n');
             }
             style.bigText(sb.toString().trim());
-            style.setSummaryText(context.getString(R.string.message_format, chat.getMessages().getSize()));
+            style.setSummaryText(context.getString(R.string.notification_messages, chat.getMessages().getSize()));
 
             return style;
         } else {
@@ -145,7 +145,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 style.addMessage(message.getContent(context), message.getTimestamp(), message.getSender());
             }
 
-            style.setSummaryText(context.getString(R.string.message_format, chat.getMessages().getSize()));
+            style.setSummaryText(context.getString(R.string.notification_messages, chat.getMessages().getSize()));
 
             return style;
         }
@@ -163,7 +163,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         Intent intent = FFMBroadcastReceiver.replyIntent(chat);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        String replyLabel = context.getString(R.string.reply, chat.getName());
+        String replyLabel = context.getString(R.string.notification_action_reply, chat.getName());
         RemoteInput remoteInput = new RemoteInput.Builder(NOTIFICATION_INPUT_KEY)
                 .setLabel(replyLabel)
                 .build();
@@ -181,7 +181,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = createBuilder(context, null)
-                .setSubText(String.format(context.getString(R.string.messages_format), nb.getMessageCount(), nb.getSendersCount()))
+                .setSubText(String.format(context.getString(R.string.notification_messages_multi_sender), nb.getMessageCount(), nb.getSendersCount()))
                 .setShowWhen(true)
                 .setWhen(System.currentTimeMillis())
                 .setGroup(GROUP_KEY)

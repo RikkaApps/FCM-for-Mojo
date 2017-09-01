@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.LocalBroadcastManager;
@@ -89,7 +88,7 @@ public class ServerStatusPreference extends Preference {
             if (server != null
                     && !server.equals(BuildConfig.REQUIRE_SERVER_VERSION)) {
                 TextView status = versionCard.findViewById(android.R.id.text2);
-                status.setText(getContext().getString(R.string.version_not_match, server, BuildConfig.VERSION_NAME));
+                status.setText(getContext().getString(R.string.status_version_not_match, server, BuildConfig.VERSION_NAME));
 
                 versionCard.setVisibility(View.VISIBLE);
             } else {

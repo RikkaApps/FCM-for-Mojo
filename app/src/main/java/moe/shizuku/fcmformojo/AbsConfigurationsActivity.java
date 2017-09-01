@@ -28,9 +28,9 @@ public abstract class AbsConfigurationsActivity extends BaseActivity {
     public void onBackPressed() {
         if (isConfigurationsChanged()) {
             new AlertDialog.Builder(this)
-                    .setTitle(R.string.config_not_uploaded_title)
-                    .setMessage(R.string.config_not_uploaded_message)
-                    .setPositiveButton(R.string.config_not_uploaded_upload, new DialogInterface.OnClickListener() {
+                    .setTitle(R.string.dialog_config_not_uploaded_title)
+                    .setMessage(R.string.dialog_config_not_uploaded_message)
+                    .setPositiveButton(R.string.dialog_config_not_uploaded_upload, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             uploadConfigurations();
@@ -38,7 +38,7 @@ public abstract class AbsConfigurationsActivity extends BaseActivity {
                             finish();
                         }
                     })
-                    .setNegativeButton(R.string.config_not_uploaded_exit, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.dialog_config_not_uploaded_exit, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             finish();

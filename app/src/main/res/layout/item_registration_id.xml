@@ -53,6 +53,6 @@
         android:background="?android:selectableItemBackgroundBorderless"
         android:src="@drawable/ic_delete_24dp"
         android:tint="?android:textColorSecondary"
-        android:contentDescription="@string/delete" />
+        android:contentDescription="@string/button_delete" />
 
 </LinearLayout>

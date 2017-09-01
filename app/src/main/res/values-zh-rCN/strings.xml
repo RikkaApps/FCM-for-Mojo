@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="message_format">%d 条消息</string>
-    <string name="messages_format">来自 %2$d 个联系人的 %1$d 条消息</string>
-    <string name="reply" formatted="false">回复给 %s</string>
+    <string name="notification_messages">%d 条消息</string>
+    <string name="notification_messages_multi_sender">来自 %2$d 个联系人的 %1$d 条消息</string>
+    <string name="notification_action_reply" formatted="false">回复给 %s</string>
 
     <string name="update_avatar">更新头像</string>
     <string name="update_avatar_summary">更新好友及群组的头像（可能需要重启生效）</string>
@@ -39,9 +39,7 @@
 
     <string name="at_as_friend">\@ 你的消息将会被当作好友消息处理</string>
 
-    <string name="share">分享</string>
-
-    <string name="open">打开…</string>
+    <string name="dialog_token_share">分享</string>
 
     <string name="get_foreground">获取前台应用方式</string>
     <string-array name="get_foreground">
@@ -77,7 +75,7 @@
 
     <string name="about_icon_credits"><![CDATA[感谢 <a href="http://weibo.com/528556720">小雅</a> 制作应用图标]]></string>
 
-    <string name="message_image">[图片]</string>
+    <string name="notification_message_image">[图片]</string>
 
     <string name="notification_qr_code_downloaded">二维码已下载</string>
     <string name="notification_cannot_download">无法下载二维码</string>
@@ -87,10 +85,10 @@
     <string name="notification_singing_in">登录中…</string>
     <string name="notification_tap_open_qr_code_in_browser">点击在浏览器中打开二维码。</string>
     <string name="notification_tap_copy_qr_code">点击复制二维码 URL。</string>
-    <string name="open_in_browser">在浏览器中打开</string>
-    <string name="copy_to_clipboard">复制到剪贴板</string>
-    <string name="send">发送</string>
-    <string name="send_via">发送方式…</string>
+    <string name="notification_action_open_in_browser">在浏览器中打开</string>
+    <string name="notification_action_copy_to_clipboard">复制到剪贴板</string>
+    <string name="notification_action_send">发送</string>
+    <string name="dialog_title_send_via">发送方式…</string>
     <string name="cannot_request_permission">无法申请权限。</string>
 
     <string name="notification_server_stop">Mojo-Webqq 已停止</string>
@@ -103,7 +101,7 @@
     <string name="register_time">注册时间：%s</string>
     <string name="manage_devices_header">在这里您可以管理会收到消息的设备。\n若要添加这台设备，请点击工具栏上的添加按钮。\n修改完成需要点击工具栏上的上传按钮将新的配置上传到服务器。</string>
     <string name="action_add_this_device">添加这台设备</string>
-    <string name="delete">删除</string>
+    <string name="button_delete">删除</string>
     <string name="manage_webqq">管理 Mojo-Webqq</string>
     <string name="manage_webqq_summary">管理服务器设置及管理 Mojo-Webqq 服务</string>
     <string name="stop_webqq">停止</string>
@@ -123,22 +121,22 @@
     <string name="status_cannot_connect_server_error">无法连接服务器：%s。</string>
     <string name="restart_webqq_summary">重启服务器上的 Mojo-Webqq（如果没有运行）</string>
     <string name="action_donate">捐赠</string>
-    <string name="donate_title">Pay Rikka NOW ////</string>
-    <string name="donate_message">做了很多事情的 Rikka 是不是应该得到很多钱钱呢，是就快点给 Rikka 钱钱吧（逃跑），但是只支持支付宝..</string>
-    <string name="donate_ok">好耶</string>
-    <string name="donate_no">坏耶</string>
-    <string name="donate_copy">复制账号</string>
+    <string name="dialog_donate_title">Pay Rikka NOW ////</string>
+    <string name="dialog_donate_message">做了很多事情的 Rikka 是不是应该得到很多钱钱呢，是就快点给 Rikka 钱钱吧（逃跑），但是只支持支付宝..</string>
+    <string name="dialog_donate_ok">好耶</string>
+    <string name="dialog_donate_no">坏耶</string>
+    <string name="dialog_donate_copy">复制账号</string>
     <string name="stop_webqq_summary">强行停止服务器上的 Mojo-Webqq</string>
-    <string name="version_not_match">服务器版本（%1$s）与客户端需求的版本（%2$s）不匹配，部分功能可能不按预期工作。</string>
-    <string name="config_not_uploaded_title">设置已被修改</string>
-    <string name="config_not_uploaded_message">若不将设置上传至服务器，您将丢失作出的修改。</string>
+    <string name="status_version_not_match">服务器版本（%1$s）与客户端需求的版本（%2$s）不匹配，部分功能可能不按预期工作。</string>
+    <string name="dialog_config_not_uploaded_title">设置已被修改</string>
+    <string name="dialog_config_not_uploaded_message">若不将设置上传至服务器，您将丢失作出的修改。</string>
     <string name="per_group_settings">分群组设置</string>
     <string name="per_group_on">只接受开启的群组的消息</string>
     <string name="per_group_off">接收全部群组消息</string>
-    <string name="config_not_uploaded_exit">放弃修改</string>
-    <string name="config_not_uploaded_upload">上传</string>
+    <string name="dialog_config_not_uploaded_exit">放弃修改</string>
+    <string name="dialog_config_not_uploaded_upload">上传</string>
     <string name="dialog_no_google_title">找不到 Google 服务框架</string>
     <string name="dialog_no_google_message">没有安装 Google 服务框架或已安装但被禁用。\\nFFM 依赖需要 Google 服务框架的 Firebase 云消息传递。</string>
-    <string name="dialog_no_google_button_exit">退出 FFM</string>
+    <string name="dialog_no_google_exit">退出 FFM</string>
 
 </resources>
