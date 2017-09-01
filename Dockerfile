@@ -3,7 +3,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV USER=rikka PASSWD=rikka
 EXPOSE 5005
 COPY server /data/server
-RUN apk add --update perl perl-net-ssleay wget make git \
+RUN apk add --update perl perl-net-ssleay wget make \
     && wget -qO- https://cpanmin.us | perl - App::cpanminus \
     && cpanm Mojo::Webqq \
     && cd /data/server/node/ \
