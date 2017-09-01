@@ -39,6 +39,11 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.sign
+
+            ext {
+                alwaysUpdateBuildId = false
+                enableCrashlytics = false
+            }
         }
         release {
             minifyEnabled true

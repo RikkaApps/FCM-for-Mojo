@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 
 import java.util.UUID;
 
@@ -129,11 +130,19 @@ public class FFMApplication extends Application {
         });
     }
 
+    private static void initCrashReport(Context context) {
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build();
+
+        Fabric.with(context, crashlyticsKit);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        Fabric.with(this, new Crashlytics());
+        initCrashReport(this);
 
         mMainHandler = new Handler(getMainLooper());
 

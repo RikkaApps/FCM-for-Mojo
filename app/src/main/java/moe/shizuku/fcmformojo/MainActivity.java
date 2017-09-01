@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.settings.MainSettingsFragment;
 import moe.shizuku.fcmformojo.utils.ClipboardUtils;
@@ -42,6 +44,8 @@ public class MainActivity extends BaseActivity {
             startActivityForResult(intent, REQUEST_CODE);
         } catch (Exception e) {
             Toast.makeText(this, R.string.cannot_request_permission, Toast.LENGTH_LONG).show();
+
+            Crashlytics.logException(e);
         }
     }
 
