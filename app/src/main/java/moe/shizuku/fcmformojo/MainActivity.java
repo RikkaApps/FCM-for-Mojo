@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,6 +13,7 @@ import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -37,6 +39,33 @@ public class MainActivity extends BaseActivity {
                     .commit();
         }
 
+        checkGoogleServiceFramework();
+        requestPermission();
+    }
+
+    private void checkGoogleServiceFramework() {
+        boolean ok = false;
+        try {
+            ok = getPackageManager().getApplicationInfo("com.google.android.gsf", 0).enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+
+        if (!ok) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.dialog_no_google_title)
+                    .setMessage(R.string.dialog_no_google_message)
+                    .setPositiveButton(R.string.dialog_no_google_button_exit, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
+        }
+    }
+
+    private void requestPermission() {
         try {
             StorageManager sm = getSystemService(StorageManager.class);
             StorageVolume volume = sm.getPrimaryStorageVolume();
@@ -44,6 +73,7 @@ public class MainActivity extends BaseActivity {
             startActivityForResult(intent, REQUEST_CODE);
         } catch (Exception e) {
             Toast.makeText(this, R.string.cannot_request_permission, Toast.LENGTH_LONG).show();
+            Log.wtf("FFM", "can't use Scoped Directory Access", e);
 
             Crashlytics.logException(e);
         }

@@ -132,10 +132,13 @@
     <string name="version_not_match">服务器版本（%1$s）与客户端需求的版本（%2$s）不匹配，部分功能可能不按预期工作。</string>
     <string name="config_not_uploaded_title">设置已被修改</string>
     <string name="config_not_uploaded_message">若不将设置上传至服务器，您将丢失作出的修改。</string>
-    <string name="config_not_exit">放弃修改</string>
-    <string name="config_not_upload">上传</string>
     <string name="per_group_settings">分群组设置</string>
     <string name="per_group_on">只接受开启的群组的消息</string>
     <string name="per_group_off">接收全部群组消息</string>
+    <string name="config_not_uploaded_exit">放弃修改</string>
+    <string name="config_not_uploaded_upload">上传</string>
+    <string name="dialog_no_google_title">找不到 Google 服务框架</string>
+    <string name="dialog_no_google_message">没有安装 Google 服务框架或已安装但被禁用。\\nFFM 依赖需要 Google 服务框架的 Firebase 云消息传递。</string>
+    <string name="dialog_no_google_button_exit">退出 FFM</string>
 
 </resources>

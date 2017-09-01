@@ -138,4 +138,7 @@
     <string name="per_group_settings">Per-group settings</string>
     <string name="per_group_on">Only receive messages from enabled groups</string>
     <string name="per_group_off">Receive messages from all groups</string>
+    <string name="dialog_no_google_title">Google service framework not found</string>
+    <string name="dialog_no_google_message">Google service framework is not installed or installed but disabled.\\nFFM relays on Firebase Cloud Messaging and it requires Google service framework.</string>
+    <string name="dialog_no_google_button_exit">Exit FFM</string>
 </resources>
