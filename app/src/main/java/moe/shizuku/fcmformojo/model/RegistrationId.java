@@ -38,10 +38,14 @@ public class RegistrationId {
     public static RegistrationId create() {
         String token = FirebaseInstanceId.getInstance().getToken();
         if (!TextUtils.isEmpty(token)) {
-            return new RegistrationId(token, Build.MODEL, System.currentTimeMillis());
+            return create(token);
         } else {
             return null;
         }
+    }
+
+    public static RegistrationId create(String token) {
+        return new RegistrationId(token, Build.MODEL, System.currentTimeMillis());
     }
 
     @Override

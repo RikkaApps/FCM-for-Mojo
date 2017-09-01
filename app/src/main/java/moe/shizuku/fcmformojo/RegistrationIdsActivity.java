@@ -7,8 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.Set;
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.Set;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -104,11 +109,40 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
 
     private void addDevice() {
         RegistrationId registrationId = RegistrationId.create();
-        if (registrationId == null) {
-            Toast.makeText(this, "Can't add because token is null.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (registrationId != null) {
+            addDevice(registrationId);
+        } else {
+            Toast.makeText(this, "Token is null, try requesting...", Toast.LENGTH_SHORT).show();
 
+            mCompositeDisposable.add(Single
+                    .fromCallable(new Callable<String>() {
+                        @Override
+                        public String call() throws Exception {
+                            return FirebaseInstanceId.getInstance().getToken(getString(R.string.project_id), "FCM");
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(String token) throws Exception {
+                            addDevice(RegistrationId.create(token));
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+                            throwable.printStackTrace();
+
+                            Toast.makeText(RegistrationIdsActivity.this, "Something wrong: \n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            Crashlytics.log("requesting token");
+                            Crashlytics.logException(throwable);
+                        }
+                    }));
+        }
+    }
+
+    private void addDevice(RegistrationId registrationId) {
         for (RegistrationId id : mAdapter.getRegistrationIds()) {
             if (id.getId().equals(registrationId.getId())) {
                 Toast.makeText(this, "Can't add because token already exists.", Toast.LENGTH_SHORT).show();
