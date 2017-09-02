@@ -25,13 +25,13 @@ android {
         minSdkVersion 24
         targetSdkVersion 26
         versionCode gitCommitCount
-        versionName "0.3.4"
+        versionName "0.3.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resConfigs "en", "zh-rCN", "ja"
 
         resValue "string", "version_name", "${versionName} (${versionCode})"
         buildConfigField "String", "DONATE_ALIPAY_URL", '"alipayqr://platformapi/startapp?saId=10000007&qrcode=https%3A%2F%2Fqr.alipay.com%2Faex01083scje5axcttivf13"'
-        buildConfigField "String", "REQUIRE_SERVER_VERSION", '"0.3.4"'
+        buildConfigField "String", "REQUIRE_SERVER_VERSION", '"0.3.6"'
     }
     signingConfigs {
         sign

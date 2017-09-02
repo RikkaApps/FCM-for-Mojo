@@ -14,13 +14,13 @@ import java.util.Set;
  */
 
 @Keep
-public class BlacklistState {
+public class GroupWhitelistState {
 
     private boolean enabled;
     private Set<Long> list;
     private transient List<Pair<Group, Boolean>> states;
 
-    public BlacklistState(boolean enabled, Set<Long> list) {
+    public GroupWhitelistState(boolean enabled, Set<Long> list) {
         this.enabled = enabled;
         this.list = list;
     }
@@ -45,10 +45,10 @@ public class BlacklistState {
         states.clear();
 
         for (Group group : groups) {
-            boolean checked = true;
+            boolean checked = false;
             for (long uid : list) {
                 if (group.getUid() == uid) {
-                    checked = false;
+                    checked = true;
                     break;
                 }
             }
@@ -69,7 +69,7 @@ public class BlacklistState {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BlacklistState that = (BlacklistState) o;
+        GroupWhitelistState that = (GroupWhitelistState) o;
 
         if (enabled != that.enabled) return false;
         return list.equals(that.list);
@@ -84,7 +84,7 @@ public class BlacklistState {
 
     @Override
     public String toString() {
-        return "BlacklistState{" +
+        return "GroupWhitelistState{" +
                 "enabled=" + enabled +
                 ", list=" + list +
                 '}';

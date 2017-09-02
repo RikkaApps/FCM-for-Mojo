@@ -46,7 +46,7 @@ public class FFMSettings {
     }
 
     public static int getNotificationPriority(boolean group) {
-        String value = Settings.getString(group ? "priority_group" : "priority", group ? "0" : "1");
+        String value = Settings.getString(group ? "priority_group" : "priority", "1");
         return Integer.parseInt(value);
     }
 

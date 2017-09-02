@@ -137,12 +137,13 @@
     <string name="per_group_on">Only receive messages from enabled groups</string>
     <string name="per_group_off">Receive messages from all groups</string>
     <string name="dialog_no_google_title">Google service framework not found</string>
-    <string name="dialog_no_google_message">Google service framework is not installed or installed but disabled.\\nFFM relays on Firebase Cloud Messaging and it requires Google service framework.</string>
+    <string name="dialog_no_google_message">Google service framework is not installed or installed but disabled.\nFFM relays on Firebase Cloud Messaging and it requires Google service framework.</string>
     <string name="dialog_no_google_exit">Exit FFM</string>
     <string name="dialog_token_message" translatable="false"><![CDATA[<font face=\"monospace\">%s</font>]]></string>
     <string name="toast_succeeded">Succeeded.</string>
-    <string name="toast_something_wroing">Something wrong:\\n%s</string>
+    <string name="toast_something_wroing">Something wrong:\n%s</string>
     <string name="toast_nothing_changed">Nothing changed.</string>
     <string name="toast_token_exists">Already added this devices.</string>
     <string name="toast_token_requesting">Can\'t get token, try requesting…</string>
+    <string name="whitelist_group_no_uid">Can\'t toggle because unable to get group uid</string>
 </resources>

@@ -17,26 +17,26 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import moe.shizuku.fcmformojo.adapter.BlacklistAdapter;
-import moe.shizuku.fcmformojo.model.BlacklistState;
+import moe.shizuku.fcmformojo.adapter.GroupWhitelistAdapter;
+import moe.shizuku.fcmformojo.model.GroupWhitelistState;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.Group;
-import moe.shizuku.fcmformojo.viewholder.BlacklistItemViewHolder;
+import moe.shizuku.fcmformojo.viewholder.GroupWhitelistItemViewHolder;
 import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
 
 import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 import static moe.shizuku.fcmformojo.FFMApplication.OpenQQService;
 
-public class BlacklistActivity extends AbsConfigurationsActivity {
+public class WhitelistActivity extends AbsConfigurationsActivity {
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     private View mToggleContainer;
     private CompoundButton mToggle;
 
-    private BlacklistAdapter mAdapter;
+    private GroupWhitelistAdapter mAdapter;
 
-    private BlacklistState mServerBlacklistState;
+    private GroupWhitelistState mServerGroupWhitelistState;
 
     private boolean mRefreshed;
 
@@ -52,8 +52,8 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
         RecyclerView recyclerView = findViewById(android.R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mAdapter = new BlacklistAdapter();
-        mAdapter.addRule(Pair.class, BlacklistItemViewHolder.CREATOR);
+        mAdapter = new GroupWhitelistAdapter();
+        mAdapter.addRule(Pair.class, GroupWhitelistItemViewHolder.CREATOR);
 
         recyclerView.setAdapter(mAdapter);
 
@@ -80,24 +80,24 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
             }
         });
 
-        fetchBlacklistState();
+        fetchWhitelistState();
     }
 
-    private void fetchBlacklistState() {
-        mCompositeDisposable.add(Single.zip(FFMService.getGroupBlacklist(), OpenQQService.getGroupsBasicInfo(),
-                new BiFunction<BlacklistState, List<Group>, BlacklistState>() {
+    private void fetchWhitelistState() {
+        mCompositeDisposable.add(Single.zip(FFMService.getGroupWhitelist(), OpenQQService.getGroupsBasicInfo(),
+                new BiFunction<GroupWhitelistState, List<Group>, GroupWhitelistState>() {
                     @Override
-                    public BlacklistState apply(BlacklistState state, List<Group> groups) throws Exception {
+                    public GroupWhitelistState apply(GroupWhitelistState state, List<Group> groups) throws Exception {
                         state.generateStates(groups);
                         return state;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<BlacklistState>() {
+                .subscribe(new Consumer<GroupWhitelistState>() {
                     @Override
-                    public void accept(BlacklistState state) throws Exception {
-                        mServerBlacklistState = state;
+                    public void accept(GroupWhitelistState state) throws Exception {
+                        mServerGroupWhitelistState = state;
 
                         mToggleContainer.setEnabled(true);
                         mToggle.setEnabled(true);
@@ -137,16 +137,16 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
             return;
         }
 
-        final BlacklistState blacklistState = mAdapter.collectCurrentData();
-        mCompositeDisposable.add(FFMService.updateGroupBlacklist(blacklistState)
+        final GroupWhitelistState groupWhitelistState = mAdapter.collectCurrentData();
+        mCompositeDisposable.add(FFMService.updateGroupWhitelist(groupWhitelistState)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<FFMResult>() {
                     @Override
                     public void accept(FFMResult result) throws Exception {
-                        mServerBlacklistState = blacklistState;
+                        mServerGroupWhitelistState = groupWhitelistState;
 
-                        FFMSettings.putLocalPerGroupSettingsEnabled(blacklistState.isEnabled());
+                        FFMSettings.putLocalPerGroupSettingsEnabled(groupWhitelistState.isEnabled());
 
                         Toast.makeText(getApplicationContext(), R.string.toast_succeeded, Toast.LENGTH_SHORT).show();
                     }
@@ -161,7 +161,7 @@ public class BlacklistActivity extends AbsConfigurationsActivity {
 
     @Override
     public boolean isConfigurationsChanged() {
-        return mServerBlacklistState != null
-                && !mServerBlacklistState.equals(mAdapter.collectCurrentData());
+        return mServerGroupWhitelistState != null
+                && !mServerGroupWhitelistState.equals(mAdapter.collectCurrentData());
     }
 }

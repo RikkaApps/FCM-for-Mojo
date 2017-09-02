@@ -1,6 +1,5 @@
 package moe.shizuku.fcmformojo.viewholder;
 
-import android.graphics.Bitmap;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -25,7 +24,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.fcmformojo.adapter.BlacklistAdapter;
+import moe.shizuku.fcmformojo.adapter.GroupWhitelistAdapter;
 import moe.shizuku.fcmformojo.model.Group;
 import moe.shizuku.utils.recyclerview.BaseViewHolder;
 
@@ -33,13 +32,13 @@ import moe.shizuku.utils.recyclerview.BaseViewHolder;
  * Created by rikka on 2017/8/28.
  */
 
-public class BlacklistItemViewHolder extends BaseViewHolder<Pair<Group, Boolean>> implements View.OnClickListener {
+public class GroupWhitelistItemViewHolder extends BaseViewHolder<Pair<Group, Boolean>> implements View.OnClickListener {
 
     public static final Creator CREATOR = new Creator<Pair<Group, Boolean>>() {
 
         @Override
         public BaseViewHolder<Pair<Group, Boolean>> createViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            return new BlacklistItemViewHolder(inflater.inflate(R.layout.item_blacklist_item, parent ,false));
+            return new GroupWhitelistItemViewHolder(inflater.inflate(R.layout.item_blacklist_item, parent ,false));
         }
     };
 
@@ -50,7 +49,7 @@ public class BlacklistItemViewHolder extends BaseViewHolder<Pair<Group, Boolean>
 
     private Disposable mDisposable;
 
-    public BlacklistItemViewHolder(View itemView) {
+    public GroupWhitelistItemViewHolder(View itemView) {
         super(itemView);
 
         title = itemView.findViewById(android.R.id.title);
@@ -62,14 +61,15 @@ public class BlacklistItemViewHolder extends BaseViewHolder<Pair<Group, Boolean>
     }
 
     @Override
-    public BlacklistAdapter getAdapter() {
-        return (BlacklistAdapter) super.getAdapter();
+    public GroupWhitelistAdapter getAdapter() {
+        return (GroupWhitelistAdapter) super.getAdapter();
     }
 
     @Override
     public void onBind() {
         title.setText(getData().first.getName());
-        summary.setText(String.format(Locale.ENGLISH, "%d", getData().first.getUid()));
+        summary.setText(getData().first.getUid() == 0 ? itemView.getContext().getString(R.string.whitelist_group_no_uid) :
+                String.format(Locale.ENGLISH, "%d", getData().first.getUid()));
         toggle.setChecked(getData().second);
 
         mDisposable = Single.just(getData().first.loadIcon(itemView.getContext()))
@@ -90,14 +90,14 @@ public class BlacklistItemViewHolder extends BaseViewHolder<Pair<Group, Boolean>
                     }
                 });
 
-        onBind(getAdapter().isEnabled());
+        setEnabled(getAdapter().isEnabled());
     }
 
     @Override
     public void onBind(@NonNull List<Object> payloads) {
         for (Object payload : payloads) {
             if (payload instanceof Boolean) {
-                onBind((Boolean) payload);
+                setEnabled((Boolean) payload);
             }
         }
     }
@@ -110,7 +110,11 @@ public class BlacklistItemViewHolder extends BaseViewHolder<Pair<Group, Boolean>
         sColorFilter = new ColorMatrixColorFilter(cm);
     }
 
-    public void onBind(boolean enabled) {
+    public void setEnabled(boolean enabled) {
+        if (getData().first.getUid() == 0) {
+            enabled = false;
+        }
+
         itemView.setEnabled(enabled);
         toggle.setEnabled(enabled);
         title.setEnabled(enabled);
