@@ -6,7 +6,11 @@ function Push() {
         if (!error && response.statusCode === 200) {
             //console.log("200 " + JSON.stringify(body));
         } else {
-            console.error("[FFM] push failed, error: " + error + " body: " + body + " code: " + response.statusCode);
+            if (response !== undefined) {
+                console.error("[FFM] push failed, error: " + error + " body: " + body + " code: " + response.statusCode);
+            } else {
+                console.error("[FFM] push failed, error: " + error);
+            }
         }
     }
 
@@ -23,6 +27,11 @@ function Push() {
     this.ids = [];
 
     this.send = function(data) {
+        if (this.ids.length === 0) {
+            console.warn("[FFM] do not send because ids is empty");
+            return
+        }
+
         var body = {
             data: data,
             priority: 'high',
