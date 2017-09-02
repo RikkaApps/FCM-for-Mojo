@@ -52,6 +52,7 @@ function handle(req, res) {
         case '/ffm/update_registration_ids':
         case '/ffm/update_notifications_toggle':
         case '/ffm/update_group_whitelist':
+        case '/ffm/update_discuss_whitelist':
             handlePost(req, res);
             break;
 
@@ -62,6 +63,10 @@ function handle(req, res) {
                 group_whitelist: {
                     enabled: data.group_whitelist.enabled,
                     count: data.group_whitelist.list.length
+                },
+                discuss_whitelist: {
+                    enabled: data.discuss_whitelist.enabled,
+                    count: data.discuss_whitelist.list.length
                 },
                 version: version,
                 running: mojoQQ.running()
@@ -78,6 +83,10 @@ function handle(req, res) {
         case '/ffm/get_group_whitelist':
             res.writeHead(200, {"Content-Type": "application/json"});
             res.end(JSON.stringify(data.group_whitelist));
+            break;
+        case '/ffm/get_discuss_whitelist':
+            res.writeHead(200, {"Content-Type": "application/json"});
+            res.end(JSON.stringify(data.discuss_whitelist));
             break;
         case '/ffm/restart':
             res.writeHead(200, {"Content-Type": "application/json"});
@@ -156,6 +165,14 @@ function onPostEnd(req, res, body) {
                 console.log('[FFM] new group whitelist ' + JSON.stringify(body));
             }
             break;
+        case '/ffm/update_discuss_whitelist':
+            ffmConfig.data.discuss_whitelist = body;
+            ffmConfig.save();
+
+            if (debug) {
+                console.log('[FFM] new discuss whitelist ' + JSON.stringify(body));
+            }
+            break;
         default:
             res.writeHead(403, {
                 'Content-Type': 'text/plain'
@@ -206,7 +223,7 @@ function onSendMessage(body) {
     }
 
     var discuss_whitelist = ffmConfig.data.discuss_whitelist;
-    if (type === 2 && !isAt && discuss_whitelist.enabled && discuss_whitelist.list.indexOf(body.message.sender) === -1) {
+    if (type === 2 && !isAt && discuss_whitelist.enabled && discuss_whitelist.list.indexOf(body.name) === -1) {
         if (debug) {
             console.log('[FFM] do not send "' + body.message.content + '", because discuss is not in whitelist.')
         }
