@@ -199,8 +199,23 @@ public class NotificationSettingsFragment extends SettingsFragment {
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
 
-        ((SwitchPreference) findPreference(FFMSettings.LOCAL_PER_GROUP_ENABLED))
-                .setChecked(FFMSettings.isLocalPerGroupSettingsEnabled());
+        int group = FFMSettings.getLocalGroupWhitelistValue();
+        if (group == -1) {
+            findPreference(FFMSettings.LOCAL_GROUP_WHITELIST)
+                    .setSummary(R.string.settings_per_group_summary_off);
+        } else {
+            findPreference(FFMSettings.LOCAL_GROUP_WHITELIST)
+                    .setSummary(getContext().getResources().getQuantityString(R.plurals.settings_per_group_summary_on, group, group));
+        }
+
+        int discuss = FFMSettings.getLocalDiscussWhitelistValue();
+        if (discuss == -1) {
+            findPreference(FFMSettings.LOCAL_DISCUSS_WHITELIST)
+                    .setSummary(R.string.settings_per_discuss_summary_off);
+        } else {
+            findPreference(FFMSettings.LOCAL_DISCUSS_WHITELIST)
+                    .setSummary(getContext().getResources().getQuantityString(R.plurals.settings_per_discuss_summary_on, discuss, discuss));
+        }
     }
 
     @Override

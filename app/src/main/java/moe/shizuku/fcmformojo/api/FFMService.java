@@ -3,9 +3,10 @@ package moe.shizuku.fcmformojo.api;
 import java.util.Set;
 
 import io.reactivex.Single;
-import moe.shizuku.fcmformojo.model.GroupWhitelistState;
+import moe.shizuku.fcmformojo.model.DiscussWhitelistState;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.FFMStatus;
+import moe.shizuku.fcmformojo.model.GroupWhitelistState;
 import moe.shizuku.fcmformojo.model.NotificationToggle;
 import moe.shizuku.fcmformojo.model.RegistrationId;
 import retrofit2.http.Body;
@@ -48,4 +49,11 @@ public interface FFMService {
     @Headers("Content-Type: application/json")
     @POST("/ffm/update_group_whitelist")
     Single<FFMResult> updateGroupWhitelist(@Body GroupWhitelistState state);
+
+    @GET("/ffm/get_discuss_whitelist")
+    Single<DiscussWhitelistState> getDiscussWhitelist();
+
+    @Headers("Content-Type: application/json")
+    @POST("/ffm/update_discuss_whitelist")
+    Single<FFMResult> updateDiscussWhitelist(@Body DiscussWhitelistState state);
 }

@@ -133,7 +133,11 @@ public class ServerStatusPreference extends Preference {
 
     private void updateStatus(FFMStatus status) {
         if (status.getGroupBlacklist() != null) {
-            FFMSettings.putLocalPerGroupSettingsEnabled(status.getGroupBlacklist().isEnabled());
+            FFMSettings.putLocalGroupWhitelistValue(status.getGroupBlacklist().isEnabled() ? status.getGroupBlacklist().getCount() : -1);
+        }
+
+        if (status.getDiscussWhitelist() != null) {
+            FFMSettings.putLocalDiscussWhitelistValue(status.getDiscussWhitelist().isEnabled() ? status.getDiscussWhitelist().getCount() : -1);
         }
 
         if (status.isRunning()) {

@@ -26,8 +26,7 @@ public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
     private CompoundButton mToggle;
 
     private WhitelistAdapter mAdapter;
-
-    private WhitelistState mServerGroupWhitelistState;
+    private WhitelistState mServerWhitelistState;
 
     private boolean mRefreshed;
 
@@ -54,7 +53,7 @@ public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
         mToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton button, boolean checked) {
-                button.setText(button.getContext().getString(checked ? R.string.per_group_on : R.string.per_group_off));
+                setToggleText(button, checked);
 
                 mAdapter.setEnabled(checked);
                 mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount(), checked);
@@ -73,11 +72,21 @@ public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
         fetchWhitelistState();
     }
 
+    public abstract void setToggleText(CompoundButton button, boolean checked);
+
     public abstract WhitelistAdapter createListAdapter();
 
     public abstract Single<? extends WhitelistState> startFetchWhitelistState();
 
     public abstract Single<FFMResult> startUpdateWhitelistState(WhitelistState whitelistState);
+
+    public void onFetchSucceed(WhitelistState state) {
+
+    }
+
+    public void onUploadSucceed(WhitelistState state) {
+
+    }
 
     private void fetchWhitelistState() {
         mCompositeDisposable.add(startFetchWhitelistState()
@@ -86,7 +95,7 @@ public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
                 .subscribe(new Consumer<WhitelistState>() {
                     @Override
                     public void accept(WhitelistState state) throws Exception {
-                        mServerGroupWhitelistState = state;
+                        mServerWhitelistState = state;
 
                         mToggleContainer.setEnabled(true);
                         mToggle.setEnabled(true);
@@ -96,7 +105,7 @@ public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
 
                         invalidateOptionsMenu();
 
-                        FFMSettings.putLocalPerGroupSettingsEnabled(state.isEnabled());
+                        onFetchSucceed(state);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -133,11 +142,11 @@ public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
                 .subscribe(new Consumer<FFMResult>() {
                     @Override
                     public void accept(FFMResult result) throws Exception {
-                        mServerGroupWhitelistState = whitelistState;
-
-                        FFMSettings.putLocalPerGroupSettingsEnabled(whitelistState.isEnabled());
+                        mServerWhitelistState = whitelistState;
 
                         Toast.makeText(getApplicationContext(), R.string.toast_succeeded, Toast.LENGTH_SHORT).show();
+
+                        onUploadSucceed(whitelistState);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -150,7 +159,7 @@ public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
 
     @Override
     public boolean isConfigurationsChanged() {
-        return mServerGroupWhitelistState != null
-                && !mServerGroupWhitelistState.equals(mAdapter.collectCurrentData());
+        return mServerWhitelistState != null
+                && !mServerWhitelistState.equals(mAdapter.collectCurrentData());
     }
 }

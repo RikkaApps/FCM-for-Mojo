@@ -130,9 +130,9 @@
     <string name="status_version_not_match">服务器版本（%1$s）与客户端需求的版本（%2$s）不匹配，部分功能可能不按预期工作。</string>
     <string name="dialog_config_not_uploaded_title">设置已被修改</string>
     <string name="dialog_config_not_uploaded_message">若不将设置上传至服务器，您将丢失作出的修改。</string>
-    <string name="per_group_settings">分群组设置</string>
-    <string name="per_group_on">只接受开启的群组的消息</string>
-    <string name="per_group_off">接收全部群组消息</string>
+    <string name="settings_per_group_title">分群组设置</string>
+    <string name="whitelist_summary_group_on">只接受开启的群的消息</string>
+    <string name="whitelist_summary_group_off">接收全部群消息</string>
     <string name="dialog_config_not_uploaded_exit">放弃修改</string>
     <string name="dialog_config_not_uploaded_upload">上传</string>
     <string name="dialog_no_google_title">找不到 Google 服务框架</string>
@@ -144,5 +144,13 @@
     <string name="toast_token_exists">已添加过这台设备。</string>
     <string name="toast_token_requesting">无法获取令牌，正在尝试请求…</string>
     <string name="whitelist_group_no_uid">由于无法获取群号无法修改</string>
-
+    <string name="whitelist_summary_discuss_on">只接受开启的讨论组的消息</string>
+    <string name="whitelist_summary_discuss_off">接收全部讨论组消息</string>
+    <string name="settings_per_discuss_title">分讨论组设置</string>
+    <plurals name="settings_per_group_summary_on">
+        <item quantity="other">只接收 %d 个群的消息</item>
+    </plurals>
+    <plurals name="settings_per_discuss_summary_on">
+        <item quantity="other">只接收 %d 个讨论组的消息</item>
+    </plurals>
 </resources>

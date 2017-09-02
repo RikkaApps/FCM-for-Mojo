@@ -27,7 +27,8 @@ public class FFMSettings {
     public static final String QQ_PACKAGE = "qq_package";
     public static final String GET_FOREGROUND = "get_foreground";
     public static final String DOWNLOADS_URI = "downloads_uri";
-    public static final String LOCAL_PER_GROUP_ENABLED = "group_blacklist";
+    public static final String LOCAL_GROUP_WHITELIST = "group_whitelist";
+    public static final String LOCAL_DISCUSS_WHITELIST = "discuss_whitelist";
 
     public static void init(Context context) {
         Settings.init(context);
@@ -149,11 +150,19 @@ public class FFMSettings {
         return pickedDir;
     }
 
-    public static void putLocalPerGroupSettingsEnabled(boolean enabled) {
-        Settings.putBoolean(LOCAL_PER_GROUP_ENABLED, enabled);
+    public static void putLocalGroupWhitelistValue(int value) {
+        Settings.putInt(LOCAL_GROUP_WHITELIST, value);
     }
 
-    public static boolean isLocalPerGroupSettingsEnabled() {
-        return Settings.getBoolean(LOCAL_PER_GROUP_ENABLED, false);
+    public static int getLocalGroupWhitelistValue() {
+        return Settings.getInt(LOCAL_GROUP_WHITELIST, -1);
+    }
+
+    public static void putLocalDiscussWhitelistValue(int value) {
+        Settings.putInt(LOCAL_DISCUSS_WHITELIST, value);
+    }
+
+    public static int getLocalDiscussWhitelistValue() {
+        return Settings.getInt(LOCAL_DISCUSS_WHITELIST, -1);
     }
 }

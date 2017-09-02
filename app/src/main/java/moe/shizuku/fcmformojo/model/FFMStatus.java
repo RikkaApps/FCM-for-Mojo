@@ -10,7 +10,8 @@ import android.support.annotation.Keep;
 public class FFMStatus {
 
     private int devices;
-    private GroupBlacklistStatus group_blacklist;
+    private WhitelistStatus group_whitelist;
+    private WhitelistStatus discuss_whitelist;
     private String version;
     private boolean running;
 
@@ -18,8 +19,12 @@ public class FFMStatus {
         return devices;
     }
 
-    public GroupBlacklistStatus getGroupBlacklist() {
-        return group_blacklist;
+    public WhitelistStatus getGroupBlacklist() {
+        return group_whitelist;
+    }
+
+    public WhitelistStatus getDiscussWhitelist() {
+        return discuss_whitelist;
     }
 
     public String getVersion() {
@@ -30,7 +35,8 @@ public class FFMStatus {
         return running;
     }
 
-    public static class GroupBlacklistStatus {
+    @Keep
+    public static class WhitelistStatus {
 
         private boolean enabled;
         private int count;

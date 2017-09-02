@@ -48,18 +48,25 @@
             android:defaultValue="false"
             android:enabled="false"/>
 
-        <moe.shizuku.fcmformojo.preference.StateInformationPreference
-            android:key="group_blacklist"
-            android:title="@string/per_group_settings"
-            android:summaryOn="@string/per_group_on"
-            android:summaryOff="@string/per_group_off"
-            android:widgetLayout="@null">
+        <Preference
+            android:key="group_whitelist"
+            android:title="@string/settings_per_group_title">
 
             <intent
                 android:targetPackage="moe.shizuku.fcmformojo"
                 android:targetClass="moe.shizuku.fcmformojo.GroupWhitelistActivity"/>
 
-        </moe.shizuku.fcmformojo.preference.StateInformationPreference>
+        </Preference>
+
+        <Preference
+            android:key="discuss_whitelist"
+            android:title="@string/settings_per_discuss_title">
+
+            <intent
+                android:targetPackage="moe.shizuku.fcmformojo"
+                android:targetClass="moe.shizuku.fcmformojo.DiscussWhitelistActivity"/>
+
+        </Preference>
 
         <Preference
             android:key="edit_channel_group"

@@ -29,7 +29,7 @@
             android:clickable="false"
             android:focusable="false"
             android:textColor="?android:textColorPrimaryInverse"
-            android:text="@string/per_group_off"/>
+            android:text="@string/whitelist_summary_group_off"/>
 
     </FrameLayout>
 

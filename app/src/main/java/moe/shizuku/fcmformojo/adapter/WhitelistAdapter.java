@@ -1,6 +1,5 @@
 package moe.shizuku.fcmformojo.adapter;
 
-import moe.shizuku.fcmformojo.model.GroupWhitelistState;
 import moe.shizuku.fcmformojo.model.WhitelistState;
 import moe.shizuku.utils.recyclerview.BaseRecyclerViewAdapter;
 
@@ -29,5 +28,5 @@ public abstract class WhitelistAdapter extends BaseRecyclerViewAdapter {
         notifyDataSetChanged();
     }
 
-    public abstract GroupWhitelistState collectCurrentData();
+    public abstract WhitelistState collectCurrentData();
 }

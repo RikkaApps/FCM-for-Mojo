@@ -132,9 +132,9 @@
     <string name="dialog_config_not_uploaded_message">You will lost your changes if you do not upload them to server.</string>
     <string name="dialog_config_not_uploaded_exit">Discard changes</string>
     <string name="dialog_config_not_uploaded_upload">Upload</string>
-    <string name="per_group_settings">Per-group settings</string>
-    <string name="per_group_on">Only receive messages from enabled groups</string>
-    <string name="per_group_off">Receive messages from all groups</string>
+    <string name="settings_per_group_title">Per-group settings</string>
+    <string name="whitelist_summary_group_on">Only receive messages from enabled groups</string>
+    <string name="whitelist_summary_group_off">Receive messages from all groups</string>
     <string name="dialog_no_google_title">Google service framework not found</string>
     <string name="dialog_no_google_message">Google service framework is not installed or installed but disabled.\nFFM relays on Firebase Cloud Messaging and it requires Google service framework.</string>
     <string name="dialog_no_google_exit">Exit FFM</string>
@@ -144,4 +144,17 @@
     <string name="toast_token_exists">Already added this devices.</string>
     <string name="toast_token_requesting">Can\'t get token, try requesting…</string>
     <string name="whitelist_group_no_uid">Can\'t toggle because unable to get group uid</string>
+    <string name="whitelist_summary_discuss_on">Only receive messages from enabled discusses</string>
+    <string name="whitelist_summary_discuss_off">Receive messages from all discusses</string>
+    <string name="settings_per_discuss_title">Per-discuss settings</string>
+    <plurals name="settings_per_group_summary_on">
+        <item quantity="zero">Only receive messages from %d group</item>
+        <item quantity="one">Only receive messages from %d group</item>
+        <item quantity="other">Only receive messages from %d groups</item>
+    </plurals>
+    <plurals name="settings_per_discuss_summary_on">
+        <item quantity="zero">Only receive messages from %d discuss</item>
+        <item quantity="one">Only receive messages from %d discuss</item>
+        <item quantity="other">Only receive messages from %d discusses</item>
+    </plurals>
 </resources>
