@@ -40,7 +40,7 @@ function FFMConfig(file) {
 
     this.data.registration_ids = this.data.registration_ids || [];
 
-    this.data.group_blacklist = this.data.group_blacklist || {
+    this.data.group_whitelist = this.data.group_whitelist || {
         enabled: false,
         list: []
     };

@@ -51,7 +51,7 @@ function handle(req, res) {
         case '/ffm/send':
         case '/ffm/update_registration_ids':
         case '/ffm/update_notifications_toggle':
-        case '/ffm/update_group_blacklist':
+        case '/ffm/update_group_whitelist':
             handlePost(req, res);
             break;
 
@@ -59,9 +59,9 @@ function handle(req, res) {
             res.writeHead(200, {"Content-Type": "application/json"});
             res.end(JSON.stringify({
                 devices: data.registration_ids.length,
-                group_blacklist: {
-                    enabled: data.group_blacklist.enabled,
-                    count: data.group_blacklist.list.length
+                group_whitelist: {
+                    enabled: data.group_whitelist.enabled,
+                    count: data.group_whitelist.list.length
                 },
                 version: version,
                 running: mojoQQ.running()
@@ -75,9 +75,9 @@ function handle(req, res) {
             res.writeHead(200, {"Content-Type": "application/json"});
             res.end(JSON.stringify(data.notifications));
             break;
-        case '/ffm/get_group_blacklist':
+        case '/ffm/get_group_whitelist':
             res.writeHead(200, {"Content-Type": "application/json"});
-            res.end(JSON.stringify(data.group_blacklist));
+            res.end(JSON.stringify(data.group_whitelist));
             break;
         case '/ffm/restart':
             res.writeHead(200, {"Content-Type": "application/json"});
@@ -148,12 +148,12 @@ function onPostEnd(req, res, body) {
                 console.log('[FFM] new notification toggle ' + JSON.stringify(body));
             }
             break;
-        case '/ffm/update_group_blacklist':
-            ffmConfig.data.group_blacklist = body;
+        case '/ffm/update_group_whitelist':
+            ffmConfig.data.group_whitelist = body;
             ffmConfig.save();
 
             if (debug) {
-                console.log('[FFM] new group blacklist ' + JSON.stringify(body));
+                console.log('[FFM] new group whitelist ' + JSON.stringify(body));
             }
             break;
         default:
@@ -196,10 +196,10 @@ function onSendMessage(body) {
         return;
     }
 
-    var blacklist = ffmConfig.data.group_blacklist;
-    if (type === 1 && !isAt && blacklist.enabled && blacklist.list.indexOf(body.uid) !== -1) {
+    var group_whitelist = ffmConfig.data.group_whitelist;
+    if (type === 1 && !isAt && group_whitelist.enabled && group_whitelist.list.indexOf(body.uid) === -1) {
         if (debug) {
-            console.log('[FFM] do not send "' + body.message.content + '", because group blacklist.')
+            console.log('[FFM] do not send "' + body.message.content + '", because group is not in whitelist.')
         }
 
         return;
