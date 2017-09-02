@@ -45,6 +45,11 @@ function FFMConfig(file) {
         list: []
     };
 
+    this.data.discuss_whitelist = this.data.discuss_whitelist || {
+        enabled: false,
+        list: []
+    };
+
     //console.log('[FFM] ids: ' + this.ids);
 }
 

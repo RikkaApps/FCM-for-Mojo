@@ -205,6 +205,15 @@ function onSendMessage(body) {
         return;
     }
 
+    var discuss_whitelist = ffmConfig.data.discuss_whitelist;
+    if (type === 2 && !isAt && discuss_whitelist.enabled && discuss_whitelist.list.indexOf(body.message.sender) === -1) {
+        if (debug) {
+            console.log('[FFM] do not send "' + body.message.content + '", because discuss is not in whitelist.')
+        }
+
+        return;
+    }
+
     push.send(body);
 }
 
