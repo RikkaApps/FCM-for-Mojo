@@ -31,7 +31,13 @@ docker pull kotomeinyan/fcm-for-mojo
 ### 方法二：手动创建 Docker 镜像（较新，慢速）
 
 ```
-docker build -t kotomeinyan/fcm-for-mojo github.com/RikkaW/FCM-for-Mojo
+docker build --pull --rm -t kotomeinyan/fcm-for-mojo github.com/RikkaW/FCM-for-Mojo
+```
+
+**TIPS:**  
+安装指定版本的服务端
+```
+docker build --pull --rm -t kotomeinyan/fcm-for-mojo github.com/RikkaW/FCM-for-Mojo#<version_tag>
 ```
 
 ## 运行 Docker
@@ -62,10 +68,22 @@ USER 与 PASSWD 为 html 基础验证所需字段，PORT为外网端口，暂不
 docker ps
 ```
 
-停止想要终止运行的 Docker
+停止想要终止运行的 Docker 容器
 
 ```
 docker stop <container_id>
+```
+
+使用 Docker images 指令获取当前存放的 Docker 镜像列表
+
+```
+docker images
+```
+
+删除不再需要的 Docker 镜像（服务端更新后）
+
+```
+docker rmi <image_id>
 ```
 
 ## 遇到错误？
@@ -74,4 +92,4 @@ docker stop <container_id>
 docker logs <container_id>
 ```
 
-将输出发在[issue](https://github.com/kotomei/fcm-for-mojo/issues/new)，我们会帮助您解决问题。
+将输出发在[issue](https://github.com/RikkaW/FCM-for-Mojo/issues/new)，并在标题附上`[Docker]`字样，我们会帮助您解决问题。
