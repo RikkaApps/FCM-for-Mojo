@@ -57,7 +57,7 @@
 
             <intent
                 android:targetPackage="moe.shizuku.fcmformojo"
-                android:targetClass="moe.shizuku.fcmformojo.WhitelistActivity"/>
+                android:targetClass="moe.shizuku.fcmformojo.GroupWhitelistActivity"/>
 
         </moe.shizuku.fcmformojo.preference.StateInformationPreference>
 

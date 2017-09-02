@@ -3,40 +3,31 @@ package moe.shizuku.fcmformojo;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
-import java.util.List;
-
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import moe.shizuku.fcmformojo.adapter.GroupWhitelistAdapter;
-import moe.shizuku.fcmformojo.model.GroupWhitelistState;
+import moe.shizuku.fcmformojo.adapter.WhitelistAdapter;
 import moe.shizuku.fcmformojo.model.FFMResult;
-import moe.shizuku.fcmformojo.model.Group;
-import moe.shizuku.fcmformojo.viewholder.GroupWhitelistItemViewHolder;
+import moe.shizuku.fcmformojo.model.WhitelistState;
 import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
 
-import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
-import static moe.shizuku.fcmformojo.FFMApplication.OpenQQService;
-
-public class WhitelistActivity extends AbsConfigurationsActivity {
+public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     private View mToggleContainer;
     private CompoundButton mToggle;
 
-    private GroupWhitelistAdapter mAdapter;
+    private WhitelistAdapter mAdapter;
 
-    private GroupWhitelistState mServerGroupWhitelistState;
+    private WhitelistState mServerGroupWhitelistState;
 
     private boolean mRefreshed;
 
@@ -52,8 +43,7 @@ public class WhitelistActivity extends AbsConfigurationsActivity {
         RecyclerView recyclerView = findViewById(android.R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mAdapter = new GroupWhitelistAdapter();
-        mAdapter.addRule(Pair.class, GroupWhitelistItemViewHolder.CREATOR);
+        mAdapter = createListAdapter();
 
         recyclerView.setAdapter(mAdapter);
 
@@ -83,20 +73,19 @@ public class WhitelistActivity extends AbsConfigurationsActivity {
         fetchWhitelistState();
     }
 
+    public abstract WhitelistAdapter createListAdapter();
+
+    public abstract Single<? extends WhitelistState> startFetchWhitelistState();
+
+    public abstract Single<FFMResult> startUpdateWhitelistState(WhitelistState whitelistState);
+
     private void fetchWhitelistState() {
-        mCompositeDisposable.add(Single.zip(FFMService.getGroupWhitelist(), OpenQQService.getGroupsBasicInfo(),
-                new BiFunction<GroupWhitelistState, List<Group>, GroupWhitelistState>() {
-                    @Override
-                    public GroupWhitelistState apply(GroupWhitelistState state, List<Group> groups) throws Exception {
-                        state.generateStates(groups);
-                        return state;
-                    }
-                })
+        mCompositeDisposable.add(startFetchWhitelistState()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<GroupWhitelistState>() {
+                .subscribe(new Consumer<WhitelistState>() {
                     @Override
-                    public void accept(GroupWhitelistState state) throws Exception {
+                    public void accept(WhitelistState state) throws Exception {
                         mServerGroupWhitelistState = state;
 
                         mToggleContainer.setEnabled(true);
@@ -137,16 +126,16 @@ public class WhitelistActivity extends AbsConfigurationsActivity {
             return;
         }
 
-        final GroupWhitelistState groupWhitelistState = mAdapter.collectCurrentData();
-        mCompositeDisposable.add(FFMService.updateGroupWhitelist(groupWhitelistState)
+        final WhitelistState whitelistState = mAdapter.collectCurrentData();
+        mCompositeDisposable.add(startUpdateWhitelistState(whitelistState)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<FFMResult>() {
                     @Override
                     public void accept(FFMResult result) throws Exception {
-                        mServerGroupWhitelistState = groupWhitelistState;
+                        mServerGroupWhitelistState = whitelistState;
 
-                        FFMSettings.putLocalPerGroupSettingsEnabled(groupWhitelistState.isEnabled());
+                        FFMSettings.putLocalPerGroupSettingsEnabled(whitelistState.isEnabled());
 
                         Toast.makeText(getApplicationContext(), R.string.toast_succeeded, Toast.LENGTH_SHORT).show();
                     }

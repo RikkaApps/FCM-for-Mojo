@@ -47,6 +47,5 @@ public interface FFMService {
 
     @Headers("Content-Type: application/json")
     @POST("/ffm/update_group_whitelist")
-    Single<FFMResult> updateGroupWhitelist(@Body GroupWhitelistState state
-    );
+    Single<FFMResult> updateGroupWhitelist(@Body GroupWhitelistState state);
 }

@@ -14,79 +14,14 @@ import java.util.Set;
  */
 
 @Keep
-public class GroupWhitelistState {
-
-    private boolean enabled;
-    private Set<Long> list;
-    private transient List<Pair<Group, Boolean>> states;
+public class GroupWhitelistState extends WhitelistState<Long, Group> {
 
     public GroupWhitelistState(boolean enabled, Set<Long> list) {
-        this.enabled = enabled;
-        this.list = list;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public Set<Long> getList() {
-        return list;
-    }
-
-    public List<Pair<Group, Boolean>> getStates() {
-
-        return states;
-    }
-
-    public void generateStates(Collection<Group> groups) {
-        if (states == null) {
-            states = new ArrayList<>();
-        }
-        states.clear();
-
-        for (Group group : groups) {
-            boolean checked = false;
-            for (long uid : list) {
-                if (group.getUid() == uid) {
-                    checked = true;
-                    break;
-                }
-            }
-
-            states.add(new Pair<>(group, checked));
-        }
-
-        states.sort(new Comparator<Pair<Group, Boolean>>() {
-            @Override
-            public int compare(Pair<Group, Boolean> o1, Pair<Group, Boolean> o2) {
-                return Boolean.compare(o2.second, o1.second);
-            }
-        });
+        super(enabled, list);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        GroupWhitelistState that = (GroupWhitelistState) o;
-
-        if (enabled != that.enabled) return false;
-        return list.equals(that.list);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (enabled ? 1 : 0);
-        result = 31 * result + list.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "GroupWhitelistState{" +
-                "enabled=" + enabled +
-                ", list=" + list +
-                '}';
+    public boolean equals(Long o1, Group o2) {
+        return o1 == o2.getUid();
     }
 }
