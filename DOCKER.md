@@ -51,12 +51,13 @@ docker run -it -e USER=<your_username> -e PASSWD=<your_password> -p <port>:5005 
 ### 守护进程运行
 
 ```
-docker run -d -e USER=<your_username> -e PASSWD=<your_password> -v ~/config.json:/config.json -p <port>:5005 kotomeinyan/fcm-for-mojo
+docker run -d -e USER=<your_username> -e PASSWD=<your_password> -v ~/client.json:/data/server/client.json -p <port>:5005 kotomeinyan/fcm-for-mojo
 ```
 
 参数说明：  
-USER 与 PASSWD 为 html 基础验证所需字段，PORT为外网端口，暂不支持SSL验证。  
-保留设备 ID 列表可以采用 Docker 内建的文件挂载，如`-v ~/config.json:/config.json`即可用当前用户主目录下的 config.json 替换 Docker 中的空 config.json 以保留设备信息。
+USER 与 PASSWD 为 html 基础验证所需字段，默认为`rikka:rikka`。  
+PORT 为外网端口，如`-p 5005:5005`即可在外网打开5005端口通信，如需 SSL 验证，务必使用`-p 127.0.0.1:5005:5005`只开放内网访问，并借助其它反向代理程序实现。  
+保留设备 ID 列表可以采用 Docker 内建的文件挂载，如`-v ~/client.json:/data/server/client.json`即可用当前用户主目录下的 client.json 替换 Docker 中的空 client.json 以保留设备信息。
 
 **请确保外网端口在防火墙上是开启的**
 

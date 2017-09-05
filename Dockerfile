@@ -13,6 +13,5 @@ RUN apk add --update --no-cache perl perl-net-ssleay wget make \
                            "local_port": 5004, "port": 5005, \
                            "client_config": "client.json", \
                            "basic_auth":{"file": "auth"}}; \
-             module.exports = config;' > ../config.js \
-    && echo "{}" > /client.json
+             module.exports = config;' > ../config.js
 CMD cd /data/server && echo "$USER:$PASSWD" > auth && node node/index.js
