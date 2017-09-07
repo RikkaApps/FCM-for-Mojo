@@ -1,4 +1,5 @@
 var spawn = require('child_process').spawn;
+var path = require('path');
 
 function MojoQQ(port, openqq_port) {
     this.proc = null;
@@ -10,7 +11,7 @@ function MojoQQ(port, openqq_port) {
             console.log("[FFM] starting Mojo-Webqq...");
 
             var cmd = 'perl';
-            var args = ['perl/start.pl', '--node-port=' + this.port, '--openqq-port=' + this.openqq_port];
+            var args = [path.resolve(__dirname, '..') + '/perl/start.pl', '--node-port=' + this.port, '--openqq-port=' + this.openqq_port];
 
             this.proc = spawn(cmd, args, {stdio: "inherit"});
 
