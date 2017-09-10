@@ -50,9 +50,9 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
         RecyclerView recyclerView = findViewById(android.R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mAdapter = new RegistrationIdsAdapter();
-        mAdapter.addRule(RegistrationId.class, RegistrationIdViewHolder.CREATOR);
-        mAdapter.addRule(CharSequence.class, TitleViewHolder.CREATOR);
+        mAdapter = new RegistrationIdsAdapter()
+                .addRule(RegistrationId.class, RegistrationIdViewHolder.CREATOR)
+                .addRule(CharSequence.class, TitleViewHolder.CREATOR);
 
         recyclerView.setAdapter(mAdapter);
 

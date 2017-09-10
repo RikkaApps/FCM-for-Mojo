@@ -67,8 +67,6 @@ public class NotificationBuilderImplO extends NotificationBuilderImplBase {
         channel.setShowBadge(false);
         channels.add(channel);
 
-        notificationManager.createNotificationChannels(channels);
-
         channel = new NotificationChannel(NOTIFICATION_CHANNEL_SERVER,
                 context.getString(R.string.notification_channel_server_message),
                 NotificationManager.IMPORTANCE_HIGH);
@@ -77,5 +75,7 @@ public class NotificationBuilderImplO extends NotificationBuilderImplBase {
         channel.setVibrationPattern(new long[]{0, 100, 0, 100});
         channel.setShowBadge(false);
         channels.add(channel);
+
+        notificationManager.createNotificationChannels(channels);
     }
 }
