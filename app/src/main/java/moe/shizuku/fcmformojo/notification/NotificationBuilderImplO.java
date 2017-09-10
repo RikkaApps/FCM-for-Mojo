@@ -70,7 +70,7 @@ public class NotificationBuilderImplO extends NotificationBuilderImplBase {
         notificationManager.createNotificationChannels(channels);
 
         channel = new NotificationChannel(NOTIFICATION_CHANNEL_SERVER,
-                context.getString(R.string.notification_channel_friend_message),
+                context.getString(R.string.notification_channel_server_message),
                 NotificationManager.IMPORTANCE_HIGH);
         channel.enableLights(true);
         channel.setLightColor(context.getColor(R.color.colorServerNotification));
