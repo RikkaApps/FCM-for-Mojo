@@ -51,8 +51,8 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mAdapter = new RegistrationIdsAdapter()
-                .addRule(RegistrationId.class, RegistrationIdViewHolder.CREATOR)
-                .addRule(CharSequence.class, TitleViewHolder.CREATOR);
+                .putRule(RegistrationId.class, RegistrationIdViewHolder.CREATOR)
+                .putRule(CharSequence.class, TitleViewHolder.CREATOR);
 
         recyclerView.setAdapter(mAdapter);
 
@@ -60,6 +60,9 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
 
         updateItems();
         fetchRegistrationIds();
+
+        // 设为 null 主界面就不会再提示需要注意 token
+        FFMSettings.putNewToken(null);
     }
 
     @Override

@@ -81,9 +81,21 @@ public class ServerStatusPreference extends Preference {
         });
     }
 
+    private void updateTokenChanged() {
+        if (mViewHolder != null) {
+            View tokenChangedCard = ((ViewGroup) mViewHolder.itemView).getChildAt(2);
+
+            if (FFMSettings.getNewToken() != null) {
+                tokenChangedCard.setVisibility(View.VISIBLE);
+            } else {
+                tokenChangedCard.setVisibility(View.GONE);
+            }
+        }
+    }
+
     private void updateVersion(String server) {
         if (mViewHolder != null) {
-            CardView versionCard = (CardView) ((ViewGroup) mViewHolder.itemView).getChildAt(1);
+            View versionCard = ((ViewGroup) mViewHolder.itemView).getChildAt(1);
 
             if (server != null
                     && !server.equals(BuildConfig.REQUIRE_SERVER_VERSION)) {
@@ -149,8 +161,6 @@ public class ServerStatusPreference extends Preference {
             Drawable icon = context.getDrawable(R.drawable.ic_status_error_24dp);
             updateStatus(context.getString(R.string.status_webqq_dead), color, icon);
         }
-
-        updateVersion(status.getVersion());
     }
 
     private void updateStatus(String error) {
@@ -173,13 +183,16 @@ public class ServerStatusPreference extends Preference {
                     public void accept(FFMStatus status) throws Exception {
                         if (status != null) {
                             updateStatus(status);
+                            updateVersion(status.getVersion());
                         }
+                        updateTokenChanged();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         updateStatus(throwable.getMessage());
                         updateVersion(null);
+                        updateTokenChanged();
                     }
                 });
     }

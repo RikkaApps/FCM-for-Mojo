@@ -29,6 +29,7 @@ public class FFMSettings {
     public static final String DOWNLOADS_URI = "downloads_uri";
     public static final String LOCAL_GROUP_WHITELIST = "group_whitelist";
     public static final String LOCAL_DISCUSS_WHITELIST = "discuss_whitelist";
+    public static final String NEW_TOKEN = "new_token";
 
     public static void init(Context context) {
         Settings.init(context);
@@ -164,5 +165,13 @@ public class FFMSettings {
 
     public static int getLocalDiscussWhitelistValue() {
         return Settings.getInt(LOCAL_DISCUSS_WHITELIST, -1);
+    }
+
+    public static void putNewToken(String token) {
+        Settings.putString(NEW_TOKEN, token);
+    }
+
+    public static String getNewToken() {
+        return Settings.getString(NEW_TOKEN, null);
     }
 }
