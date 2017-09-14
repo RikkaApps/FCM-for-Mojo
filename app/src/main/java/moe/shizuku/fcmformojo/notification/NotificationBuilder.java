@@ -11,7 +11,6 @@ import android.support.v4.util.LongSparseArray;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.model.Chat;
-import moe.shizuku.fcmformojo.model.Chat.ChatType;
 import moe.shizuku.fcmformojo.model.PushChat;
 import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
 import moe.shizuku.fcmformojo.utils.ChatMessagesList;
@@ -92,20 +91,19 @@ public class NotificationBuilder {
         mMessageCount ++;
         mSendersCount = mMessages.size();
 
-        if (shouldNotify(context, chat)) {
+        if (shouldNotify(context)) {
             getImpl().notify(context, chat, this);
         }
     }
 
-    private boolean shouldNotify(Context context, Chat chat) {
+    private boolean shouldNotify(Context context) {
         String foreground = FFMApplication.get(context).getForegroundPackage();
         if (FFMSettings.getProfile().getPackageName().equals(foreground)) {
             clearMessages();
             return false;
         }
 
-        return chat.getLatestMessage().isAt()
-                || FFMSettings.getNotificationEnabled(chat.getType() != ChatType.FRIEND);
+        return true;
     }
 
     /**
