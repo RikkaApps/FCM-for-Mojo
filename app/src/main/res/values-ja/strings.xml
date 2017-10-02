@@ -4,8 +4,8 @@
     <string name="notification_messages_multi_sender">%2$dつ 連絡先からの %1$d件 メッセージ</string>
     <string name="notification_action_reply" formatted="false">%s に返信</string>
 
-    <string name="update_avatar">Update avatar</string>
-    <string name="update_avatar_summary">Update friends and groups avatar (restart app maybe required to take effect)</string>
+    <string name="update_avatar">画像を更新</string>
+    <string name="update_avatar_summary">友達やグループの画像を更新する(アプリを再開して有効する)</string>
 
     <string name="friend_messages">友達メッセージ</string>
     <string name="group_messages">グループメッセージ</string>
@@ -37,15 +37,15 @@
     <string name="select_qq">QQアプリを選択</string>
     <string name="select_qq_summary">これは、通知がクリックされたときに使用されます。</string>
 
-    <string name="at_as_friend">君を\@たメッセージは友達からとして扱われます。</string>
+    <string name="at_as_friend">君を言及するメッセージは友のを見なす</string>
 
     <string name="dialog_token_share">共有</string>
 
     <string name="get_foreground">フォアグラウンドアプリを取得する方法</string>
     <string-array name="get_foreground">
         <item>フォアグランドアプリを検出しない</item>
-        <item>使用統計API（no multi-user support）</item>
-        <item>Shizuku（multi-user support）</item>
+        <item>使用統計API（複数ユーザーをサポートしない）</item>
+        <item>Shizuku（複数ユーザーをサポートする）</item>
     </string-array>
 
     <string name="http_usernames">HTTP ユーザ</string>
@@ -55,14 +55,14 @@
 
     <string name="notification_channel_friend_message">友達メッセージ</string>
     <string name="notification_channel_group_message">グループメッセージ</string>
-    <string name="notification_channel_progress_message">Progress</string>
-    <string name="notification_channel_server_message">Server messages</string>
+    <string name="notification_channel_progress_message">進行する</string>
+    <string name="notification_channel_server_message">サーバーメッセージ</string>
 
     <string name="notification_style">通知スタイル</string>
 
-    <string name="notification_fetching_list">Fetching friends and groups list…</string>
-    <string name="notification_fetching">Fetching avatar…</string>
-    <string name="notification_fetching_progress">%1$d of %2$d</string>
+    <string name="notification_fetching_list">友達やグループのリストを取得しています…</string>
+    <string name="notification_fetching">を取得しています</string>
+    <string name="notification_fetching_progress">%2$d 中の %1$d</string>
 
     <string name="display_name_qq">QQ</string>
     <string name="display_name_tim">TIM</string>
@@ -73,89 +73,89 @@
 
     <string name="action_about">アプリについて</string>
 
-    <string name="about_icon_credits"><![CDATA[Thanks <a href="https://twitter.com/xiaoya_er">小雅</a> for illustrating app icon]]></string>
+    <string name="about_icon_credits"><![CDATA[このアプリのアイコンを挿絵したの<a href="https://twitter.com/xiaoya_er">小雅</a>に感謝します<br/>日本語翻訳：<a href="https://twitter.com/Sakura_Sa233">佐倉さふみ</a>（きっと間違ったとこがいっぱいあって、いつも指摘してください]]></string>
 
-    <string name="notification_message_image">[Image]</string>
+    <string name="notification_message_image">[画像]</string>
 
-    <string name="notification_qr_code_downloaded">QR code downloaded</string>
-    <string name="notification_cannot_download">Can\'t download QR code</string>
-    <string name="notification_tap_open_qq">Tap to open %s to scan the QR code.</string>
-    <string name="notification_network_issue">It may be a network issue.</string>
-    <string name="notification_permission_issue">It may be required permission is not granted.</string>
-    <string name="notification_singing_in">Signing in…</string>
-    <string name="notification_tap_open_qr_code_in_browser">Tap to open QR code in browser.</string>
-    <string name="notification_tap_copy_qr_code">Tap to copy QR code URL.</string>
-    <string name="notification_action_open_in_browser">Open in browser</string>
-    <string name="notification_action_copy_to_clipboard">Copy to clipboard</string>
-    <string name="notification_action_send">Send</string>
-    <string name="dialog_title_send_via">Send via…</string>
-    <string name="cannot_request_permission">Can\'t request permission.</string>
+    <string name="notification_qr_code_downloaded">QRコードダウンロードした</string>
+    <string name="notification_cannot_download">QRコードをダウンロード出来ません</string>
+    <string name="notification_tap_open_qq">タップして ％s を開く、QRコードをスキャンする</string>
+    <string name="notification_network_issue">ネットワークエラー</string>
+    <string name="notification_permission_issue">必要な許可が与えられていない</string>
+    <string name="notification_singing_in">サインイン…</string>
+    <string name="notification_tap_open_qr_code_in_browser">タップして、ブラウザでQRコードが開く</string>
+    <string name="notification_tap_copy_qr_code">タップして、QRコードのURLをコピーする</string>
+    <string name="notification_action_open_in_browser">ブラウザで開く</string>
+    <string name="notification_action_copy_to_clipboard">クリップボードにコピー</string>
+    <string name="notification_action_send">送信</string>
+    <string name="dialog_title_send_via">送信…</string>
+    <string name="cannot_request_permission">権限がありません</string>
 
-    <string name="notification_server_stop">Mojo-Webqq stopped</string>
-    <string name="notification_tap_to_restart">You need to restart it in your server.</string>
-    <string name="action_upload_to_server">Upload to server</string>
-    <string name="manage_devices">Manage devices</string>
-    <string name="manage_devices_summary">Manage registered devices that will receive messages</string>
+    <string name="notification_server_stop">Mojo-Webqq 停止したstring>
+    <string name="notification_tap_to_restart">サーバーで再起動するが必要</string>
+    <string name="action_upload_to_server">サーバーにアップロードする</string>
+    <string name="manage_devices">デバイスを管理</string>
+    <string name="manage_devices_summary">登録済みのデバイスを管理する</string>
     <string name="devices_name">%s</string>
-    <string name="devices_name_this">%s (this device)</string>
-    <string name="register_time">register time: %s</string>
-    <string name="manage_devices_header">You can manager devices that will receive messages here.\nTo add this device, please tap add button in toolbar.\nAfter editing, you need to tap upload button in the toolbar to upload new configuration to sever.</string>
-    <string name="action_add_this_device">Add this device</string>
-    <string name="button_delete">Delete</string>
-    <string name="manage_webqq">Mojo-Webqq control</string>
-    <string name="manage_webqq_summary">Manage server setting and manage Mojo-Webqq service</string>
-    <string name="stop_webqq">Stop</string>
-    <string name="restart_webqq">Restart</string>
-    <string name="server_status">Server status</string>
-    <string name="server_settings">Server settings</string>
-    <string name="server_settings_summary">Change server URL, registered devices and control Mojo-Webqq</string>
-    <string name="notification_settings">Notification settings</string>
-    <string name="notification_settings_summary">Change notification behavior and style</string>
+    <string name="devices_name_this">%s (本デバイス)</string>
+    <string name="register_time">登録時間: %s</string>
+    <string name="manage_devices_header">ここに登録済みのデバイスを管理することができます\nデバイスを追加するには、ツールバーの追加ボタンをタップしてください。\n編集後、ツールバーのアップロードボタンをタップして新しい設定をアップロードする。</string>
+    <string name="action_add_this_device">デバイスを追加</string>
+    <string name="button_delete">削除</string>
+    <string name="manage_webqq">Mojo-Webqq コントロール</string>
+    <string name="manage_webqq_summary">サーバ設定とMojo-Webqqサービスの管理</string>
+    <string name="stop_webqq">停止</string>
+    <string name="restart_webqq">再開</string>
+    <string name="server_status">サーバー状態</string>
+    <string name="server_settings">サーバ設定</string>
+    <string name="server_settings_summary">サーバーURLや登録済みのデバイスを変更、Mojo-Webqqをコントロールする</string>
+    <string name="notification_settings">通知設定</string>
+    <string name="notification_settings_summary">通知の動作とスタイルを変更する</string>
     <plurals name="status_running">
-        <item quantity="other">Running, %d devices registered.</item>
+        <item quantity="other">実行中、％d個のデバイスが登録されています</item>
     </plurals>
-    <string name="status_running_no_device">Running, but no device is registered.</string>
-    <string name="status_webqq_dead">Mojo-Webqq is not running.</string>
-    <string name="status_webqq_error">Running, but the log in QR code has not yet been scanned or other error.</string>
-    <string name="status_waiting_refresh">Waiting for refresh…</string>
-    <string name="status_cannot_connect_server_error">Can\'t connect to server: %s.</string>
-    <string name="status_token_changed">Token may have changed, you may need to add this device and upload again in Manage Devices.</string>
-    <string name="restart_webqq_summary">Restart Mojo-Webqq on server (if not running)</string>
-    <string name="action_donate">Donate</string>
-    <string name="dialog_donate_title">Pay Rikka NOW ////</string>
-    <string name="dialog_donate_message">Rikka have spent a lot time on this project, so Rikka should be paied. (Alipay only)</string>
-    <string name="dialog_donate_ok">Pay NOW</string>
-    <string name="dialog_donate_no">Bad Rikka</string>
-    <string name="dialog_donate_copy">Copy account</string>
-    <string name="stop_webqq_summary">Force stop Mojo-Webqq on server</string>
-    <string name="status_version_not_match">Server version (%1$s) do not match client requirement (%2$s), some features may not work as excepted.</string>
-    <string name="dialog_config_not_uploaded_title">Settings have been changed</string>
-    <string name="dialog_config_not_uploaded_message">You will lost your changes if you do not upload them to server.</string>
-    <string name="dialog_config_not_uploaded_exit">Discard changes</string>
-    <string name="dialog_config_not_uploaded_upload">Upload</string>
-    <string name="settings_per_group_title">Per-group settings</string>
-    <string name="whitelist_summary_group_on">Only receive messages from enabled groups</string>
-    <string name="whitelist_summary_group_off">Receive messages from all groups</string>
-    <string name="dialog_no_google_title">Google service framework not found</string>
-    <string name="dialog_no_google_message">Google service framework is not installed or installed but disabled.\nFFM relays on Firebase Cloud Messaging and it requires Google service framework.</string>
-    <string name="dialog_no_google_exit">Exit FFM</string>
-    <string name="toast_succeeded">Succeeded.</string>
-    <string name="toast_something_wroing">Something wrong:\n%s</string>
-    <string name="toast_nothing_changed">Nothing changed.</string>
-    <string name="toast_token_exists">Already added this devices.</string>
-    <string name="toast_token_requesting">Can\'t get token, try requesting…</string>
-    <string name="whitelist_group_no_uid">Can\'t toggle because unable to get group uid</string>
-    <string name="whitelist_summary_discuss_on">Only receive messages from enabled discusses</string>
-    <string name="whitelist_summary_discuss_off">Receive messages from all discusses</string>
-    <string name="settings_per_discuss_title">Per-discuss settings</string>
+    <string name="status_running_no_device">実行中、デバイスは登録されていません。</string>
+    <string name="status_webqq_dead">Mojo-Webqq が実行していません</string>
+    <string name="status_webqq_error">実行中、QRコードがまだスキャンされていないか、その他のエラーです。</string>
+    <string name="status_waiting_refresh">リフレッシュを待ち…</string>
+    <string name="status_cannot_connect_server_error">サーバーに接続できない: %s.</string>
+    <string name="status_token_changed">トークンが変更されたの可能性がある。このデバイスを追加するのため、マネージャーデバイスで再度アップロードするの必要があります。</string>
+    <string name="restart_webqq_summary">サーバーのMojo-Webqqを再開する (もし進行していない)</string>
+    <string name="action_donate">寄付</string>
+    <string name="dialog_donate_title">Rikkaに今すっぐ支払う ////</string>
+    <string name="dialog_donate_message">Rikkaはこのプロジェクトに多くの時間を費やしたので、Rikkaは支払いを受けるべきです。（Alipayのみ）</string>
+    <string name="dialog_donate_ok">今すっぐ支払う</string>
+    <string name="dialog_donate_no">Rikkaの悪い</string>
+    <string name="dialog_donate_copy">アカウントをコピー</string>
+    <string name="stop_webqq_summary">サーバーのMojo-Webqqを強制的に停止する</string>
+    <string name="status_version_not_match">サーバーのバージョン(%1$s)はクライアントの要求(%2$s)と一致しないので、一部の機能が動作しない可能性があります</string>
+    <string name="dialog_config_not_uploaded_title">設定が変更されました</string>
+    <string name="dialog_config_not_uploaded_message">サーバーにアップロードしないと、変更が失われますぞ</string>
+    <string name="dialog_config_not_uploaded_exit">変更を破棄</string>
+    <string name="dialog_config_not_uploaded_upload">アップロード</string>
+    <string name="settings_per_group_title">グループ設定</string>
+    <string name="whitelist_summary_group_on">有効にしたグループからのメッセージを受信するのみ</string>
+    <string name="whitelist_summary_group_off">すべてのグループからのメッセージを受信する</string>
+    <string name="dialog_no_google_title">Googleサービスフレームワークが見つかりません</string>
+    <string name="dialog_no_google_message">Googleサービスフレームワークはインストールしていないか、インストールされている無効になっています。\nFFMはFirebase Cloud Messaging上で中継のため、Googleサービスフレームワークが必要です。</string>
+    <string name="dialog_no_google_exit">FFMを終了</string>
+    <string name="toast_succeeded">成功</string>
+    <string name="toast_something_wroing">不正なこと:\n%s</string>
+    <string name="toast_nothing_changed">何も変わされなかった</string>
+    <string name="toast_token_exists">すでにこのデバイスが追加された</string>
+    <string name="toast_token_requesting">トークンを取得できません、再リクエスト中…</string>
+    <string name="whitelist_group_no_uid">グループのuidを取得できないので切り替えできません</string>
+    <string name="whitelist_summary_discuss_on">有効にした討論からのメッセージを受信するのみ</string>
+    <string name="whitelist_summary_discuss_off">すべての討論からのメッセージを受信する</string>
+    <string name="settings_per_discuss_title">討論設定</string>
     <plurals name="settings_per_group_summary_on">
-        <item quantity="zero">Only receive messages from %d group</item>
-        <item quantity="one">Only receive messages from %d group</item>
-        <item quantity="other">Only receive messages from %d groups</item>
+        <item quantity="zero">％d個グループからのメッセージを受信するのみ</item>
+        <item quantity="one">％d個グループからのメッセージを受信するのみ</item>
+        <item quantity="other">％d個グループからのメッセージを受信するのみ</item>
     </plurals>
     <plurals name="settings_per_discuss_summary_on">
-        <item quantity="zero">Only receive messages from %d discuss</item>
-        <item quantity="one">Only receive messages from %d discuss</item>
-        <item quantity="other">Only receive messages from %d discusses</item>
+        <item quantity="zero">％d個討論からのメッセージを受信するのみ</item>
+        <item quantity="one">％d個討論からのメッセージを受信するのみ</item>
+        <item quantity="other">％d個討論からのメッセージを受信するのみ</item>
     </plurals>
 </resources>
