@@ -91,7 +91,7 @@
     <string name="dialog_title_send_via">送信…</string>
     <string name="cannot_request_permission">権限がありません</string>
 
-    <string name="notification_server_stop">Mojo-Webqq 停止したstring>
+    <string name="notification_server_stop">Mojo-Webqq 停止した</string>
     <string name="notification_tap_to_restart">サーバーで再起動するが必要</string>
     <string name="action_upload_to_server">サーバーにアップロードする</string>
     <string name="manage_devices">デバイスを管理</string>
