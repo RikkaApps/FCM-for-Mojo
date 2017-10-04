@@ -1,5 +1,7 @@
 var spawn = require('child_process').spawn;
 var path = require('path');
+var fs = require('fs');
+const os = require('os');
 
 function MojoQQ(port, openqq_port) {
     this.proc = null;
@@ -7,7 +9,7 @@ function MojoQQ(port, openqq_port) {
     this.openqq_port = openqq_port;
 
     this.restart = function() {
-        if (this.proc === null || this.proc.killed) {
+        if (this.proc === null || this.proc.killed || !fs.existsSync(os.tmpdir()+'/mojo_webqq_pid_ffm.pid')) {
             console.log("[FFM] starting Mojo-Webqq...");
 
             var cmd = 'perl';
