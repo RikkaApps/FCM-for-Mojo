@@ -11,18 +11,19 @@ import java.lang.ref.WeakReference;
 import moe.shizuku.fcmformojo.notification.ChatIcon;
 
 /**
- * Created by rikka on 2017/7/29.
+ * Created by rikka on 2017/9/2.
  */
 
 @Keep
-public class Group {
+public class Discuss {
 
-    private long uid;
+    private long id;
     private String name;
+
     private WeakReference<Drawable> icon = new WeakReference<>(null);
 
-    public long getUid() {
-        return uid;
+    public long getId() {
+        return id;
     }
 
     public String getName() {
@@ -35,33 +36,10 @@ public class Group {
 
     public Drawable loadIcon(Context context) {
         if (icon == null || icon.get() == null) {
-            Bitmap bitmap = ChatIcon.getIcon(context, uid, Chat.ChatType.GROUP);
+            Bitmap bitmap = ChatIcon.getDefault(context, (int) (id % 7), true);
             Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
             icon = new WeakReference<>(drawable);
         }
         return icon.get();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Group group = (Group) o;
-
-        return uid == group.uid;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (uid ^ (uid >>> 32));
-    }
-
-    @Override
-    public String toString() {
-        return "Group{" +
-                "uid=" + uid +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

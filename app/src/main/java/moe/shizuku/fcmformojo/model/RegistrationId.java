@@ -38,9 +38,28 @@ public class RegistrationId {
     public static RegistrationId create() {
         String token = FirebaseInstanceId.getInstance().getToken();
         if (!TextUtils.isEmpty(token)) {
-            return new RegistrationId(token, Build.MODEL, System.currentTimeMillis());
+            return create(token);
         } else {
             return null;
         }
+    }
+
+    public static RegistrationId create(String token) {
+        return new RegistrationId(token, Build.MODEL, System.currentTimeMillis());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RegistrationId that = (RegistrationId) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

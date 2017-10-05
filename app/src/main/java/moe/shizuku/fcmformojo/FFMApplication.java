@@ -7,8 +7,12 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
+
 import java.util.UUID;
 
+import io.fabric.sdk.android.Fabric;
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
 import moe.shizuku.fcmformojo.api.FFMService;
 import moe.shizuku.fcmformojo.api.OpenQQService;
@@ -93,7 +97,7 @@ public class FFMApplication extends Application {
     }
 
     private static void initShizuku(Context context) {
-        if (sPrivilegedAPIs == null) {
+        if (sPrivilegedAPIs != null) {
             return;
         }
 
@@ -126,9 +130,19 @@ public class FFMApplication extends Application {
         });
     }
 
+    private static void initCrashReport(Context context) {
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build();
+
+        Fabric.with(context, crashlyticsKit);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        initCrashReport(this);
 
         mMainHandler = new Handler(getMainLooper());
 

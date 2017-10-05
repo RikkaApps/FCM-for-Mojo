@@ -6,6 +6,8 @@ var config = require('../config');
 
 var push = require('./push');
 
+var version = require('./package.json').version;
+
 var FFMConfig = require('./ffm-config');
 var ffmConfig = new FFMConfig(config.client_config);
 
@@ -44,21 +46,47 @@ proxy.on('error', function(err, req, res) {
 });
 
 function handle(req, res) {
-    var ffm = ffmConfig.data;
+    var data = ffmConfig.data;
     switch (req.url) {
         case '/ffm/send':
         case '/ffm/update_registration_ids':
         case '/ffm/update_notifications_toggle':
+        case '/ffm/update_group_whitelist':
+        case '/ffm/update_discuss_whitelist':
             handlePost(req, res);
             break;
 
+        case '/ffm/get_status':
+            res.writeHead(200, {"Content-Type": "application/json"});
+            res.end(JSON.stringify({
+                devices: data.registration_ids.length,
+                group_whitelist: {
+                    enabled: data.group_whitelist.enabled,
+                    count: data.group_whitelist.list.length
+                },
+                discuss_whitelist: {
+                    enabled: data.discuss_whitelist.enabled,
+                    count: data.discuss_whitelist.list.length
+                },
+                version: version,
+                running: mojoQQ.running()
+            }));
+            break;
         case '/ffm/get_registration_ids':
             res.writeHead(200, {"Content-Type": "application/json"});
-            res.end(JSON.stringify(ffm.registration_ids));
+            res.end(JSON.stringify(data.registration_ids));
             break;
         case '/ffm/get_notifications_toggle':
             res.writeHead(200, {"Content-Type": "application/json"});
-            res.end(JSON.stringify(ffm.notifications));
+            res.end(JSON.stringify(data.notifications));
+            break;
+        case '/ffm/get_group_whitelist':
+            res.writeHead(200, {"Content-Type": "application/json"});
+            res.end(JSON.stringify(data.group_whitelist));
+            break;
+        case '/ffm/get_discuss_whitelist':
+            res.writeHead(200, {"Content-Type": "application/json"});
+            res.end(JSON.stringify(data.discuss_whitelist));
             break;
         case '/ffm/restart':
             res.writeHead(200, {"Content-Type": "application/json"});
@@ -129,6 +157,22 @@ function onPostEnd(req, res, body) {
                 console.log('[FFM] new notification toggle ' + JSON.stringify(body));
             }
             break;
+        case '/ffm/update_group_whitelist':
+            ffmConfig.data.group_whitelist = body;
+            ffmConfig.save();
+
+            if (debug) {
+                console.log('[FFM] new group whitelist ' + JSON.stringify(body));
+            }
+            break;
+        case '/ffm/update_discuss_whitelist':
+            ffmConfig.data.discuss_whitelist = body;
+            ffmConfig.save();
+
+            if (debug) {
+                console.log('[FFM] new discuss whitelist ' + JSON.stringify(body));
+            }
+            break;
         default:
             res.writeHead(403, {
                 'Content-Type': 'text/plain'
@@ -143,8 +187,6 @@ function onPostEnd(req, res, body) {
 }
 
 function onSendMessage(body) {
-    var send = true;
-
     var type = body.type;
     var isAt = false;
     if (type === 1 || type === 2) {
@@ -152,30 +194,44 @@ function onSendMessage(body) {
     }
 
     // 好友及群组开关
-    if (ffmConfig.data.notifications !== undefined) {
-        var friend = ffmConfig.data.notifications.friend;
-        var group = ffmConfig.data.notifications.group;
+    var friend = ffmConfig.data.notifications.friend;
+    var group = ffmConfig.data.notifications.group;
 
-        if ((type === 1 || type === 2) && (group === false && (!isAt || friend === false))) {
-            send = false;
-
-            if (debug) {
-                console.log('[FFM] do not send "' + body.message.content + '", because group toggle.')
-            }
+    if ((type === 1 || type === 2) && (group === false && (!isAt || friend === false))) {
+        if (debug) {
+            console.log('[FFM] do not send "' + body.message.content + '", because group toggle.')
         }
 
-        if (type === 0 && friend === false) {
-            send = false;
+        return;
+    }
 
-            if (debug) {
-                console.log('[FFM] do not send "' + body.message.content + '", because friend toggle.')
-            }
+    if (type === 0 && friend === false) {
+        if (debug) {
+            console.log('[FFM] do not send "' + body.message.content + '", because friend toggle.')
         }
+
+        return;
     }
 
-    if (send) {
-        push.send(body);
+    var group_whitelist = ffmConfig.data.group_whitelist;
+    if (type === 1 && !isAt && group_whitelist.enabled && group_whitelist.list.indexOf(body.uid) === -1) {
+        if (debug) {
+            console.log('[FFM] do not send "' + body.message.content + '", because group is not in whitelist.')
+        }
+
+        return;
     }
+
+    var discuss_whitelist = ffmConfig.data.discuss_whitelist;
+    if (type === 2 && !isAt && discuss_whitelist.enabled && discuss_whitelist.list.indexOf(body.name) === -1) {
+        if (debug) {
+            console.log('[FFM] do not send "' + body.message.content + '", because discuss is not in whitelist.')
+        }
+
+        return;
+    }
+
+    push.send(body);
 }
 
 var requestListener = function(req, res) {

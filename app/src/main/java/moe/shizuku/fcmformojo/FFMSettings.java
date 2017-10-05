@@ -2,6 +2,7 @@ package moe.shizuku.fcmformojo;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
 import android.support.v4.provider.DocumentFile;
 
@@ -26,6 +27,9 @@ public class FFMSettings {
     public static final String QQ_PACKAGE = "qq_package";
     public static final String GET_FOREGROUND = "get_foreground";
     public static final String DOWNLOADS_URI = "downloads_uri";
+    public static final String LOCAL_GROUP_WHITELIST = "group_whitelist";
+    public static final String LOCAL_DISCUSS_WHITELIST = "discuss_whitelist";
+    public static final String NEW_TOKEN = "new_token";
 
     public static void init(Context context) {
         Settings.init(context);
@@ -44,11 +48,25 @@ public class FFMSettings {
     }
 
     public static int getNotificationPriority(boolean group) {
-        String value = Settings.getString(group ? "priority_group" : "priority", group ? "0" : "1");
+        String value = Settings.getString(group ? "priority_group" : "priority", "1");
         return Integer.parseInt(value);
     }
 
-    public static int getNotificationVibrate(boolean group) {
+    @IntDef({
+            Vibrate.DISABLED,
+            Vibrate.DEFAULT,
+            Vibrate.SHORT,
+            Vibrate.LONG,
+    })
+    @Retention(SOURCE)
+    public @interface Vibrate {
+        int DISABLED = 0;
+        int DEFAULT = 1;
+        int SHORT = 2;
+        int LONG = 3;
+    }
+
+    public static @Vibrate int getNotificationVibrate(boolean group) {
         String value = Settings.getString(group ? "vibrate_group" : "vibrate", "1");
         return Integer.parseInt(value);
     }
@@ -131,5 +149,29 @@ public class FFMSettings {
             pickedDir = dir;
 
         return pickedDir;
+    }
+
+    public static void putLocalGroupWhitelistValue(int value) {
+        Settings.putInt(LOCAL_GROUP_WHITELIST, value);
+    }
+
+    public static int getLocalGroupWhitelistValue() {
+        return Settings.getInt(LOCAL_GROUP_WHITELIST, -1);
+    }
+
+    public static void putLocalDiscussWhitelistValue(int value) {
+        Settings.putInt(LOCAL_DISCUSS_WHITELIST, value);
+    }
+
+    public static int getLocalDiscussWhitelistValue() {
+        return Settings.getInt(LOCAL_DISCUSS_WHITELIST, -1);
+    }
+
+    public static void putNewToken(String token) {
+        Settings.putString(NEW_TOKEN, token);
+    }
+
+    public static String getNewToken() {
+        return Settings.getString(NEW_TOKEN, null);
     }
 }

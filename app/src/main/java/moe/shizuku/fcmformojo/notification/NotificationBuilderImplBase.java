@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.support.v4.provider.DocumentFile;
 
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
+import moe.shizuku.fcmformojo.FFMSettings.Vibrate;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.app.MessagingStyle;
 import moe.shizuku.fcmformojo.model.Chat;
@@ -96,13 +98,16 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                         .setColor(context.getColor(R.color.colorServerNotification))
                         .setSmallIcon(R.drawable.ic_noti_24dp)
                         .setWhen(System.currentTimeMillis())
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setVibrate(new long[0])
                         .setOngoing(true)
                         .setAutoCancel(true)
                         .setShowWhen(true)
                         .setContentIntent(PendingIntent.getService(context, REQUEST_CODE_RESTART_WEBQQ, FFMIntentService.restartIntent(context), PendingIntent.FLAG_ONE_SHOT))
                         .addAction(R.drawable.ic_noti_dismiss_24dp, context.getString(android.R.string.cancel), PendingIntent.getBroadcast(context, REQUEST_CODE_DISMISS_SYSTEM_NOTIFICATION, FFMBroadcastReceiver.dismissSystemNotificationIntent(), 0));
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    builder.setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setVibrate(new long[0]);
+                }
 
                 nb.getNotificationManager().notify(NOTIFICATION_ID_SYSTEM, builder.build());
                 break;
@@ -124,7 +129,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 sb.append(message.getContent(context)).append('\n');
             }
             style.bigText(sb.toString().trim());
-            style.setSummaryText(context.getString(R.string.message_format, chat.getMessages().getSize()));
+            style.setSummaryText(context.getString(R.string.notification_messages, chat.getMessages().getSize()));
 
             return style;
         } else {
@@ -140,7 +145,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 style.addMessage(message.getContent(context), message.getTimestamp(), message.getSender());
             }
 
-            style.setSummaryText(context.getString(R.string.message_format, chat.getMessages().getSize()));
+            style.setSummaryText(context.getString(R.string.notification_messages, chat.getMessages().getSize()));
 
             return style;
         }
@@ -158,7 +163,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         Intent intent = FFMBroadcastReceiver.replyIntent(chat);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        String replyLabel = context.getString(R.string.reply, chat.getName());
+        String replyLabel = context.getString(R.string.notification_action_reply, chat.getName());
         RemoteInput remoteInput = new RemoteInput.Builder(NOTIFICATION_INPUT_KEY)
                 .setLabel(replyLabel)
                 .build();
@@ -176,7 +181,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = createBuilder(context, null)
-                .setSubText(String.format(context.getString(R.string.messages_format), nb.getMessageCount(), nb.getSendersCount()))
+                .setSubText(String.format(context.getString(R.string.notification_messages_multi_sender), nb.getMessageCount(), nb.getSendersCount()))
                 .setShowWhen(true)
                 .setWhen(System.currentTimeMillis())
                 .setGroup(GROUP_KEY)
@@ -215,42 +220,41 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         }
 
         // @ 消息当作好友消息处理
-        boolean group = chat.isGroup() && !chat.getLatestMessage().isAt();
-        if (!group) {
+        boolean isFriend = chat.isFriend() || (chat.isGroup() && chat.getLatestMessage().isAt());
+        if (isFriend) {
             builder.setChannelId(NOTIFICATION_CHANNEL_FRIENDS);
         }
 
-        // sound
-        builder.setSound(FFMSettings.getNotificationSound(group));
+        // support library still set them on O
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            // sound
+            builder.setSound(FFMSettings.getNotificationSound(!isFriend));
 
-        // heads-up
-        int priority = FFMSettings.getNotificationPriority(group);
-        builder.setPriority(priority);
-        if (priority >= NotificationCompat.PRIORITY_HIGH || chat.getLatestMessage().isAt()) {
-            builder.setVibrate(new long[0]);
-        }
+            // priority
+            int priority = FFMSettings.getNotificationPriority(!isFriend);
+            builder.setPriority(priority);
 
-        // vibrate
-        int vibrate = FFMSettings.getNotificationVibrate(group);
-        if (vibrate != 0) {
+            // vibrate
+            int vibrate = FFMSettings.getNotificationVibrate(!isFriend);
             switch (vibrate) {
-                case 1:
-                    builder.setVibrate(null);
+                case Vibrate.DISABLED:
+                    break;
+                case Vibrate.DEFAULT:
                     builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
                     break;
-                case 2:
+                case Vibrate.SHORT:
                     builder.setVibrate(new long[]{0, 100, 0, 100});
                     break;
-                case 3:
+                case Vibrate.LONG:
                     builder.setVibrate(new long[]{0, 1000});
                     break;
             }
-        }
 
-        // lights
-        if (FFMSettings.getNotificationLight(group)
-                && priority >= NotificationCompat.PRIORITY_DEFAULT) {
-            builder.setLights(context.getColor(R.color.colorNotification), 1000, 1000);
+            // lights
+            if (FFMSettings.getNotificationLight(!isFriend)
+                    && priority >= NotificationCompat.PRIORITY_DEFAULT) {
+                builder.setLights(context.getColor(R.color.colorNotification), 1000, 1000);
+            }
         }
 
         return builder;

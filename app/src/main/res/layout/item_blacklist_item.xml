@@ -14,17 +14,16 @@
     android:gravity="center_vertical">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_android_24dp"
-        android:tint="?android:textColorSecondary"
+        android:id="@android:id/icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:importantForAccessibility="no"/>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="20dp"
         android:orientation="vertical">
 
         <TextView
@@ -32,27 +31,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-            tools:text="ONEPLUS A3010"/>
+            tools:text="群名"/>
 
         <TextView
             android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
-            android:textStyle="italic"
-            tools:text="This device"/>
+            tools:text="735608"/>
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@android:id/button1"
-        android:layout_width="24dp"
-        android:layout_height="32dp"
+    <Switch
+        android:id="@android:id/switch_widget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_delete_24dp"
-        android:tint="?android:textColorSecondary"
-        android:contentDescription="@string/button_delete" />
+        android:background="@null"
+        android:clickable="false"
+        android:focusable="false"/>
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,10 +13,13 @@ import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
 
 import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.settings.MainSettingsFragment;
@@ -35,6 +39,33 @@ public class MainActivity extends BaseActivity {
                     .commit();
         }
 
+        checkGoogleServiceFramework();
+        requestPermission();
+    }
+
+    private void checkGoogleServiceFramework() {
+        boolean ok = false;
+        try {
+            ok = getPackageManager().getApplicationInfo("com.google.android.gsf", 0).enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+
+        if (!ok) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.dialog_no_google_title)
+                    .setMessage(R.string.dialog_no_google_message)
+                    .setPositiveButton(R.string.dialog_no_google_exit, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
+        }
+    }
+
+    private void requestPermission() {
         try {
             StorageManager sm = getSystemService(StorageManager.class);
             StorageVolume volume = sm.getPrimaryStorageVolume();
@@ -42,6 +73,9 @@ public class MainActivity extends BaseActivity {
             startActivityForResult(intent, REQUEST_CODE);
         } catch (Exception e) {
             Toast.makeText(this, R.string.cannot_request_permission, Toast.LENGTH_LONG).show();
+            Log.wtf("FFM", "can't use Scoped Directory Access", e);
+
+            Crashlytics.logException(e);
         }
     }
 
@@ -61,6 +95,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
+        boolean isGooglePlay = "com.android.vending"
+                .equals(getPackageManager().getInstallerPackageName(BuildConfig.APPLICATION_ID));
+        menu.findItem(R.id.action_donate).setVisible(!isGooglePlay);
+
         return true;
     }
 
@@ -77,9 +116,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.action_donate:
                 new AlertDialog.Builder(this)
-                        .setTitle(R.string.donate_title)
-                        .setMessage(R.string.donate_message)
-                        .setPositiveButton(R.string.donate_ok, new DialogInterface.OnClickListener() {
+                        .setTitle(R.string.dialog_donate_title)
+                        .setMessage(R.string.dialog_donate_message)
+                        .setPositiveButton(R.string.dialog_donate_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Intent intent = new Intent(Intent.ACTION_VIEW,
@@ -87,13 +126,13 @@ public class MainActivity extends BaseActivity {
                                 ShizukuCompat.startActivity(MainActivity.this, intent, "com.eg.android.AlipayGphone");
                             }
                         })
-                        .setNegativeButton(R.string.donate_no, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.dialog_donate_no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Toast.makeText(MainActivity.this, "QAQ", Toast.LENGTH_SHORT).show();
                             }
                         })
-                        .setNeutralButton(R.string.donate_copy, new DialogInterface.OnClickListener() {
+                        .setNeutralButton(R.string.dialog_donate_copy, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ClipboardUtils.put(MainActivity.this, "rikka@xing.moe");

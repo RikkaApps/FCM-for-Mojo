@@ -41,7 +41,7 @@ public class Message implements Parcelable {
      * @return 消息内容
      */
     public String getContent(Context context) {
-        return content != null ? content : context.getString(R.string.message_image);
+        return content != null ? content : context.getString(R.string.notification_message_image);
     }
 
     /**

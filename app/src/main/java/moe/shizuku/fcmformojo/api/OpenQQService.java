@@ -3,6 +3,7 @@ package moe.shizuku.fcmformojo.api;
 import java.util.List;
 
 import io.reactivex.Single;
+import moe.shizuku.fcmformojo.model.Discuss;
 import moe.shizuku.fcmformojo.model.Friend;
 import moe.shizuku.fcmformojo.model.Group;
 import moe.shizuku.fcmformojo.model.SendResult;
@@ -28,6 +29,18 @@ public interface OpenQQService {
      */
     @GET("/openqq/get_group_info")
     Single<List<Group>> getGroupsInfo();
+
+    /**
+     * 查询群信息（不包含群成员）
+     */
+    @GET("/openqq/get_group_basic_info")
+    Single<List<Group>> getGroupsBasicInfo();
+
+    /**
+     * 查询群信息（不包含群成员）
+     */
+    @GET("/openqq/get_discuss_info")
+    Single<List<Discuss>> getDiscussesInfo();
 
     /**
      * 发送好友消息

@@ -62,20 +62,20 @@ public class RegistrationIdViewHolder extends BaseViewHolder<RegistrationId> {
             public void onClick(View view) {
                 final Context context = view.getContext();
                 new AlertDialog.Builder(context)
-                        .setMessage(Html.fromHtml("<font face=\"monospace\">" + FirebaseInstanceId.getInstance().getToken() + "</font>", Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE))
+                        .setMessage(Html.fromHtml(context.getString(R.string.dialog_token_message, FirebaseInstanceId.getInstance().getToken()), Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE))
                         .setPositiveButton(android.R.string.copy, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 ClipboardUtils.put(context, getData().getId());
                             }
                         })
-                        .setNeutralButton(R.string.share, new DialogInterface.OnClickListener() {
+                        .setNeutralButton(R.string.dialog_token_share, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 context.startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
                                                 .putExtra(Intent.EXTRA_TEXT, FirebaseInstanceId.getInstance().getToken())
                                                 .setType("text/plain")
-                                        , context.getString(R.string.share)));
+                                        , context.getString(R.string.dialog_token_share)));
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)

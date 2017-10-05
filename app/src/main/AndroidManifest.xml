@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="moe.shizuku.fcmformojo">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -45,6 +46,14 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".GroupWhitelistActivity"
+            android:label="@string/settings_per_group_title"/>
+
+        <activity
+            android:name=".DiscussWhitelistActivity"
+            android:label="@string/settings_per_group_title"/>
+
         <receiver
             android:name=".receiver.FFMBroadcastReceiver"
             android:exported="false">
@@ -69,12 +78,16 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="14724a50f9b4697ae7e68998e3a3004758c84b56" />
 
     </application>
 

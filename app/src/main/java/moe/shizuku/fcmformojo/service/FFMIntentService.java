@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ResultReceiver;
@@ -150,7 +151,7 @@ public class FFMIntentService extends IntentService {
 
         try {
             List<Friend> friends = OpenQQService.getFriendsInfo().blockingGet();
-            List<Group> groups = OpenQQService.getGroupsInfo().blockingGet();
+            List<Group> groups = OpenQQService.getGroupsBasicInfo().blockingGet();
 
             if (friends == null || groups == null) {
                 notificationManager.cancel(NOTIFICATION_ID_PROGRESS);
@@ -342,11 +343,14 @@ public class FFMIntentService extends IntentService {
                 .setChannelId(NOTIFICATION_CHANNEL_SERVER)
                 .setColor(getColor(R.color.colorServerNotification))
                 .setSmallIcon(R.drawable.ic_noti_download_24dp)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVibrate(new long[0])
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
                 .setShowWhen(true);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setVibrate(new long[0]);
+        }
 
         NotificationCompat.Action action;
 
@@ -358,11 +362,11 @@ public class FFMIntentService extends IntentService {
                 .getBroadcast(this, REQUEST_CODE_COPY, FFMBroadcastReceiver.copyToClipboardIntent(url), PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (intent.resolveActivity(getPackageManager()) != null) {
-            action = new NotificationCompat.Action.Builder(R.drawable.ic_noti_open_24dp, getString(R.string.open_in_browser), viewIntent)
+            action = new NotificationCompat.Action.Builder(R.drawable.ic_noti_open_24dp, getString(R.string.notification_action_open_in_browser), viewIntent)
                     .build();
         } else {
             // 这个人没有浏览器..
-            action = new NotificationCompat.Action.Builder(R.drawable.ic_noti_copy_24dp, getString(R.string.copy_to_clipboard), copyIntent)
+            action = new NotificationCompat.Action.Builder(R.drawable.ic_noti_copy_24dp, getString(R.string.notification_action_copy_to_clipboard), copyIntent)
                     .build();
         }
 
@@ -412,11 +416,11 @@ public class FFMIntentService extends IntentService {
                     Intent sendIntent = new Intent(Intent.ACTION_SEND)
                             .putExtra(Intent.EXTRA_STREAM, uri)
                             .setType("image/*");
-                    sendIntent = Intent.createChooser(sendIntent, getString(R.string.send_via));
+                    sendIntent = Intent.createChooser(sendIntent, getString(R.string.dialog_title_send_via));
                     if (sendIntent.resolveActivity(getPackageManager()) != null) {
                         NotificationCompat.Action sendAction = new NotificationCompat.Action.Builder(
                                 R.drawable.ic_noti_send_24dp,
-                                getString(R.string.send),
+                                getString(R.string.notification_action_send),
                                 PendingIntent.getActivity(this, REQUEST_CODE_SEND, sendIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                                 .build();
                         builder.addAction(sendAction);

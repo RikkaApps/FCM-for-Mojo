@@ -13,7 +13,8 @@ GetOptions(
 
 my $client = Mojo::Webqq->new(
     log_encoding           => 'utf8',
-    poll_failure_count_max => 20
+    poll_failure_count_max => 20,
+    account => 'ffm'
 );
 
 $client->load('UploadQRcode');

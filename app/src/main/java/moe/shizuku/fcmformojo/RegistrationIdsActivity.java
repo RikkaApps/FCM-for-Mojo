@@ -7,8 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.List;
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.Set;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -23,14 +28,15 @@ import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
 
 import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 
-public class RegistrationIdsActivity extends BaseActivity {
+public class RegistrationIdsActivity extends AbsConfigurationsActivity {
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    private RecyclerView mRecyclerView;
     private RegistrationIdsAdapter mAdapter;
 
     private boolean mRefreshed;
+
+    private Set<RegistrationId> mServerRegistrationIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +47,22 @@ public class RegistrationIdsActivity extends BaseActivity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mRecyclerView = findViewById(android.R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = findViewById(android.R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mAdapter = new RegistrationIdsAdapter();
-        mAdapter.addRule(RegistrationId.class, RegistrationIdViewHolder.CREATOR);
-        mAdapter.addRule(CharSequence.class, TitleViewHolder.CREATOR);
+        mAdapter = new RegistrationIdsAdapter()
+                .putRule(RegistrationId.class, RegistrationIdViewHolder.CREATOR)
+                .putRule(CharSequence.class, TitleViewHolder.CREATOR);
 
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
 
-        RecyclerViewHelper.fixOverScroll(mRecyclerView);
+        RecyclerViewHelper.fixOverScroll(recyclerView);
 
         updateItems();
-        requestRegistrationIds();
+        fetchRegistrationIds();
+
+        // 设为 null 主界面就不会再提示需要注意 token
+        FFMSettings.putNewToken(null);
     }
 
     @Override
@@ -62,7 +71,7 @@ public class RegistrationIdsActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    public void updateItems(List<RegistrationId> items) {
+    public void updateItems(Set<RegistrationId> items) {
         mRefreshed = true;
 
         mAdapter.getItems().clear();
@@ -80,39 +89,21 @@ public class RegistrationIdsActivity extends BaseActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    private void requestRegistrationIds() {
+    private void fetchRegistrationIds() {
         mCompositeDisposable.add(FFMService.getRegistrationIds()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<RegistrationId>>() {
+                .subscribe(new Consumer<Set<RegistrationId>>() {
                     @Override
-                    public void accept(List<RegistrationId> registrationIds) throws Exception {
+                    public void accept(Set<RegistrationId> registrationIds) throws Exception {
+                        mServerRegistrationIds = registrationIds;
+
                         updateItems(registrationIds);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                })
-        );
-    }
-
-    private void updateRegistrationIds() {
-        mCompositeDisposable.add(FFMService.updateRegistrationIds(mAdapter.getRegistrationIds())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<FFMResult>() {
-                    @Override
-                    public void accept(FFMResult registrationIds) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Succeed.", Toast.LENGTH_SHORT).show();
-
-                        LocalBroadcast.refreshStatus(getApplicationContext());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
                     }
                 })
         );
@@ -120,14 +111,43 @@ public class RegistrationIdsActivity extends BaseActivity {
 
     private void addDevice() {
         RegistrationId registrationId = RegistrationId.create();
-        if (registrationId == null) {
-            Toast.makeText(this, "Can't add because token is null.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (registrationId != null) {
+            addDevice(registrationId);
+        } else {
+            Toast.makeText(this, R.string.toast_token_requesting, Toast.LENGTH_SHORT).show();
 
+            mCompositeDisposable.add(Single
+                    .fromCallable(new Callable<String>() {
+                        @Override
+                        public String call() throws Exception {
+                            return FirebaseInstanceId.getInstance().getToken(getString(R.string.project_id), "FCM");
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(String token) throws Exception {
+                            addDevice(RegistrationId.create(token));
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+                            throwable.printStackTrace();
+
+                            Toast.makeText(RegistrationIdsActivity.this, getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
+
+                            Crashlytics.log("requesting token");
+                            Crashlytics.logException(throwable);
+                        }
+                    }));
+        }
+    }
+
+    private void addDevice(RegistrationId registrationId) {
         for (RegistrationId id : mAdapter.getRegistrationIds()) {
             if (id.getId().equals(registrationId.getId())) {
-                Toast.makeText(this, "Can't add because token already exists.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.toast_token_exists, Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -150,11 +170,44 @@ public class RegistrationIdsActivity extends BaseActivity {
     }
 
     @Override
+    public void uploadConfigurations() {
+        if (!isConfigurationsChanged()) {
+            Toast.makeText(getApplicationContext(), R.string.toast_nothing_changed, Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        final Set<RegistrationId> registrationIds = mAdapter.getRegistrationIds();
+        mCompositeDisposable.add(FFMService.updateRegistrationIds(registrationIds)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<FFMResult>() {
+                    @Override
+                    public void accept(FFMResult result) throws Exception {
+                        mServerRegistrationIds = registrationIds;
+
+                        Toast.makeText(getApplicationContext(), R.string.toast_succeeded, Toast.LENGTH_SHORT).show();
+
+                        LocalBroadcast.refreshStatus(getApplicationContext());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
+                    }
+                })
+        );
+    }
+
+    @Override
+    public boolean isConfigurationsChanged() {
+        return mServerRegistrationIds != null
+                && !mAdapter.getRegistrationIds().equals(mServerRegistrationIds);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_upload:
-                updateRegistrationIds();
-                return true;
             case R.id.action_add:
                 addDevice();
                 return true;

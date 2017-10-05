@@ -49,6 +49,26 @@
             android:enabled="false"/>
 
         <Preference
+            android:key="group_whitelist"
+            android:title="@string/settings_per_group_title">
+
+            <intent
+                android:targetPackage="moe.shizuku.fcmformojo"
+                android:targetClass="moe.shizuku.fcmformojo.GroupWhitelistActivity"/>
+
+        </Preference>
+
+        <Preference
+            android:key="discuss_whitelist"
+            android:title="@string/settings_per_discuss_title">
+
+            <intent
+                android:targetPackage="moe.shizuku.fcmformojo"
+                android:targetClass="moe.shizuku.fcmformojo.DiscussWhitelistActivity"/>
+
+        </Preference>
+
+        <Preference
             android:key="edit_channel_group"
             android:title="@string/notification_style"/>
 

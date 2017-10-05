@@ -67,15 +67,15 @@ public class NotificationBuilderImplO extends NotificationBuilderImplBase {
         channel.setShowBadge(false);
         channels.add(channel);
 
-        notificationManager.createNotificationChannels(channels);
-
         channel = new NotificationChannel(NOTIFICATION_CHANNEL_SERVER,
-                context.getString(R.string.notification_channel_friend_message),
+                context.getString(R.string.notification_channel_server_message),
                 NotificationManager.IMPORTANCE_HIGH);
         channel.enableLights(true);
         channel.setLightColor(context.getColor(R.color.colorServerNotification));
         channel.setVibrationPattern(new long[]{0, 100, 0, 100});
         channel.setShowBadge(false);
         channels.add(channel);
+
+        notificationManager.createNotificationChannels(channels);
     }
 }
