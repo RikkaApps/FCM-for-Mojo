@@ -18,7 +18,8 @@
 
 Mojo-Webqq：直接根据[官方教程](https://github.com/sjdy521/Mojo-Webqq#安装方法)即可
 
-Node.js：自己编译安装，或者直接[使用包管理器](https://nodejs.org/en/download/package-manager)
+Node.js：自己[编译安装](https://raw.githubusercontent.com/RikkaApps/FCM-for-Mojo/master/README.md)，
+或者直接[使用包管理器](https://nodejs.org/en/download/package-manager)
 
 ##### 下载（或更新）服务端
 
@@ -48,16 +49,14 @@ node node/index.js
 
 HTTP 基本认证通过 [http-auth 模块](https://github.com/http-auth/http-auth) 实现，在[这里](https://github.com/http-auth/http-auth#configurations)可以看到所有可用选项，下文只说明最简单的配置方法。
 
-创建一个每行的内容是 **用户名:密码** 或是 **用户名:密码 hash** 的文件。
+创建一个任意文件名，内容为`用户名:密码`的文件，下面是一个简单的例子：
 
-密码 hash 可以用如下的方式生成：
-
-```Shell
-$ openssl passwd
-Password:
-Verifying - Password:
-<这里就是密码 hash>
 ```
+username:passsword
+```
+
+在上面的例子中，客户端中的用户名填写为：`username`，密码填写为：`password`。
+你也可以通过写入多行实现多个用户名和密码
 
 编辑 ```config.js```，找到有 ```basic_auth``` 那几行并去掉附近的注释（即 ```/*``` 和 ```*/```）：
 ```js
