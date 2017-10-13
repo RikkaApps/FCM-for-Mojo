@@ -79,7 +79,7 @@
 
     <string name="notification_qr_code_downloaded">QRコードダウンロードした</string>
     <string name="notification_cannot_download">QRコードをダウンロード出来ません</string>
-    <string name="notification_tap_open_qq">タップして ％s を開く、QRコードをスキャンする</string>
+    <string name="notification_tap_open_qq">タップして %s を開く、QRコードをスキャンする</string>
     <string name="notification_network_issue">ネットワークエラー</string>
     <string name="notification_permission_issue">必要な許可が与えられていない</string>
     <string name="notification_singing_in">サインイン…</string>
@@ -112,7 +112,7 @@
     <string name="notification_settings">通知設定</string>
     <string name="notification_settings_summary">通知の動作とスタイルを変更する</string>
     <plurals name="status_running">
-        <item quantity="other">実行中、％d個のデバイスが登録されています</item>
+        <item quantity="other">実行中、%d個のデバイスが登録されています</item>
     </plurals>
     <string name="status_running_no_device">実行中、デバイスは登録されていません。</string>
     <string name="status_webqq_dead">Mojo-Webqq が実行していません</string>
