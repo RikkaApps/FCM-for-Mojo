@@ -14,7 +14,7 @@ public class Message implements Parcelable {
     private final String sender;
     private final String content;
     private final long timestamp;
-    private final boolean isAt;
+    private final int isAt;
 
     /**
      * 返回该条消息的发送者名称。
@@ -50,7 +50,7 @@ public class Message implements Parcelable {
      * @return 是否 @ 了用户自己
      */
     public boolean isAt() {
-        return isAt;
+        return isAt == 1;
     }
 
     /**
@@ -73,14 +73,14 @@ public class Message implements Parcelable {
         dest.writeString(this.sender);
         dest.writeString(this.content);
         dest.writeLong(this.timestamp);
-        dest.writeByte(this.isAt ? (byte) 1 : (byte) 0);
+        dest.writeByte((byte) this.isAt);
     }
 
     protected Message(Parcel in) {
         this.sender = in.readString();
         this.content = in.readString();
         this.timestamp = in.readLong();
-        this.isAt = in.readByte() != 0;
+        this.isAt = in.readByte();
     }
 
     public static final Parcelable.Creator<Message> CREATOR = new Parcelable.Creator<Message>() {
