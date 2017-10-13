@@ -1,7 +1,7 @@
 package moe.shizuku.fcmformojo.adapter;
 
 import moe.shizuku.fcmformojo.model.WhitelistState;
-import moe.shizuku.utils.recyclerview.BaseRecyclerViewAdapter;
+import moe.shizuku.support.recyclerview.BaseRecyclerViewAdapter;
 
 /**
  * Created by rikka on 2017/8/28.

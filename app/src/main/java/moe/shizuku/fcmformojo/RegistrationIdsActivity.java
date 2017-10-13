@@ -24,7 +24,7 @@ import moe.shizuku.fcmformojo.model.RegistrationId;
 import moe.shizuku.fcmformojo.utils.LocalBroadcast;
 import moe.shizuku.fcmformojo.viewholder.RegistrationIdViewHolder;
 import moe.shizuku.fcmformojo.viewholder.TitleViewHolder;
-import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
+import moe.shizuku.support.recyclerview.RecyclerViewHelper;
 
 import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 
@@ -50,7 +50,8 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
         RecyclerView recyclerView = findViewById(android.R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mAdapter = new RegistrationIdsAdapter()
+        mAdapter = new RegistrationIdsAdapter();
+        mAdapter.getCreatorPool()
                 .putRule(RegistrationId.class, RegistrationIdViewHolder.CREATOR)
                 .putRule(CharSequence.class, TitleViewHolder.CREATOR);
 

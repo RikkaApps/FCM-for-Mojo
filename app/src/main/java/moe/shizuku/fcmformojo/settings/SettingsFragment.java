@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import io.reactivex.disposables.CompositeDisposable;
 import moe.shizuku.preference.PreferenceFragment;
-import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
+import moe.shizuku.support.recyclerview.RecyclerViewHelper;
 
 /**
  * Created by Rikka on 2017/4/22.

@@ -14,7 +14,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.model.Discuss;
-import moe.shizuku.utils.recyclerview.BaseViewHolder;
+import moe.shizuku.support.recyclerview.BaseViewHolder;
 
 /**
  * Created by rikka on 2017/9/2.

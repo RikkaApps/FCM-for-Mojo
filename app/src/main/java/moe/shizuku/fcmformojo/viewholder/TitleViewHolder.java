@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.utils.recyclerview.BaseViewHolder;
+import moe.shizuku.support.recyclerview.BaseViewHolder;
 
 /**
  * Created by rikka on 2017/8/16.

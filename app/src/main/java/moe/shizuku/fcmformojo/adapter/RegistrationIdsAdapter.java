@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import moe.shizuku.fcmformojo.model.RegistrationId;
-import moe.shizuku.utils.recyclerview.BaseRecyclerViewAdapter;
+import moe.shizuku.support.recyclerview.BaseRecyclerViewAdapter;
 
 /**
  * Created by rikka on 2017/8/16.

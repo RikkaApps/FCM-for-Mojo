@@ -14,7 +14,7 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import moe.shizuku.fcmformojo.adapter.WhitelistAdapter;
-import moe.shizuku.utils.recyclerview.BaseViewHolder;
+import moe.shizuku.support.recyclerview.BaseViewHolder;
 
 /**
  * Created by rikka on 2017/9/2.
@@ -55,6 +55,8 @@ public abstract class WhitelistItemViewHolder<W> extends BaseViewHolder<Pair<W, 
         for (Object payload : payloads) {
             if (payload instanceof Boolean) {
                 setEnabled((Boolean) payload);
+            } else {
+                toggle.setChecked(getData().second);
             }
         }
     }
@@ -84,9 +86,7 @@ public abstract class WhitelistItemViewHolder<W> extends BaseViewHolder<Pair<W, 
 
     @Override
     public void onClick(View view) {
-        setData(Pair.create(getData().first, !getData().second));
-        getAdapter().getItems().set(getAdapterPosition(), getData());
-        toggle.setChecked(getData().second);
+        setData(Pair.create(getData().first, !getData().second), new Object());
     }
 
     @Override

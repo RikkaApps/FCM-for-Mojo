@@ -19,7 +19,7 @@ import java.util.Locale;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.model.RegistrationId;
 import moe.shizuku.fcmformojo.utils.ClipboardUtils;
-import moe.shizuku.utils.recyclerview.BaseViewHolder;
+import moe.shizuku.support.recyclerview.BaseViewHolder;
 
 /**
  * Created by rikka on 2017/8/16.

@@ -16,7 +16,7 @@ import moe.shizuku.fcmformojo.viewholder.GroupWhitelistItemViewHolder;
 public class GroupWhitelistAdapter extends WhitelistAdapter {
 
     public GroupWhitelistAdapter() {
-        putRule(Pair.class, GroupWhitelistItemViewHolder.CREATOR);
+        getCreatorPool().putRule(Pair.class, GroupWhitelistItemViewHolder.CREATOR);
     }
 
     @Override

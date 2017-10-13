@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.adapter.WhitelistAdapter;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.WhitelistState;
-import moe.shizuku.utils.recyclerview.helper.RecyclerViewHelper;
+import moe.shizuku.support.recyclerview.RecyclerViewHelper;
 
 public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
 

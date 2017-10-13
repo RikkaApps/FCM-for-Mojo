@@ -16,7 +16,7 @@ import moe.shizuku.fcmformojo.viewholder.DiscussWhitelistViewHolder;
 public class DiscussWhitelistAdapter extends WhitelistAdapter {
 
     public DiscussWhitelistAdapter() {
-        putRule(Pair.class, DiscussWhitelistViewHolder.CREATOR);
+        getCreatorPool().putRule(Pair.class, DiscussWhitelistViewHolder.CREATOR);
     }
 
     @Override
