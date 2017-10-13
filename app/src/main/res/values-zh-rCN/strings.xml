@@ -37,8 +37,6 @@
     <string name="select_qq">选择 QQ 程序</string>
     <string name="select_qq_summary">这将被用于点击通知或是检测是否是前台</string>
 
-    <string name="at_as_friend">\@ 你的消息将会被当作好友消息处理</string>
-
     <string name="dialog_token_share">分享</string>
 
     <string name="get_foreground">获取前台应用方式</string>
@@ -154,4 +152,8 @@
     <plurals name="settings_per_discuss_summary_on">
         <item quantity="other">只接收 %d 个讨论组的消息</item>
     </plurals>
+    <string name="settings_notification_friend_on">开启</string>
+    <string name="settings_notification_friend_off">关闭</string>
+    <string name="settings_notification_group_on">开启</string>
+    <string name="settings_notification_group_off">关闭，但 \@ 你的消息将会被当作好友消息处理</string>
 </resources>

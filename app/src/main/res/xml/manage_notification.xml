@@ -29,6 +29,8 @@
         <SwitchPreference
             android:key="notification"
             android:title="@string/notification"
+            android:summaryOn="@string/settings_notification_friend_on"
+            android:summaryOff="@string/settings_notification_friend_off"
             android:defaultValue="true"
             android:enabled="false"/>
 
@@ -67,7 +69,8 @@
 
         <SwitchPreference
             android:key="notification_group"
-            android:summary="@string/at_as_friend"
+            android:summaryOn="@string/settings_notification_group_on"
+            android:summaryOff="@string/settings_notification_group_off"
             android:title="@string/notification"
             android:defaultValue="false"
             android:enabled="false"/>

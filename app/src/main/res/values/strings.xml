@@ -36,8 +36,6 @@
     <string name="select_qq">Select QQ application</string>
     <string name="select_qq_summary">This will be used when notification clicked or get if is foreground</string>
 
-    <string name="at_as_friend">Messages that \@ you will be treated as friend message</string>
-
     <string name="dialog_token_share">Share</string>
 
     <string name="get_foreground">How FFM get foreground package</string>
@@ -162,4 +160,8 @@
         <item quantity="one">Only receive messages from %d discuss</item>
         <item quantity="other">Only receive messages from %d discusses</item>
     </plurals>
+    <string name="settings_notification_friend_on">On</string>
+    <string name="settings_notification_friend_off">Off</string>
+    <string name="settings_notification_group_on">On</string>
+    <string name="settings_notification_group_off">Off, but messages that \@ you will be treated as friend message</string>
 </resources>
