@@ -190,7 +190,7 @@ function onSendMessage(body) {
     var type = body.type;
     var isAt = false;
     if (type === 1 || type === 2) {
-        isAt = body.message.isAt;
+        isAt = body.message.isAt === 1;
     }
 
     // 好友及群组开关
