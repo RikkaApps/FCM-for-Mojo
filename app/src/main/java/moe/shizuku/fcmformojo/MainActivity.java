@@ -1,5 +1,6 @@
 package moe.shizuku.fcmformojo;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -72,10 +73,14 @@ public class MainActivity extends BaseActivity {
             Intent intent = volume.createAccessIntent(Environment.DIRECTORY_DOWNLOADS);
             startActivityForResult(intent, REQUEST_CODE);
         } catch (Exception e) {
-            Toast.makeText(this, R.string.cannot_request_permission, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, R.string.cannot_request_permission, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Can't use Scoped Directory Access.\nFallback to runtime permission.", Toast.LENGTH_LONG).show();
             Log.wtf("FFM", "can't use Scoped Directory Access", e);
 
             Crashlytics.logException(e);
+
+            // fallback to runtime permission
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
     }
 
