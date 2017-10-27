@@ -22,7 +22,6 @@ import moe.shizuku.fcmformojo.interceptor.HttpBasicAuthorizationInterceptor;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.utils.URLFormatUtils;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
-import moe.shizuku.support.utils.Settings;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -93,12 +92,20 @@ public class FFMApplication extends Application {
     }
 
     private static void initShizuku(Context context) {
-        if (ShizukuClient.getManagerVersion(context) < 106) {
+        if (ShizukuClient.getManagerVersion(context) < 106
+                || !ShizukuClient.checkSelfPermission(context)) {
             FFMSettings.putForegroundImpl(ForegroundImpl.NONE);
             return;
         }
 
         ShizukuClient.setPermitNetworkThreadPolicy();
+
+        if (!ShizukuClient.getState().isAuthorized()
+                && ShizukuClient.checkSelfPermission(context)) {
+            if (ShizukuClient.requestToken(context)) {
+                FFMSettings.putToken(ShizukuClient.getToken());
+            }
+        }
 
         ShizukuClient.setToken(FFMSettings.getToken());
 

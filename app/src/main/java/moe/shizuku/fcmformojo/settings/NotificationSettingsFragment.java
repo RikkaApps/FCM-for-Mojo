@@ -47,6 +47,8 @@ public class NotificationSettingsFragment extends SettingsFragment {
     private SwitchPreference mFriendToggle;
     private SwitchPreference mGroupToggle;
 
+    private ListPreference mForegroundList;
+
     private NotificationToggle mServerNotificationToggle;
 
     @Override
@@ -57,6 +59,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
 
         mFriendToggle = (SwitchPreference) findPreference("notification");
         mGroupToggle = (SwitchPreference) findPreference("notification_group");
+        mForegroundList = (ListPreference) findPreference("get_foreground");
 
         List<CharSequence> names = new ArrayList<>();
         List<CharSequence> packages = new ArrayList<>();
@@ -266,6 +269,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
                     ShizukuClient.requestAuthorization(this);
                 } else {
                     // denied
+                    mForegroundList.setValue(ForegroundImpl.NONE);
                 }
                 break;
         }
@@ -279,7 +283,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
                     ShizukuClient.setToken(data);
                     FFMSettings.putToken(ShizukuClient.getToken());
                 } else {
-                    // user denied or error
+                    // error
                 }
                 return;
             default:
