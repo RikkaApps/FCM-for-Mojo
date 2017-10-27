@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
@@ -13,22 +12,21 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import java.util.UUID;
 
 import io.fabric.sdk.android.Fabric;
+import moe.shizuku.api.ShizukuClient;
+import moe.shizuku.api.TokenUpdateReceiver;
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
 import moe.shizuku.fcmformojo.api.FFMService;
 import moe.shizuku.fcmformojo.api.OpenQQService;
+import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.interceptor.HttpBasicAuthorizationInterceptor;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.utils.URLFormatUtils;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
-import moe.shizuku.privileged.api.PrivilegedAPIs;
-import moe.shizuku.privileged.api.receiver.TokenUpdateReceiver;
 import moe.shizuku.support.utils.Settings;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static moe.shizuku.fcmformojo.FFMSettings.GET_FOREGROUND;
 
 /**
  * Created by Rikka on 2017/4/19.
@@ -41,8 +39,6 @@ public class FFMApplication extends Application {
 
     public static OpenQQService OpenQQService;
     public static FFMService FFMService;
-
-    public static PrivilegedAPIs sPrivilegedAPIs;
 
     private Handler mMainHandler;
 
@@ -97,35 +93,19 @@ public class FFMApplication extends Application {
     }
 
     private static void initShizuku(Context context) {
-        if (sPrivilegedAPIs != null) {
+        if (ShizukuClient.getManagerVersion(context) < 106) {
+            FFMSettings.putForegroundImpl(ForegroundImpl.NONE);
             return;
         }
 
-        PrivilegedAPIs.setPermitNetworkThreadPolicy();
+        ShizukuClient.setPermitNetworkThreadPolicy();
 
-        sPrivilegedAPIs = new PrivilegedAPIs(FFMSettings.getToken());
-        if (!sPrivilegedAPIs.authorized()) {
-            if (!PrivilegedAPIs.installed(context)) {
-                return;
-            }
+        ShizukuClient.setToken(FFMSettings.getToken());
 
-            UUID token = sPrivilegedAPIs.requestToken(context);
-            if (token != null) {
-                FFMSettings.putToken(token);
-
-                Log.i("FFM", "update shizuku service token: " + token);
-            } else {
-                Settings.putString(GET_FOREGROUND, "disable");
-            }
-        }
-        sPrivilegedAPIs.registerTokenUpdateReceiver(context, new TokenUpdateReceiver() {
+        ShizukuClient.registerTokenUpdateReceiver(context, new TokenUpdateReceiver() {
             @Override
-            public void onTokenUpdate(Context context, UUID token) {
+            public void onTokenUpdated(Context context, UUID token) {
                 FFMSettings.putToken(token);
-
-                sPrivilegedAPIs.updateToken(token);
-
-                Log.i("FFM", "update shizuku service token: " + token);
             }
         });
     }
@@ -175,7 +155,7 @@ public class FFMApplication extends Application {
                 case ForegroundImpl.USAGE_STATS:
                     return UsageStatsUtils.getForegroundPackage(this);
                 case ForegroundImpl.SHIZUKU:
-                    return sPrivilegedAPIs.getForegroundPackageName();
+                    return ShizukuCompat.getForegroundPackage();
                 case ForegroundImpl.NONE:
                 default:
                     return null;

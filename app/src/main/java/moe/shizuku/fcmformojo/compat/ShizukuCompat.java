@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.os.UserHandle;
 import android.os.UserManager;
 
-import moe.shizuku.fcmformojo.FFMApplication;
-import moe.shizuku.privileged.api.PrivilegedAPIs;
+import moe.shizuku.api.ShizukuActivityManagerV26;
+import moe.shizuku.api.ShizukuClient;
+import moe.shizuku.api.ShizukuPackageManagerV26;
 
 /**
  * Created by rikka on 2017/8/22.
@@ -37,18 +38,21 @@ public class ShizukuCompat {
 
         // 就可能是在其他的用户了
         UserManager userManager = context.getSystemService(UserManager.class);
+        if (userManager == null) {
+            return false;
+        }
 
-        PrivilegedAPIs.setPermitNetworkThreadPolicy();
-        PrivilegedAPIs privilegedAPIs = FFMApplication.sPrivilegedAPIs;
-        if (!privilegedAPIs.authorized()) {
+        ShizukuClient.setPermitNetworkThreadPolicy();
+        if (!ShizukuClient.getState().isAuthorized()) {
             return false;
         }
 
         for (UserHandle userHandle : userManager.getUserProfiles()) {
             int userId = userHandle.hashCode(); // 就是（
             try {
-                if (privilegedAPIs.getApplicationInfo(packageName, 0, userId) != null) {
-                    privilegedAPIs.startActivity(intent, userId);
+                if (ShizukuPackageManagerV26.getApplicationInfo(packageName, 0, userId) != null) {
+                    ShizukuActivityManagerV26.startActivityAsUser(
+                            null, null, intent, null, null, null, 0, 0, null, null, userId);
                     return true;
                 }
             } catch (SecurityException e) {
@@ -59,5 +63,13 @@ public class ShizukuCompat {
         }
 
         return false;
+    }
+
+    public static String getForegroundPackage() {
+        try {
+            return ShizukuActivityManagerV26.getTasks(1, 0).get(0).baseActivity.getPackageName();
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 }

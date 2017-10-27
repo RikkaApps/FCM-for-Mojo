@@ -4,14 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Process;
 import android.support.annotation.Nullable;
 
-import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.model.Chat;
-import moe.shizuku.privileged.api.PrivilegedAPIs;
 
 /**
  * Created by rikka on 2017/7/29.

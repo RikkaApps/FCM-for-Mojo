@@ -130,6 +130,10 @@ public class FFMSettings {
         return Settings.getString(GET_FOREGROUND, ForegroundImpl.NONE);
     }
 
+    public static void putForegroundImpl(@ForegroundImpl String impl) {
+        Settings.putString(GET_FOREGROUND, ForegroundImpl.NONE);
+    }
+
     public static void putDownloadUri(String uri) {
         Settings.putString(DOWNLOADS_URI, uri);
     }

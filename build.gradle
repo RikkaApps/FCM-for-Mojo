@@ -19,6 +19,7 @@ allprojects {
         mavenLocal()
         jcenter()
         google()
+        maven { url 'https://dl.bintray.com/rikkaw/Shizuku' }
     }
 }
 
@@ -29,6 +30,8 @@ task clean(type: Delete) {
 ext {
     supportLibraryVersion = '26.1.0'
     preferenceLibraryVersion = '2.0.8'
+    shizukuPrivilegeBaseApiVersion = '8'
+    shizukuPrivilegeApiVersion = '3'
     minSdkVersion = 24
     targetSdkVersion = 26
     buildToolsVersion = "26.0.2"
