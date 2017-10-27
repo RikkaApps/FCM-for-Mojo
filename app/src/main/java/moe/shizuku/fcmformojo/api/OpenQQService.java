@@ -21,25 +21,25 @@ public interface OpenQQService {
     /**
      * 获取好友数据
      */
-    @GET("/openqq/get_friend_info")
+    @GET("openqq/get_friend_info")
     Single<List<Friend>> getFriendsInfo();
 
     /**
      * 查询群信息
      */
-    @GET("/openqq/get_group_info")
+    @GET("openqq/get_group_info")
     Single<List<Group>> getGroupsInfo();
 
     /**
      * 查询群信息（不包含群成员）
      */
-    @GET("/openqq/get_group_basic_info")
+    @GET("openqq/get_group_basic_info")
     Single<List<Group>> getGroupsBasicInfo();
 
     /**
      * 查询群信息（不包含群成员）
      */
-    @GET("/openqq/get_discuss_info")
+    @GET("openqq/get_discuss_info")
     Single<List<Discuss>> getDiscussesInfo();
 
     /**
@@ -49,7 +49,7 @@ public interface OpenQQService {
      * @param content 发送的消息
      */
     @FormUrlEncoded
-    @POST("/openqq/send_friend_message")
+    @POST("openqq/send_friend_message")
     Single<SendResult> sendFriendMessage(@Field("id") long id, @Field("content") String content);
 
     /**
@@ -59,7 +59,7 @@ public interface OpenQQService {
      * @param content 发送的消息
      */
     @FormUrlEncoded
-    @POST("/openqq/send_friend_message")
+    @POST("openqq/send_friend_message")
     Single<SendResult> sendFriendMessageByUid(@Field("uid") int uid, @Field("content") String content);
 
     /**
@@ -69,7 +69,7 @@ public interface OpenQQService {
      * @param content 发送的消息
      */
     @FormUrlEncoded
-    @POST("/openqq/send_group_message")
+    @POST("openqq/send_group_message")
     Single<SendResult> sendGroupMessage(@Field("id") long id, @Field("content") String content);
 
     /**
@@ -79,7 +79,7 @@ public interface OpenQQService {
      * @param content 发送的消息
      */
     @FormUrlEncoded
-    @POST("/openqq/send_group_message")
+    @POST("openqq/send_group_message")
     Single<SendResult> sendGroupMessageByUid(@Field("uid") int uid, @Field("content") String content);
 
     /**
@@ -89,6 +89,6 @@ public interface OpenQQService {
      * @param content 发送的消息
      */
     @FormUrlEncoded
-    @POST("/openqq/send_discuss_message")
+    @POST("openqq/send_discuss_message")
     Single<SendResult> sendDiscussMessage(@Field("id") long id, @Field("content") String content);
 }

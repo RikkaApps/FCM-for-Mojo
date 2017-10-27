@@ -20,40 +20,40 @@ import retrofit2.http.POST;
 
 public interface FFMService {
 
-    @GET("/ffm/get_registration_ids")
+    @GET("ffm/get_registration_ids")
     Single<Set<RegistrationId>> getRegistrationIds();
 
     @Headers("Content-Type: application/json")
-    @POST("/ffm/update_registration_ids")
+    @POST("ffm/update_registration_ids")
     Single<FFMResult> updateRegistrationIds(@Body Set<RegistrationId> registrationIds);
 
-    @GET("/ffm/restart")
+    @GET("ffm/restart")
     Single<FFMResult> restart();
 
-    @GET("/ffm/stop")
+    @GET("ffm/stop")
     Single<FFMResult> stop();
 
-    @GET("/ffm/get_status")
+    @GET("ffm/get_status")
     Single<FFMStatus> getStatus();
 
-    @GET("/ffm/get_notifications_toggle")
+    @GET("ffm/get_notifications_toggle")
     Single<NotificationToggle> getNotificationsToggle();
 
     @Headers("Content-Type: application/json")
-    @POST("/ffm/update_notifications_toggle")
+    @POST("ffm/update_notifications_toggle")
     Single<FFMResult> updateNotificationsToggle(@Body NotificationToggle notificationToggle);
 
-    @GET("/ffm/get_group_whitelist")
+    @GET("ffm/get_group_whitelist")
     Single<GroupWhitelistState> getGroupWhitelist();
 
     @Headers("Content-Type: application/json")
-    @POST("/ffm/update_group_whitelist")
+    @POST("ffm/update_group_whitelist")
     Single<FFMResult> updateGroupWhitelist(@Body GroupWhitelistState state);
 
-    @GET("/ffm/get_discuss_whitelist")
+    @GET("ffm/get_discuss_whitelist")
     Single<DiscussWhitelistState> getDiscussWhitelist();
 
     @Headers("Content-Type: application/json")
-    @POST("/ffm/update_discuss_whitelist")
+    @POST("ffm/update_discuss_whitelist")
     Single<FFMResult> updateDiscussWhitelist(@Body DiscussWhitelistState state);
 }
