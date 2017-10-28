@@ -46,6 +46,7 @@ import okhttp3.Request;
 import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 import static moe.shizuku.fcmformojo.FFMApplication.OpenQQService;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_DOWNLOAD_QRCODE;
+import static moe.shizuku.fcmformojo.FFMStatic.ACTION_OPEN_CHAT_ACTIVITY;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REPLY;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_RESTART_WEBQQ;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_ICON;
@@ -75,33 +76,32 @@ public class FFMIntentService extends IntentService {
     }
 
     public static void startUpdateIcon(Context context, @Nullable ResultReceiver receiver) {
-        Intent intent = new Intent(context, FFMIntentService.class);
-        intent.setAction(ACTION_UPDATE_ICON);
-        intent.putExtra(Intent.EXTRA_RESULT_RECEIVER, receiver);
-        context.startService(intent);
+        context.startService(new Intent(context, FFMIntentService.class)
+                .setAction(ACTION_UPDATE_ICON)
+                .putExtra(Intent.EXTRA_RESULT_RECEIVER, receiver));
     }
 
     public static void startReply(Context context, CharSequence content, Chat chat) {
-        Intent intent = new Intent(context, FFMIntentService.class);
-        intent.setAction(ACTION_REPLY);
-        intent.putExtra(EXTRA_CONTENT, content);
-        intent.putExtra(EXTRA_CHAT, chat);
-        context.startService(intent);
+        context.startService(new Intent(context, FFMIntentService.class)
+                .setAction(ACTION_REPLY)
+                .putExtra(EXTRA_CONTENT, content)
+                .putExtra(EXTRA_CHAT, chat));
     }
 
     public static void startDownloadQrCode(Context context, String url) {
-        Intent intent = new Intent(context, FFMIntentService.class);
-        intent.setAction(ACTION_DOWNLOAD_QRCODE);
-        intent.putExtra(EXTRA_URL, url);
-        context.startService(intent);
+        context.startService(new Intent(context, FFMIntentService.class)
+                .setAction(ACTION_DOWNLOAD_QRCODE)
+                .putExtra(EXTRA_URL, url));
+    }
+
+    public static void startOpenChatActivity(Context context, @Nullable Chat chat) {
+        context.startService(new Intent(context, FFMIntentService.class)
+                .setAction(ACTION_DOWNLOAD_QRCODE)
+                .putExtra(EXTRA_CHAT, chat));
     }
 
     public static Intent restartIntent(Context context) {
         return new Intent(context, FFMIntentService.class).setAction(ACTION_RESTART_WEBQQ);
-    }
-
-    public static void startRestart(Context context) {
-        context.startService(restartIntent(context));
     }
 
     @Override
@@ -122,6 +122,22 @@ public class FFMIntentService extends IntentService {
             handleDownloadQrCode(url);
         } else if (ACTION_RESTART_WEBQQ.equals(action)) {
             handleRestart();
+        } else if (ACTION_OPEN_CHAT_ACTIVITY.equals(action)) {
+            handleStartChatActivity(this, intent.<Chat>getParcelableExtra(EXTRA_CHAT));
+        }
+    }
+
+    private void handleStartChatActivity(Context context, @Nullable Chat chat) {
+        if (chat == null) {
+            FFMApplication.get(context).getNotificationBuilder()
+                    .clearMessages();
+
+            FFMSettings.getProfile().onStartChatActivity(context, null);
+        } else {
+            FFMApplication.get(context).getNotificationBuilder()
+                    .clearMessages();
+
+            FFMSettings.getProfile().onStartChatActivity(context, chat);
         }
     }
 

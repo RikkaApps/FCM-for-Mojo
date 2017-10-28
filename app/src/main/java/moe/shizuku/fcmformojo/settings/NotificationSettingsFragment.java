@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -246,14 +248,27 @@ public class NotificationSettingsFragment extends SettingsFragment {
                             break;
                         }
                         ShizukuClient.setPermitNetworkThreadPolicy();
-                        ShizukuState state = ShizukuClient.getState();
-                        if (state.isServerAvailable() && !state.isAuthorized()) {
-                            if (!ShizukuClient.checkSelfPermission(getContext())) {
-                                ShizukuClient.requestPermission(this);
-                            } else {
-                                ShizukuClient.requestAuthorization(this);
-                            }
-                        }
+
+                        Single.just(ShizukuClient.getState())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Consumer<ShizukuState>() {
+                                    @Override
+                                    public void accept(ShizukuState state) throws Exception {
+                                        if (!isDetached()) {
+                                            return;
+                                        }
+
+                                        if (!ShizukuClient.getState().isAuthorized()) {
+                                            if (!ShizukuClient.checkSelfPermission(getContext())) {
+                                                ShizukuClient.requestPermission(NotificationSettingsFragment.this);
+                                            } else {
+                                                ShizukuClient.requestAuthorization(NotificationSettingsFragment.this);
+                                            }
+                                        }
+                                    }
+                                });
+
                         break;
                 }
                 break;

@@ -17,6 +17,7 @@ public class FFMStatic {
     public static final String ACTION_DISMISS_SYSTEM_NOTIFICATION = BuildConfig.APPLICATION_ID + ".action.DISMISS_SYSTEM_NOTIFICATION";
     public static final String ACTION_UPDATE_URL = BuildConfig.APPLICATION_ID + ".action.URL_UPDATED";
     public static final String ACTION_COPY_TO_CLIPBOARD = BuildConfig.APPLICATION_ID + ".action.COPY_TO_CLIPBOARD";
+    public static final String ACTION_OPEN_CHAT_ACTIVITY = BuildConfig.APPLICATION_ID + ".action.OPEN_CHAT_ACTIVITY";
 
     public static final String EXTRA_CONTENT = BuildConfig.APPLICATION_ID + ".extra.CONTENT";
     public static final String EXTRA_CHAT = BuildConfig.APPLICATION_ID + ".extra.CHAT";

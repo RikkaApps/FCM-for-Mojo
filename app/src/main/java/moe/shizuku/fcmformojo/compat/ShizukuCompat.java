@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.UserHandle;
 import android.os.UserManager;
+import android.support.annotation.WorkerThread;
 
 import moe.shizuku.api.ShizukuActivityManagerV26;
 import moe.shizuku.api.ShizukuClient;
@@ -13,6 +14,7 @@ import moe.shizuku.api.ShizukuPackageManagerV26;
  * Created by rikka on 2017/8/22.
  */
 
+@WorkerThread
 public class ShizukuCompat {
 
     /**

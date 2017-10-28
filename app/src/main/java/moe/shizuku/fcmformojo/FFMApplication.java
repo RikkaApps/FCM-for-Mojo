@@ -9,11 +9,8 @@ import android.os.Handler;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 
-import java.util.UUID;
-
 import io.fabric.sdk.android.Fabric;
 import moe.shizuku.api.ShizukuClient;
-import moe.shizuku.api.TokenUpdateReceiver;
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
 import moe.shizuku.fcmformojo.api.FFMService;
 import moe.shizuku.fcmformojo.api.OpenQQService;
@@ -91,30 +88,15 @@ public class FFMApplication extends Application {
         FFMService = retrofit.create(FFMService.class);
     }
 
-    private static void initShizuku(Context context) {
+    private static void initShizuku(final Context context) {
+        // not installed, version too low, no permission
         if (ShizukuClient.getManagerVersion(context) < 106
                 || !ShizukuClient.checkSelfPermission(context)) {
             FFMSettings.putForegroundImpl(ForegroundImpl.NONE);
             return;
         }
 
-        ShizukuClient.setPermitNetworkThreadPolicy();
-
-        if (!ShizukuClient.getState().isAuthorized()
-                && ShizukuClient.checkSelfPermission(context)) {
-            if (ShizukuClient.requestToken(context)) {
-                FFMSettings.putToken(ShizukuClient.getToken());
-            }
-        }
-
-        ShizukuClient.setToken(FFMSettings.getToken());
-
-        ShizukuClient.registerTokenUpdateReceiver(context, new TokenUpdateReceiver() {
-            @Override
-            public void onTokenUpdated(Context context, UUID token) {
-                FFMSettings.putToken(token);
-            }
-        });
+        ShizukuClient.initialize(context);
     }
 
     private static void initCrashReport(Context context) {

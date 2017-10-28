@@ -110,17 +110,7 @@ public class FFMBroadcastReceiver extends BroadcastReceiver {
     }
 
     private void handleContent(Context context, @Nullable Chat chat) {
-        if (chat == null) {
-            FFMApplication.get(context).getNotificationBuilder()
-                    .clearMessages();
-
-            FFMSettings.getProfile().onStartChatActivity(context, null);
-        } else {
-            FFMApplication.get(context).getNotificationBuilder()
-                        .clearMessages();
-
-            FFMSettings.getProfile().onStartChatActivity(context, chat);
-        }
+        FFMIntentService.startOpenChatActivity(context, chat);
     }
 
     private void handleDelete(Context context, @Nullable Chat chat) {
