@@ -72,3 +72,9 @@
 
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
+
+# shizuku
+-keep class !android.support.**, android.** { *; }
+-dontwarn android.**
+-keep class com.android.** { *; }
+-dontwarn com.android.**

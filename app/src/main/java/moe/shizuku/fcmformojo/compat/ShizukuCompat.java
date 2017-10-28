@@ -44,7 +44,6 @@ public class ShizukuCompat {
             return false;
         }
 
-        ShizukuClient.setPermitNetworkThreadPolicy();
         if (!ShizukuClient.getState().isAuthorized()) {
             return false;
         }

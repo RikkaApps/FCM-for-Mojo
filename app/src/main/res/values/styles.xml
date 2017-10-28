@@ -9,6 +9,11 @@
         <item name="preferenceTheme">@style/AppTheme.PreferenceTheme</item>
     </style>
 
+    <style name="AppTheme.Translucent" parent="android:Theme.Translucent.NoTitleBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
     <style name="AppTheme.PreferenceTheme" parent="PreferenceThemeOverlay">
         <item name="preferenceFragmentStyle">@style/AppTheme.PreferenceTheme.PreferenceFragment</item>
     </style>

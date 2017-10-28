@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import moe.shizuku.fcmformojo.BaseActivity;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.preference.Preference;
 
@@ -40,6 +41,22 @@ public class MainSettingsFragment extends SettingsFragment {
                         .add(android.R.id.content, new NotificationSettingsFragment())
                         .addToBackStack(null)
                         .commit();
+                return true;
+            }
+        });
+
+        findPreference("donate").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ((BaseActivity) getActivity()).onOptionsItemSelected(R.id.action_donate);
+                return true;
+            }
+        });
+
+        findPreference("about").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ((BaseActivity) getActivity()).onOptionsItemSelected(R.id.action_about);
                 return true;
             }
         });

@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -244,10 +243,11 @@ public class NotificationSettingsFragment extends SettingsFragment {
                         break;
                     case ForegroundImpl.SHIZUKU:
                         if (ShizukuClient.getManagerVersion(getContext()) < 106) {
+                            mForegroundList.setValue(ForegroundImpl.NONE);
+
                             Toast.makeText(getContext(), "Shizuku version too low", Toast.LENGTH_SHORT).show();
                             break;
                         }
-                        ShizukuClient.setPermitNetworkThreadPolicy();
 
                         Single.just(ShizukuClient.getState())
                                 .subscribeOn(Schedulers.io())

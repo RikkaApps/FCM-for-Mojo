@@ -42,11 +42,18 @@ public class BaseActivity extends FragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
+        if (onOptionsItemSelected(item.getItemId())) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onOptionsItemSelected(int itemId) {
+        if (itemId == android.R.id.home) {
             onBackPressed();
             return true;
         } else {
-            return super.onOptionsItemSelected(item);
+            return false;
         }
     }
 }

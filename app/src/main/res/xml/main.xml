@@ -19,4 +19,18 @@
         android:icon="@drawable/ic_settings_notification_24dp"
         android:layout="@layout/preference_main"/>
 
+    <Preference
+        android:key="donate"
+        android:title="@string/action_donate"
+        android:summary="@string/dialog_donate_title"
+        android:icon="@drawable/ic_settings_donate_24dp"
+        android:layout="@layout/preference_main"/>
+
+    <Preference
+        android:key="about"
+        android:title="@string/action_about"
+        android:summary="@string/version_name"
+        android:icon="@drawable/ic_settings_about_24dp"
+        android:layout="@layout/preference_main"/>
+
 </PreferenceScreen>

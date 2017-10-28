@@ -25,7 +25,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode gitCommitCount
-        versionName "0.3.9"
+        versionName "0.4.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resConfigs "en", "zh-rCN", "ja"
 
@@ -95,6 +95,7 @@ dependencies {
     implementation "moe.shizuku.privilege:api-24:$shizukuPrivilegeApiVersion"
     implementation "moe.shizuku.privilege:api-25:$shizukuPrivilegeApiVersion"
     implementation "moe.shizuku.privilege:api-26:$shizukuPrivilegeApiVersion"
+    implementation 'com.android.billingclient:billing:1.0'
 }
 
 def ksFile = rootProject.file('signing.properties')

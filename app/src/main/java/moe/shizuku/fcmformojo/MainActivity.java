@@ -12,23 +12,34 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClient.BillingResponse;
+import com.android.billingclient.api.BillingClient.SkuType;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.ConsumeResponseListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.crashlytics.android.Crashlytics;
+
+import java.util.List;
 
 import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.settings.MainSettingsFragment;
 import moe.shizuku.fcmformojo.utils.ClipboardUtils;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements PurchasesUpdatedListener {
 
     private static final int REQUEST_CODE = 10000;
+
+    private BillingClient mBillingClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,19 +109,8 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        boolean isGooglePlay = "com.android.vending"
-                .equals(getPackageManager().getInstallerPackageName(BuildConfig.APPLICATION_ID));
-        menu.findItem(R.id.action_donate).setVisible(!isGooglePlay);
-
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected(int itemId) {
+        switch (itemId) {
             case R.id.action_about:
                 Dialog dialog = new AlertDialog.Builder(this)
                         .setView(R.layout.dialog_about)
@@ -118,40 +118,92 @@ public class MainActivity extends BaseActivity {
                 ((TextView) dialog.findViewById(R.id.icon_credits)).setMovementMethod(LinkMovementMethod.getInstance());
                 ((TextView) dialog.findViewById(R.id.icon_credits)).setText(Html.fromHtml(getString(R.string.about_icon_credits), Html.FROM_HTML_MODE_COMPACT));
 
-                break;
+                return true;
             case R.id.action_donate:
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.dialog_donate_title)
-                        .setMessage(R.string.dialog_donate_message)
-                        .setPositiveButton(R.string.dialog_donate_ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse(BuildConfig.DONATE_ALIPAY_URL));
-                                ShizukuCompat.startActivity(MainActivity.this, intent, "com.eg.android.AlipayGphone");
-                            }
-                        })
-                        .setNegativeButton(R.string.dialog_donate_no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(MainActivity.this, "QAQ", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setNeutralButton(R.string.dialog_donate_copy, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                ClipboardUtils.put(MainActivity.this, "rikka@xing.moe");
-                            }
-                        })
-                        .show();
-
-                break;
+                onDonateSelected();
+                return true;
         }
-        return super.onMenuItemSelected(featureId, item);
+        return super.onOptionsItemSelected(itemId);
+    }
+
+    private void onDonateSelected() {
+        boolean isGooglePlay = "com.android.vending"
+                .equals(getPackageManager().getInstallerPackageName(BuildConfig.APPLICATION_ID));
+
+        if (isGooglePlay) {
+            showDonateGooglePlay();
+        } else {
+            showDonateAlipay();
+        }
+    }
+
+    private void showDonateGooglePlay() {
+
+        mBillingClient = BillingClient.newBuilder(this).setListener(this).build();
+
+        mBillingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@BillingResponse int billingResponseCode) {
+                if (billingResponseCode == BillingResponse.OK) {
+                    // The billing client is ready. You can query purchases here.
+                    BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+                            .setSku("donate_2")
+                            .setType(SkuType.INAPP)
+                            .build();
+                    int responseCode = mBillingClient.launchBillingFlow(MainActivity.this, flowParams);
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+    }
+
+    private void showDonateAlipay() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_donate_title)
+                .setMessage(R.string.dialog_donate_message)
+                .setPositiveButton(R.string.dialog_donate_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(BuildConfig.DONATE_ALIPAY_URL));
+                        ShizukuCompat.startActivity(MainActivity.this, intent, "com.eg.android.AlipayGphone");
+                    }
+                })
+                .setNegativeButton(R.string.dialog_donate_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(MainActivity.this, "QAQ", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNeutralButton(R.string.dialog_donate_copy, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ClipboardUtils.put(MainActivity.this, "rikka@xing.moe");
+                    }
+                })
+                .show();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+        if (responseCode == BillingResponse.OK
+                && purchases != null) {
+            for (Purchase purchase : purchases) {
+                mBillingClient.consumeAsync(purchase.getPurchaseToken(), new ConsumeResponseListener() {
+                    @Override
+                    public void onConsumeResponse(int responseCode, String purchaseToken) {
+
+                    }
+                });
+            }
+        } else if (responseCode == BillingResponse.USER_CANCELED) {
+            // Handle an error caused by a user cancelling the purchase flow.
+        } else {
+            // Handle any other error codes.
+        }
     }
 }
