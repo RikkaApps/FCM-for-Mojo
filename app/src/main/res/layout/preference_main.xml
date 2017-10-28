@@ -2,19 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="?android:listPreferredItemPaddingLeft"
-    android:layout_marginEnd="?android:listPreferredItemPaddingRight"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:minHeight="?android:listPreferredItemHeightSmall"
-    android:gravity="center_vertical"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
+    style="@style/MainItem"
     android:background="@drawable/preference_main_background"
-    android:clipToPadding="false"
-    android:focusable="true"
     android:baselineAligned="false">
 
     <LinearLayout
@@ -34,7 +23,7 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingTop="16dp"
@@ -64,6 +53,7 @@
         android:layout_height="match_parent"
         android:gravity="end|center_vertical"
         android:paddingStart="16dp"
+        android:paddingEnd="0dp"
         android:orientation="vertical" />
 
 </LinearLayout>

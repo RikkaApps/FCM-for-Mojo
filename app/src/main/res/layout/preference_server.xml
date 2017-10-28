@@ -1,31 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
     android:orientation="vertical"
     android:animateLayoutChanges="true"
     android:clipToPadding="false"
     android:clipChildren="false">
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="?android:listPreferredItemPaddingLeft"
-        android:layout_marginEnd="?android:listPreferredItemPaddingRight"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:foreground="?android:selectableItemBackground"
-        android:animateLayoutChanges="true"
-        app:cardCornerRadius="2dp"
-        app:cardBackgroundColor="@color/serverUnknown"
-        app:cardElevation="2dp"
-        app:cardMaxElevation="4dp"
-        app:contentPadding="16dp">
+        style="@style/MainItem.Card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,21 +47,9 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="?android:listPreferredItemPaddingLeft"
-        android:layout_marginEnd="?android:listPreferredItemPaddingRight"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:foreground="?android:selectableItemBackground"
-        android:animateLayoutChanges="true"
+        style="@style/MainItem.Card"
         android:visibility="gone"
-        tools:visibility="visible"
-        app:cardCornerRadius="2dp"
-        app:cardBackgroundColor="@color/serverUnknown"
-        app:cardElevation="2dp"
-        app:cardMaxElevation="4dp"
-        app:contentPadding="16dp">
+        tools:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -93,21 +67,9 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="?android:listPreferredItemPaddingLeft"
-        android:layout_marginEnd="?android:listPreferredItemPaddingRight"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:foreground="?android:selectableItemBackground"
-        android:animateLayoutChanges="true"
+        style="@style/MainItem.Card"
         android:visibility="gone"
-        tools:visibility="visible"
-        app:cardCornerRadius="2dp"
-        app:cardBackgroundColor="@color/serverUnknown"
-        app:cardElevation="2dp"
-        app:cardMaxElevation="4dp"
-        app:contentPadding="16dp">
+        tools:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"

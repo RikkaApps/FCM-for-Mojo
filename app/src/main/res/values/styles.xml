@@ -17,12 +17,31 @@
         <item name="android:layout">@layout/preference_container</item>
     </style>
 
-    <!--<style name="GridItem">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="MainItem">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
         <item name="android:gravity">center_vertical</item>
-    </style>-->
+        <item name="android:minHeight">?android:listPreferredItemHeightSmall</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
+
+    <style name="MainItem.Card">
+        <item name="android:foreground">?android:selectableItemBackground</item>
+        <item name="android:animateLayoutChanges">true</item>
+        <item name="cardCornerRadius">2dp</item>
+        <item name="cardBackgroundColor">@color/serverUnknown</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardMaxElevation">4dp</item>
+        <item name="contentPaddingLeft">16dp</item>
+        <item name="contentPaddingRight">16dp</item>
+        <item name="contentPaddingTop">24dp</item>
+        <item name="contentPaddingBottom">24dp</item>
+    </style>
 
 </resources>
