@@ -96,7 +96,7 @@ public class FFMIntentService extends IntentService {
 
     public static void startOpenChatActivity(Context context, @Nullable Chat chat) {
         context.startService(new Intent(context, FFMIntentService.class)
-                .setAction(ACTION_DOWNLOAD_QRCODE)
+                .setAction(ACTION_OPEN_CHAT_ACTIVITY)
                 .putExtra(EXTRA_CHAT, chat));
     }
 

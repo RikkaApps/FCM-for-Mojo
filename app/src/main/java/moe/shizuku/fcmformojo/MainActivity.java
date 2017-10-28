@@ -138,7 +138,6 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
     }
 
     private void showDonateGooglePlay() {
-
         mBillingClient = BillingClient.newBuilder(this).setListener(this).build();
 
         mBillingClient.startConnection(new BillingClientStateListener() {
