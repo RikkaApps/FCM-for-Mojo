@@ -91,14 +91,16 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
             Crashlytics.logException(e);
 
             // fallback to runtime permission
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            }
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
+            if (data != null && data.getData() != null) {
                 getContentResolver().takePersistableUriPermission(data.getData(),
                         Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 

@@ -45,8 +45,8 @@
         <item name="cardMaxElevation">4dp</item>
         <item name="contentPaddingLeft">16dp</item>
         <item name="contentPaddingRight">16dp</item>
-        <item name="contentPaddingTop">24dp</item>
-        <item name="contentPaddingBottom">24dp</item>
+        <item name="contentPaddingTop">20dp</item>
+        <item name="contentPaddingBottom">20dp</item>
     </style>
 
 </resources>

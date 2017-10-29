@@ -1,10 +1,12 @@
 package moe.shizuku.fcmformojo.service;
 
+import android.Manifest;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -409,6 +411,15 @@ public class FFMIntentService extends IntentService {
 
                     uri = file.getUri();
                     os = getContentResolver().openOutputStream(uri);
+                } else {
+                    // 退回到运行时权限的情况
+                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        File file = FileUtils.getExternalStoragePublicFile(Environment.DIRECTORY_DOWNLOADS, "FFM", "webqq-qrcode.png");
+                        if (file.exists() || file.createNewFile()) {
+                            uri = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, file);
+                            os = new FileOutputStream(file);
+                        }
+                    }
                 }
             }
         } catch (Exception ignored) {
