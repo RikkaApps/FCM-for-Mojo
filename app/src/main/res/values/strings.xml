@@ -122,7 +122,7 @@
     <string name="restart_webqq_summary">Restart Mojo-Webqq on server (if not running)</string>
     <string name="action_donate">Donate</string>
     <string name="dialog_donate_title">Pay Rikka NOW ////</string>
-    <string name="dialog_donate_message">Rikka have spent a lot time on this project, so Rikka should be paied. (Alipay only)</string>
+    <string name="dialog_donate_message">Rikka have spent a lot time on this project, so Rikka should be paid. (Alipay only)</string>
     <string name="dialog_donate_ok">Pay NOW</string>
     <string name="dialog_donate_no">Bad Rikka</string>
     <string name="dialog_donate_copy">Copy account</string>
@@ -136,7 +136,7 @@
     <string name="whitelist_summary_group_on">Only receive messages from enabled groups</string>
     <string name="whitelist_summary_group_off">Receive messages from all groups</string>
     <string name="dialog_no_google_title">Google service framework not found</string>
-    <string name="dialog_no_google_message">Google service framework is not installed or installed but disabled.\nFFM relays on Firebase Cloud Messaging and it requires Google service framework.</string>
+    <string name="dialog_no_google_message">Google service framework is not installed or disabled.\nFFM relays on Firebase Cloud Messaging and it requires Google service framework.</string>
     <string name="dialog_no_google_exit">Exit FFM</string>
     <string name="dialog_token_message" translatable="false"><![CDATA[<font face=\"monospace\">%s</font>]]></string>
     <string name="toast_succeeded">Succeeded.</string>
