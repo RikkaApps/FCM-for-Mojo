@@ -171,7 +171,7 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(Intent.ACTION_VIEW,
                                 Uri.parse(BuildConfig.DONATE_ALIPAY_URL));
-                        ShizukuCompat.startActivity(MainActivity.this, intent, "com.eg.android.AlipayGphone");
+                        ShizukuCompat.findAndStartActivity(MainActivity.this, intent, "com.eg.android.AlipayGphone");
                     }
                 })
                 .setNegativeButton(R.string.dialog_donate_no, new DialogInterface.OnClickListener() {

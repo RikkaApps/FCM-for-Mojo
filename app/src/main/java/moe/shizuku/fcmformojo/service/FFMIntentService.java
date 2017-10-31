@@ -48,7 +48,6 @@ import okhttp3.Request;
 import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 import static moe.shizuku.fcmformojo.FFMApplication.OpenQQService;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_DOWNLOAD_QRCODE;
-import static moe.shizuku.fcmformojo.FFMStatic.ACTION_OPEN_CHAT_ACTIVITY;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REPLY;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_RESTART_WEBQQ;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_ICON;
@@ -96,12 +95,6 @@ public class FFMIntentService extends IntentService {
                 .putExtra(EXTRA_URL, url));
     }
 
-    public static void startOpenChatActivity(Context context, @Nullable Chat chat) {
-        context.startService(new Intent(context, FFMIntentService.class)
-                .setAction(ACTION_OPEN_CHAT_ACTIVITY)
-                .putExtra(EXTRA_CHAT, chat));
-    }
-
     public static Intent restartIntent(Context context) {
         return new Intent(context, FFMIntentService.class).setAction(ACTION_RESTART_WEBQQ);
     }
@@ -124,22 +117,6 @@ public class FFMIntentService extends IntentService {
             handleDownloadQrCode(url);
         } else if (ACTION_RESTART_WEBQQ.equals(action)) {
             handleRestart();
-        } else if (ACTION_OPEN_CHAT_ACTIVITY.equals(action)) {
-            handleStartChatActivity(this, intent.<Chat>getParcelableExtra(EXTRA_CHAT));
-        }
-    }
-
-    private void handleStartChatActivity(Context context, @Nullable Chat chat) {
-        if (chat == null) {
-            FFMApplication.get(context).getNotificationBuilder()
-                    .clearMessages();
-
-            FFMSettings.getProfile().onStartChatActivity(context, null);
-        } else {
-            FFMApplication.get(context).getNotificationBuilder()
-                    .clearMessages();
-
-            FFMSettings.getProfile().onStartChatActivity(context, chat);
         }
     }
 

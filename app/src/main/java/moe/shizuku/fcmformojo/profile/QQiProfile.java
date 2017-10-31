@@ -53,7 +53,7 @@ public class QQiProfile implements Profile {
                 .putExtra("uintype", chat.getType())
                 .putExtra("uin", Long.toString(chat.getUid()));
 
-        if (!ShizukuCompat.startActivity(context, intent, getPackageName())) {
+        if (!ShizukuCompat.findAndStartActivity(context, intent, getPackageName())) {
             ProfileHelper.startLauncherActivity(context, this);
         }
     }
@@ -63,7 +63,7 @@ public class QQiProfile implements Profile {
         Intent intent = new Intent()
                 .setClassName(getPackageName(), "com.tencent.biz.qrcode.activity.ScannerActivity")
                 .setComponent(ComponentName.unflattenFromString("com.tencent.mobileqqi/com.tencent.biz.qrcode.activity.ScannerActivity"));
-        if (!ShizukuCompat.startActivity(context, intent, getPackageName())) {
+        if (!ShizukuCompat.findAndStartActivity(context, intent, getPackageName())) {
             ProfileHelper.startLauncherActivity(context, this);
         }
     }

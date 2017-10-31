@@ -54,7 +54,7 @@ public class QQLProfile implements Profile {
                 .putExtra("uin", Long.toString(chat.getUid()))
                 .putExtra("incoming_senderuin", Long.toString(chat.getUid()));
 
-        if (!ShizukuCompat.startActivity(context, intent, getPackageName())) {
+        if (!ShizukuCompat.findAndStartActivity(context, intent, getPackageName())) {
             ProfileHelper.startLauncherActivity(context, this);
         }
     }
@@ -64,7 +64,7 @@ public class QQLProfile implements Profile {
         Intent intent = new Intent()
                 .setClassName(getPackageName(), "com.tencent.biz.qrcode.activity.ScannerActivity")
                 .setComponent(ComponentName.unflattenFromString("com.tencent.qqlite/com.tencent.biz.qrcode.activity.ScannerActivity"));
-        if (!ShizukuCompat.startActivity(context, intent, getPackageName())) {
+        if (!ShizukuCompat.findAndStartActivity(context, intent, getPackageName())) {
             ProfileHelper.startLauncherActivity(context, this);
         }
     }

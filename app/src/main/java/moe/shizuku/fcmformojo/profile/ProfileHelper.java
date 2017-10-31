@@ -19,7 +19,7 @@ public class ProfileHelper {
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        ShizukuCompat.startActivity(context, intent, profile.getPackageName());
+        ShizukuCompat.findAndStartActivity(context, intent, profile.getPackageName());
     }
 
     public static boolean installed(Context context, Profile profile) {
