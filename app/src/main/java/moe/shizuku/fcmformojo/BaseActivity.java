@@ -1,6 +1,5 @@
 package moe.shizuku.fcmformojo;
 
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -23,18 +22,13 @@ public class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         if (!sFontProviderInitialized) {
-            // 替换默认 emoji 字体
-            FontRequests.setDefaultSansSerifFonts(FontRequest.DEFAULT, FontRequest.NOTO_COLOR_EMOJI);
+            FontRequests.DEFAULT_SERIF_FONTS = new FontRequest[]{FontRequest.DEFAULT, FontRequest.NOTO_COLOR_EMOJI};
 
-            // 创建 FontProviderClient
-            FontProviderClient.create(this, new FontProviderClient.Callback() {
-                @Override
-                public boolean onServiceConnected(FontProviderClient client, ServiceConnection serviceConnection) {
-                    client.replace("sans-serif", "Noto Sans CJK");
-                    client.replace("sans-serif-medium", "Noto Sans CJK");
-                    return true;
-                }
-            });
+            FontProviderClient client = FontProviderClient.create(this);
+            if (client != null) {
+                client.replace(FontRequests.DEFAULT_SERIF_FONTS, "Noto Sans CJK",
+                        "sans-serif", "sans-serif-medium");
+            }
 
             sFontProviderInitialized = true;
         }
