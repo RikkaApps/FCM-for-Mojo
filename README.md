@@ -18,8 +18,8 @@
 
 Mojo-Webqq：直接根据[官方教程](https://github.com/sjdy521/Mojo-Webqq#安装方法)即可
 
-Node.js：自己[编译安装](https://raw.githubusercontent.com/RikkaApps/FCM-for-Mojo/master/README.md)，
-或者直接[使用包管理器](https://nodejs.org/en/download/package-manager)
+Node.js：直接[使用包管理器](https://nodejs.org/en/download/package-manager)，
+或者自己[编译安装](https://github.com/nodejs/node/blob/master/BUILDING.md#building-nodejs-on-supported-platforms)
 
 ##### 下载（或更新）服务端
 
