@@ -112,8 +112,13 @@ public class NotificationSettingsFragment extends SettingsFragment {
 
         Preference.OnPreferenceChangeListener pushListener = new Preference.OnPreferenceChangeListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                uploadNotificationsToggle(preference);
+            public boolean onPreferenceChange(final Preference preference, Object newValue) {
+                getListView().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        uploadNotificationsToggle(preference);
+                    }
+                });
                 return true;
             }
         };
