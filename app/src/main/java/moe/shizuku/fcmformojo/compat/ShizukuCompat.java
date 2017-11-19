@@ -56,7 +56,7 @@ public class ShizukuCompat {
         for (UserHandle userHandle : userManager.getUserProfiles()) {
             final int userId = userHandle.hashCode(); // 就是（
             try {
-                safeStartActivity(packageName, intent, userId);
+                return safeStartActivity(packageName, intent, userId);
             } catch (SecurityException e) {
                 //Toast.makeText(context, "Can't start activity because of permission.", Toast.LENGTH_SHORT).show();
                 return false;

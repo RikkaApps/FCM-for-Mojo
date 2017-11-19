@@ -9,17 +9,21 @@ sub call {
     my $data   = shift;
     $client->load("UploadQRcode") if !$client->is_load_plugin('UploadQRcode');
     my $api_url = $data->{api_url};
-
+	
     $client->on(
         receive_message => sub {
             my ( $client, $msg ) = @_;
-
+			
             my %chat;
 
             $chat{message}{sender}    = $msg->sender->displayname;
             $chat{message}{content}   = $msg->content;
             $chat{message}{timestamp} = $msg->time;
-
+			
+			if ($client->user->uid eq $msg->sender->uid) {
+				return;
+			}
+			
             if ( $msg->is_at ) {
                 $chat{message}{isAt} = 1;
             }
