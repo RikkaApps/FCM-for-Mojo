@@ -2,9 +2,14 @@ var fs = require('fs');
 
 function FFMConfig(file) {
     var self = this;
+    var path = '../' + file;
 
     this.file = file;
-    this.data = require('../' + file);
+    if (fs.existsSync(path)) {
+        this.data = require('../' + file);
+    } else {
+        this.data = {};
+    }
 
     console.log('[FFM] client config file: ' + file);
 
