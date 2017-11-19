@@ -100,7 +100,7 @@ public class ServerStatusPreference extends Preference {
             if (server != null
                     && !server.equals(BuildConfig.REQUIRE_SERVER_VERSION)) {
                 TextView status = versionCard.findViewById(android.R.id.text2);
-                status.setText(getContext().getString(R.string.status_version_not_match, server, BuildConfig.VERSION_NAME));
+                status.setText(getContext().getString(R.string.status_version_not_match, server, BuildConfig.REQUIRE_SERVER_VERSION));
 
                 versionCard.setVisibility(View.VISIBLE);
             } else {
