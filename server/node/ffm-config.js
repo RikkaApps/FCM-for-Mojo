@@ -4,9 +4,15 @@ function FFMConfig(file) {
     var self = this;
 
     this.file = file;
-    this.data = require('../' + file);
+    if (fs.existsSync(file)) {
+        this.data = require('../' + file);
 
-    console.log('[FFM] client config file: ' + file);
+        console.log('[FFM] client config file: ' + file);
+    } else {
+        this.data = {};
+
+        console.log('[FFM] client config file: ' + file + ' not exist, use empty data');
+    }
 
     this.makeIds = function () {
         self.ids = [];
