@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,6 +26,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.ShizukuState;
 import moe.shizuku.api.ShizukuClient;
+import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
 import moe.shizuku.fcmformojo.R;
@@ -245,6 +248,13 @@ public class NotificationSettingsFragment extends SettingsFragment {
                         if (!UsageStatsUtils.granted(getContext())) {
                             getContext().startActivity(new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS));
                         }
+                    case ForegroundImpl.NONE:
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                FFMApplication.get(getContext()).unregisterTaskStackListener();
+                            }
+                        });
                         break;
                     case ForegroundImpl.SHIZUKU:
                         if (ShizukuClient.getManagerVersion(getContext()) < 106) {
@@ -254,13 +264,19 @@ public class NotificationSettingsFragment extends SettingsFragment {
                             break;
                         }
 
-                        Single.just(ShizukuClient.getState())
+                        Single
+                                .fromCallable(new Callable<ShizukuState>() {
+                                    @Override
+                                    public ShizukuState call() throws Exception {
+                                        return ShizukuClient.getState();
+                                    }
+                                })
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Consumer<ShizukuState>() {
                                     @Override
                                     public void accept(ShizukuState state) throws Exception {
-                                        if (!isDetached()) {
+                                        if (isDetached()) {
                                             return;
                                         }
 
@@ -302,8 +318,16 @@ public class NotificationSettingsFragment extends SettingsFragment {
                 if (resultCode == ShizukuClient.AUTH_RESULT_OK) {
                     ShizukuClient.setToken(data);
                     FFMSettings.putToken(ShizukuClient.getToken());
+
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            FFMApplication.get(getContext()).registerTaskStackListener();
+                        }
+                    });
                 } else {
                     // error
+                    mForegroundList.setValue(ForegroundImpl.NONE);
                 }
                 return;
             default:
