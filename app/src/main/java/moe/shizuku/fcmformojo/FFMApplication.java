@@ -90,8 +90,8 @@ public class FFMApplication extends Application {
 
     private static void initShizuku(final Context context) {
         // not installed, version too low, no permission
-        if (ShizukuClient.getManagerVersion(context) < 106
-                || !ShizukuClient.checkSelfPermission(context)) {
+        if (FFMSettings.getForegroundImpl().equals(ForegroundImpl.SHIZUKU)
+                && (ShizukuClient.getManagerVersion(context) < 106 || !ShizukuClient.checkSelfPermission(context))) {
             FFMSettings.putForegroundImpl(ForegroundImpl.NONE);
             return;
         }
