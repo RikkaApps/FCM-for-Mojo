@@ -37,7 +37,7 @@ npm install && cd ..
 为避免错过二维码扫描通知而不知所措，建议在运行前先完成客户端配置的一部分（填写好服务器 URL）。
 
 ```Shell
-node node/index.js
+node node
 ```
 #### 选项 2：Docker 快速部署
 
