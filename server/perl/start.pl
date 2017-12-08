@@ -18,8 +18,6 @@ my $client = Mojo::Webqq->new(
     account                => 'ffm'
 );
 
-$client->load('UploadQRcode');
-
 $client->load('ShowMsg');
 
 $client->load(

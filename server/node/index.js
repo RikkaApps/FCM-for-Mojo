@@ -2,6 +2,7 @@ var http = require('http');
 var https = require('https');
 var httpProxy = require('http-proxy');
 var auth = require('http-auth');
+var fs = require('fs');
 var config = require('../config');
 
 var push = require('./push');
@@ -99,6 +100,18 @@ function handle(req, res) {
             res.end(JSON.stringify({
                 code: mojoQQ.kill('SIGINT') ? 1 :0
             }));
+            break;
+        case '/ffm/get_qr_code':
+            fs.readFile('/tmp/mojo_webqq_qrcode_ffm.png', (err, buf) => {
+                if (err) {
+                    console.error("/tmp/mojo_webqq_qrcode_ffm.png: no such file");
+                    res.writeHead(404);
+                    res.end();
+                    return;
+                }
+                res.writeHead(200, {"Content-Type": "image/png"});
+                res.end(buf, 'binary');
+            });
             break;
         default:
             if (req.url.indexOf('/openqq') === 0) {

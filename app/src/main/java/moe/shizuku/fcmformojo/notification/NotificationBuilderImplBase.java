@@ -103,7 +103,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 }
                 return;
             case "input_qrcode":
-                FFMIntentService.startDownloadQrCode(context, chat.getLatestMessage().getContent());
+                FFMIntentService.startDownloadQrCode(context);
                 break;
             case "stop":
                 NotificationCompat.Builder builder = nb.createBuilder(context, null)

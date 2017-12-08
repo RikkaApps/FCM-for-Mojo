@@ -42,6 +42,7 @@ import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.profile.ProfileHelper;
 import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
 import moe.shizuku.fcmformojo.utils.FileUtils;
+import moe.shizuku.fcmformojo.utils.URLFormatUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -53,7 +54,6 @@ import static moe.shizuku.fcmformojo.FFMStatic.ACTION_RESTART_WEBQQ;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_ICON;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CHAT;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CONTENT;
-import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_URL;
 import static moe.shizuku.fcmformojo.FFMStatic.FILE_PROVIDER_AUTHORITY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_PROGRESS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_SERVER;
@@ -89,10 +89,9 @@ public class FFMIntentService extends IntentService {
                 .putExtra(EXTRA_CHAT, chat));
     }
 
-    public static void startDownloadQrCode(Context context, String url) {
+    public static void startDownloadQrCode(Context context) {
         context.startService(new Intent(context, FFMIntentService.class)
-                .setAction(ACTION_DOWNLOAD_QRCODE)
-                .putExtra(EXTRA_URL, url));
+                .setAction(ACTION_DOWNLOAD_QRCODE));
     }
 
     public static Intent restartIntent(Context context) {
@@ -113,8 +112,7 @@ public class FFMIntentService extends IntentService {
             Chat chat = intent.getParcelableExtra(EXTRA_CHAT);
             handleReply(content, chat);
         } else if (ACTION_DOWNLOAD_QRCODE.equals(action)) {
-            String url = intent.getStringExtra(EXTRA_URL);
-            handleDownloadQrCode(url);
+            handleDownloadQrCode();
         } else if (ACTION_RESTART_WEBQQ.equals(action)) {
             handleRestart();
         }
@@ -330,7 +328,8 @@ public class FFMIntentService extends IntentService {
         nb.clearMessages(chat.getUniqueId());
     }
 
-    private void handleDownloadQrCode(String url) {
+    private void handleDownloadQrCode() {
+        String url = URLFormatUtils.addEndSlash(FFMSettings.getBaseUrl()) + "ffm/get_qr_code";
         Profile profile = FFMSettings.getProfile();
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
 

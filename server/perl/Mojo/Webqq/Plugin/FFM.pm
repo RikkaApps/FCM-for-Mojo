@@ -7,7 +7,6 @@ our $PRIORITY = 97;
 sub call {
     my $client = shift;
     my $data   = shift;
-    $client->load("UploadQRcode") if !$client->is_load_plugin('UploadQRcode');
     my $api_url = $data->{api_url};
 	
     $client->on(
@@ -67,7 +66,8 @@ sub call {
             $chat{message}{sender}    = $event;
             $chat{message}{timestamp} = time();
             if ( $event eq 'input_qrcode' ) {
-                $chat{message}{content} = $client->qrcode_upload_url;
+                print "[FFM] QRCode Link: http://localhost:5004/ffm/get_qr_code\n";
+                $chat{message}{content} = "";
             }
 
             $client->http_post(
