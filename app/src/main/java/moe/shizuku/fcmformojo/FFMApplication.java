@@ -37,6 +37,7 @@ public class FFMApplication extends Application {
 
     private static NotificationBuilder sNotificationBuilder;
     private static Retrofit sRxRetrofit;
+    private static OkHttpClient sOkHttpClient;
 
     public static OpenQQService OpenQQService;
     public static FFMService FFMService;
@@ -61,6 +62,19 @@ public class FFMApplication extends Application {
         createServices(sRxRetrofit);
     }
 
+    private static void createOkHttpClient() {
+        sOkHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new HttpBasicAuthorizationInterceptor())
+                .build();
+    }
+
+    public static OkHttpClient getOkHttpClient() {
+        if (sOkHttpClient == null) {
+            createOkHttpClient();
+        }
+        return sOkHttpClient;
+    }
+
     private static void createRetrofit(String baseUrl) {
         if (!URLFormatUtils.isValidURL(baseUrl)) {
             baseUrl = "http://0.0.0.0/";
@@ -68,9 +82,7 @@ public class FFMApplication extends Application {
 
         baseUrl = URLFormatUtils.addEndSlash(baseUrl);
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new HttpBasicAuthorizationInterceptor())
-                .build();
+        OkHttpClient okHttpClient = getOkHttpClient();
 
         sRxRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)

@@ -43,6 +43,7 @@ import moe.shizuku.fcmformojo.profile.ProfileHelper;
 import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
 import moe.shizuku.fcmformojo.utils.FileUtils;
 import moe.shizuku.fcmformojo.utils.URLFormatUtils;
+import moe.shizuku.support.utils.Settings;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -348,12 +349,22 @@ public class FFMIntentService extends IntentService {
 
         NotificationCompat.Action action;
 
-        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
+        Uri authUri = Uri.parse(url);
+
+        String username = Settings.getString(FFMSettings.SERVER_HTTP_USERNAME, null);
+        String password = Settings.getString(FFMSettings.SERVER_HTTP_PASSWORD, null);
+
+        if (username != null && username.length() > 0
+                || password != null && password.length() > 0) {
+            authUri = authUri.buildUpon().encodedAuthority(String.format("%1$s:%2$s@%3$s", username, password, authUri.getAuthority())).build();
+        }
+
+        Intent intent = new Intent(Intent.ACTION_VIEW).setData(authUri);
         PendingIntent viewIntent = PendingIntent
                 .getActivity(this, REQUEST_CODE_OPEN_URI, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         PendingIntent copyIntent = PendingIntent
-                .getBroadcast(this, REQUEST_CODE_COPY, FFMBroadcastReceiver.copyToClipboardIntent(url), PendingIntent.FLAG_UPDATE_CURRENT);
+                .getBroadcast(this, REQUEST_CODE_COPY, FFMBroadcastReceiver.copyToClipboardIntent(authUri.toString()), PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (intent.resolveActivity(getPackageManager()) != null) {
             action = new NotificationCompat.Action.Builder(R.drawable.ic_noti_open_24dp, getString(R.string.notification_action_open_in_browser), viewIntent)
@@ -407,7 +418,7 @@ public class FFMIntentService extends IntentService {
                     .setContentText(getString(R.string.notification_permission_issue))
                     .addAction(action);
         } else {
-            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client = FFMApplication.getOkHttpClient();
 
             if (save(client, url, os, false)) {
                 builder.setContentTitle(getString(R.string.notification_qr_code_downloaded))
