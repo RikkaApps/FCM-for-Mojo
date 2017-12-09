@@ -21,11 +21,11 @@ Mojo-Webqq：直接根据[官方教程](https://github.com/sjdy521/Mojo-Webqq#�
 Node.js：直接[使用包管理器](https://nodejs.org/en/download/package-manager)，
 或者自己[编译安装](https://github.com/nodejs/node/blob/master/BUILDING.md#building-nodejs-on-supported-platforms)
 
-git：使用包管理器安装 git
+git：使用包管理器 [安装 git](https://git-scm.com/download/linux)
 
 ##### 下载服务端
 
-需要自行把 <server.zip> 替换为 [latest release](https://github.com/RikkaW/FCM-for-Mojo/releases/latest) 中的 server.zip 的地址
+执行下面几条命令来下载服务端并安装所需的 node 依赖。
 
 ```Shell
 git clone https://github.com/RikkaApps/FCM-for-Mojo-Server.git
@@ -36,7 +36,7 @@ npm install
 
 ##### 更新服务端
 
-首先使用 `Ctrl+C` 关闭正在运行的 FFM ，然后执行下面这两行命令更新服务端
+首先使用 `Ctrl+C` 关闭正在运行的 FFM ，然后执行下面这两行命令更新服务端并更新所需的 node 依赖。
 
 ```Shell
 git pull
