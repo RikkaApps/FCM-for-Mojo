@@ -5,7 +5,7 @@
     <string name="notification_action_reply" formatted="false">%s に返信</string>
 
     <string name="update_avatar">画像を更新</string>
-    <string name="update_avatar_summary">友達やグループの画像を更新する(アプリを再開して有効する)</string>
+    <string name="update_avatar_summary">友達やグループの画像を更新する(アプリを再開)</string>
 
     <string name="friend_messages">友達メッセージ</string>
     <string name="group_messages">グループメッセージ</string>
@@ -53,10 +53,10 @@
 
     <string name="notification_channel_friend_message">友達メッセージ</string>
     <string name="notification_channel_group_message">グループメッセージ</string>
-    <string name="notification_channel_progress_message">進行する</string>
+    <string name="notification_channel_progress_message">進行している</string>
     <string name="notification_channel_server_message">サーバーメッセージ</string>
-    <string name="notification_channel_group_summary">Notification summary</string>
-    <string name="notification_channel_group_summary_description">Please do not change importance to high or urgent, or a message will make sound twice.</string>
+    <string name="notification_channel_group_summary">通知概要</string>
+    <string name="notification_channel_group_summary_description">重要度を高いや緊急に変更しないでください、そうするとメッセージが2回になります。/string>
 
 
     <string name="notification_style">通知スタイル</string>
@@ -74,7 +74,7 @@
 
     <string name="action_about">アプリについて</string>
 
-    <string name="about_icon_credits"><![CDATA[このアプリのアイコンを挿絵したの<a href="https://twitter.com/xiaoya_er">小雅</a>に感謝します<br/>日本語翻訳：<a href="https://twitter.com/Sakura_Sa233">佐倉さふみ</a>（きっと間違ったとこがいっぱいあって、いつも指摘してください]]></string>
+    <string name="about_icon_credits"><![CDATA[アイコン:<a href="https://twitter.com/xiaoya_er">小雅</a><br/>日本語翻訳:<a href="https://twitter.com/SakuraSakuw">佐倉さく</a>]]></string>
 
     <string name="notification_message_image">[画像]</string>
 
@@ -98,7 +98,7 @@
     <string name="manage_devices">デバイスを管理</string>
     <string name="manage_devices_summary">登録済みのデバイスを管理する</string>
     <string name="devices_name">%s</string>
-    <string name="devices_name_this">%s (本デバイス)</string>
+    <string name="devices_name_this">%s (このデバイス)</string>
     <string name="register_time">登録時間: %s</string>
     <string name="manage_devices_header">ここに登録済みのデバイスを管理することができます\nデバイスを追加するには、ツールバーの追加ボタンをタップしてください。\n編集後、ツールバーのアップロードボタンをタップして新しい設定をアップロードする。</string>
     <string name="action_add_this_device">デバイスを追加</string>
@@ -118,18 +118,18 @@
     <string name="status_running_no_device">実行中、デバイスは登録されていません。</string>
     <string name="status_webqq_dead">Mojo-Webqq が実行していません</string>
     <string name="status_webqq_error">実行中、QRコードがまだスキャンされていないか、その他のエラーです。</string>
-    <string name="status_waiting_refresh">リフレッシュを待ち…</string>
+    <string name="status_waiting_refresh">更新を待ち…</string>
     <string name="status_cannot_connect_server_error">サーバーに接続できない: %s.</string>
     <string name="status_token_changed">トークンが変更されたの可能性がある。このデバイスを追加するのため、マネージャーデバイスで再度アップロードするの必要があります。</string>
     <string name="restart_webqq_summary">サーバーのMojo-Webqqを再開する (もし進行していない)</string>
     <string name="action_donate">寄付</string>
-    <string name="dialog_donate_title">Rikkaに今すっぐ支払う ////</string>
-    <string name="dialog_donate_message">Rikkaはこのプロジェクトに多くの時間を費やしたので、Rikkaは支払いを受けるべきです。（Alipayのみ）</string>
-    <string name="dialog_donate_ok">今すっぐ支払う</string>
+    <string name="dialog_donate_title">今すっぐRikkaに寄付する ////</string>
+    <string name="dialog_donate_message">Rikkaはこのプロジェクトに多くの時間を費やしたので、Rikkaは寄付を受けるべきです。（Alipayのみ）</string>
+    <string name="dialog_donate_ok">今すっぐ寄付</string>
     <string name="dialog_donate_no">Rikkaの悪い</string>
     <string name="dialog_donate_copy">アカウントをコピー</string>
     <string name="stop_webqq_summary">サーバーのMojo-Webqqを強制的に停止する</string>
-    <string name="status_version_not_match">サーバーのバージョン(%1$s)はクライアントの要求(%2$s)と一致しないので、一部の機能が動作しない可能性があります</string>
+    <string name="status_version_not_match">サーバーのバージョン(%1$s)はクライアントの要求(%2$s)と一致しないので、一部の機能が停止するの可能性があります</string>
     <string name="dialog_config_not_uploaded_title">設定が変更されました</string>
     <string name="dialog_config_not_uploaded_message">サーバーにアップロードしないと、変更が失われますぞ</string>
     <string name="dialog_config_not_uploaded_exit">変更を破棄</string>
@@ -138,15 +138,15 @@
     <string name="whitelist_summary_group_on">有効にしたグループからのメッセージを受信するのみ</string>
     <string name="whitelist_summary_group_off">すべてのグループからのメッセージを受信する</string>
     <string name="dialog_no_google_title">Googleサービスフレームワークが見つかりません</string>
-    <string name="dialog_no_google_message">Googleサービスフレームワークはインストールしていないか、インストールされている無効になっています。\nFFMはFirebase Cloud Messaging上で中継のため、Googleサービスフレームワークが必要です。</string>
+    <string name="dialog_no_google_message">Googleサービスフレームワークはインストールしていないか、インストールされている無効になっています。\nFFMはFirebase Cloud Messagingで中継のため、Googleサービスフレームワークが必要です。</string>
     <string name="dialog_no_google_exit">FFMを終了</string>
     <string name="toast_succeeded">成功</string>
     <string name="toast_something_wroing">不正なこと:\n%s</string>
     <string name="toast_nothing_changed">何も変わされなかった</string>
     <string name="toast_token_exists">すでにこのデバイスが追加された</string>
-    <string name="toast_token_requesting">トークンを取得できません、再リクエスト中…</string>
+    <string name="toast_token_requesting">トークンを取得できません、もう一度請求中…</string>
     <string name="whitelist_group_no_uid">グループのuidを取得できないので切り替えできません</string>
-    <string name="whitelist_summary_discuss_on">有効にした討論からのメッセージを受信するのみ</string>
+    <string name="whitelist_summary_discuss_on">限定の討論からのメッセージを受信するのみ</string>
     <string name="whitelist_summary_discuss_off">すべての討論からのメッセージを受信する</string>
     <string name="settings_per_discuss_title">討論設定</string>
     <plurals name="settings_per_group_summary_on">
@@ -155,8 +155,8 @@
     <plurals name="settings_per_discuss_summary_on">
         <item quantity="other">%d個討論からのメッセージを受信するのみ</item>
     </plurals>
-    <string name="settings_notification_friend_on">On</string>
-    <string name="settings_notification_friend_off">Off</string>
-    <string name="settings_notification_group_on">On</string>
-    <string name="settings_notification_group_off">Off, 君を言及するメッセージは友のを見なす</string>
+    <string name="settings_notification_friend_on">オン</string>
+    <string name="settings_notification_friend_off">オフ</string>
+    <string name="settings_notification_group_on">オン</string>
+    <string name="settings_notification_group_off">オフ、 でも君を言及するメッセージは友のを見なす</string>
 </resources>
