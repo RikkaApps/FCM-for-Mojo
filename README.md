@@ -31,17 +31,16 @@ git：使用包管理器安装 git
 git clone https://github.com/RikkaApps/FCM-for-Mojo-Server.git
 cd FCM-for-Mojo-Server
 cp config.example.js config.js
-cd node
-npm i
-cd ..
+npm install
 ```
 
 ##### 更新服务端
 
-首先使用 `Ctrl+C` 关闭正在运行的 FFM ，然后执行下面这行命令更新服务端
+首先使用 `Ctrl+C` 关闭正在运行的 FFM ，然后执行下面这两行命令更新服务端
 
 ```Shell
 git pull
+npm install
 ```
 
 再次 [运行](#%E8%BF%90%E8%A1%8C) 即可
@@ -51,7 +50,7 @@ git pull
 > 为避免错过二维码扫描通知而不知所措，建议在运行前先完成客户端配置的一部分（填写好服务器 URL）。
 
 ```Shell
-node node/
+npm start
 ```
 
 #### 选项 2：Docker 快速部署
