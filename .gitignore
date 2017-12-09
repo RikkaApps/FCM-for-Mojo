@@ -10,3 +10,4 @@
 /signing.properties
 .idea
 gradle
+*/config.js
