@@ -55,6 +55,8 @@
     <string name="notification_channel_group_message">群组消息</string>
     <string name="notification_channel_progress_message">进度</string>
     <string name="notification_channel_server_message">服务器消息</string>
+    <string name="notification_channel_group_summary">通知摘要</string>
+    <string name="notification_channel_group_summary_description">请不要将重要程度改为高或紧急，否则一条消息会产生两次声音。</string>
 
     <string name="notification_style">通知样式</string>
 

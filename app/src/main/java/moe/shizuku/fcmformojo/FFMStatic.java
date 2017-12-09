@@ -26,6 +26,8 @@ public class FFMStatic {
     public static final String NOTIFICATION_CHANNEL_GROUPS = "group_message_channel";
     public static final String NOTIFICATION_CHANNEL_PROGRESS = "progress_channel";
     public static final String NOTIFICATION_CHANNEL_SERVER = "server_channel";
+    public static final String NOTIFICATION_CHANNEL_GROUP_SUMMARY = "group_summary_channel";
+
 
     public static final int NOTIFICATION_ID_GROUP_SUMMARY = -10000;
     public static final int NOTIFICATION_ID_SYSTEM = -10001;

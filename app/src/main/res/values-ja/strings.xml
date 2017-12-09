@@ -55,6 +55,9 @@
     <string name="notification_channel_group_message">グループメッセージ</string>
     <string name="notification_channel_progress_message">進行する</string>
     <string name="notification_channel_server_message">サーバーメッセージ</string>
+    <string name="notification_channel_group_summary">Notification summary</string>
+    <string name="notification_channel_group_summary_description">Please do not change importance to high or urgent, or a message will make sound twice.</string>
+
 
     <string name="notification_style">通知スタイル</string>
 

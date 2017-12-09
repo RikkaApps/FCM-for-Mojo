@@ -32,6 +32,7 @@ import moe.shizuku.fcmformojo.utils.FileUtils;
 
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_FRIENDS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUPS;
+import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUP_SUMMARY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_SERVER;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_GROUP_SUMMARY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_SYSTEM;
@@ -196,6 +197,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = createBuilder(context, null)
+                .setChannelId(NOTIFICATION_CHANNEL_GROUP_SUMMARY)
                 .setSubText(String.format(context.getString(R.string.notification_messages_multi_sender), nb.getMessageCount(), nb.getSendersCount()))
                 .setShowWhen(true)
                 .setWhen(System.currentTimeMillis())
