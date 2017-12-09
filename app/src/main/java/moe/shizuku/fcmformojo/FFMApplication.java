@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
@@ -195,24 +196,26 @@ public class FFMApplication extends Application {
         if (ShizukuClient.getState().isAuthorized()) {
             final Context context = this;
 
-            mTaskStackListener = new TaskStackListener() {
+            if (Build.VERSION.SDK_INT >= 26) {
+                mTaskStackListener = new TaskStackListener() {
 
-                @Override
-                public void onTaskStackChanged() throws RemoteException {
-                    final String pkg = ShizukuActivityManagerV26.getTasks(1, 0).get(0).topActivity.getPackageName();
+                    @Override
+                    public void onTaskStackChanged() throws RemoteException {
+                        final String pkg = ShizukuActivityManagerV26.getTasks(1, 0).get(0).topActivity.getPackageName();
 
-                    //Log.d("FFM", "Foreground: " + pkg);
-                    if (FFMSettings.getProfile().getPackageName().equals(pkg)) {
-                        FFMSettings.getProfile().getPackageName();
-                        FFMApplication.get(context).getNotificationBuilder()
-                                .clearMessages();
+                        //Log.d("FFM", "Foreground: " + pkg);
+                        if (FFMSettings.getProfile().getPackageName().equals(pkg)) {
+                            FFMSettings.getProfile().getPackageName();
+                            FFMApplication.get(context).getNotificationBuilder()
+                                    .clearMessages();
 
-                        Log.i("FFM", "Foreground is selected QQ, clear notification.");
+                            Log.i("FFM", "Foreground is selected QQ, clear notification.");
+                        }
                     }
-                }
-            };
+                };
 
-            ShizukuActivityManagerV26.registerTaskStackListener(mTaskStackListener);
+                ShizukuActivityManagerV26.registerTaskStackListener(mTaskStackListener);
+            }
         }
     }
 
