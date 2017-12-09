@@ -21,16 +21,19 @@ Mojo-Webqq：直接根据[官方教程](https://github.com/sjdy521/Mojo-Webqq#�
 Node.js：直接[使用包管理器](https://nodejs.org/en/download/package-manager)，
 或者自己[编译安装](https://github.com/nodejs/node/blob/master/BUILDING.md#building-nodejs-on-supported-platforms)
 
-##### 下载（或更新）服务端
+##### 下载服务端
 
 需要自行把 <server.zip> 替换为 [latest release](https://github.com/RikkaW/FCM-for-Mojo/releases/latest) 中的 server.zip 的地址
 
 ```Shell
 mkdir ffm && cd ffm
 wget <server.zip>
+mv config.example.js config.js
 unzip server.zip && cd node
 npm install && cd ..
 ```
+
+需要更新服务端时只需要重新下载和解压 zip
 
 ##### 运行
 
