@@ -28,8 +28,7 @@ git：使用包管理器安装 git
 需要自行把 <server.zip> 替换为 [latest release](https://github.com/RikkaW/FCM-for-Mojo/releases/latest) 中的 server.zip 的地址
 
 ```Shell
-git clone 
-https://github.com/RikkaApps/FCM-for-Mojo-Server.git
+git clone https://github.com/RikkaApps/FCM-for-Mojo-Server.git
 cd FCM-for-Mojo-Server
 cp config.example.js config.js
 cd node
