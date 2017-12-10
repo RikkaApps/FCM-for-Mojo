@@ -55,7 +55,7 @@ npm start
 
 #### 选项 2：Docker 快速部署
 
-参阅[这里](DOCKER.md)
+参阅[这里](https://github.com/RikkaApps/FCM-for-Mojo-Server/DOCKER.md)
 
 #### 安全性（可选）
 
