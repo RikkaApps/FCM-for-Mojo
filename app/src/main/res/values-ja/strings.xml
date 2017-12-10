@@ -56,7 +56,7 @@
     <string name="notification_channel_progress_message">進行している</string>
     <string name="notification_channel_server_message">サーバーメッセージ</string>
     <string name="notification_channel_group_summary">通知概要</string>
-    <string name="notification_channel_group_summary_description">重要度を高いや緊急に変更しないでください、そうするとメッセージが2回になります。/string>
+    <string name="notification_channel_group_summary_description">重要度を高いや緊急に変更しないでください、そうするとメッセージが2回になります。</string>
 
 
     <string name="notification_style">通知スタイル</string>
