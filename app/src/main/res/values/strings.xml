@@ -131,7 +131,7 @@
     <string name="stop_webqq_summary">Force stop Mojo-Webqq on server</string>
     <string name="status_version_not_match">Server version (%1$s) do not match client requirement (%2$s), some features may not work as excepted.</string>
     <string name="dialog_config_not_uploaded_title">Settings have been changed</string>
-    <string name="dialog_config_not_uploaded_message">You will lost your changes if you didn't upload them to server.</string>
+    <string name="dialog_config_not_uploaded_message">You will lost your changes if you didn\'t upload them to server.</string>
     <string name="dialog_config_not_uploaded_exit">Discard changes</string>
     <string name="dialog_config_not_uploaded_upload">Upload</string>
     <string name="settings_per_group_title">Per-group settings</string>
