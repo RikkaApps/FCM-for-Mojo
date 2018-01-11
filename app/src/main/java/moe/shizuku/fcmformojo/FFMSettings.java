@@ -36,7 +36,7 @@ public class FFMSettings {
     }
 
     public static String getBaseUrl() {
-        return Settings.getString(BASE_URL, "http://0.0.0.0:5000");
+        return Settings.getString(BASE_URL, "http://0.0.0.0:5005");
     }
 
     public static Profile getProfile() {

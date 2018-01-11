@@ -11,7 +11,7 @@
         android:summary="%s"
         app:summaryWhenAuthorizationSet="@string/summary_uri_when_authorization_set"
         android:selectAllOnFocus="true"
-        android:defaultValue="http://0.0.0.0:5000"/>
+        android:defaultValue="http://0.0.0.0:5005"/>
 
     <Preference
         android:key="view_token"
