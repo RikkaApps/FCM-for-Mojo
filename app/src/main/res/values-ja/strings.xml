@@ -121,7 +121,7 @@
     <string name="status_waiting_refresh">更新を待ち…</string>
     <string name="status_cannot_connect_server_error">サーバーに接続できない: %s.</string>
     <string name="status_token_changed">トークンが変更されたの可能性がある。このデバイスを追加するのため、マネージャーデバイスで再度アップロードするの必要があります。</string>
-    <string name="restart_webqq_summary">サーバーのMojo-Webqqを再開する (もし進行していない)</string>
+    <string name="restart_webqq_summary">サーバーのMojo-Webqqを再開する</string>
     <string name="action_donate">寄付</string>
     <string name="dialog_donate_title">今すっぐRikkaに寄付する ////</string>
     <string name="dialog_donate_message">Rikkaはこのプロジェクトに多くの時間を費やしたので、Rikkaは寄付を受けるべきです。（Alipayのみ）</string>

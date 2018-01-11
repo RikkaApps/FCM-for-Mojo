@@ -121,7 +121,7 @@
     <string name="status_waiting_refresh">Waiting for refresh…</string>
     <string name="status_cannot_connect_server_error">Can\'t connect to server: %s.</string>
     <string name="status_token_changed">Token may have changed, you may need to add this device and upload settings again in Manage Devices.</string>
-    <string name="restart_webqq_summary">Restart Mojo-Webqq on server (if not running)</string>
+    <string name="restart_webqq_summary">Restart Mojo-Webqq on server</string>
     <string name="action_donate">Donate</string>
     <string name="dialog_donate_title">Pay Rikka NOW ////</string>
     <string name="dialog_donate_message">Rikka have spent a lot time on this project, so Rikka should be paid. (Alipay only)</string>
