@@ -32,10 +32,12 @@ import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.NotificationToggle;
+import moe.shizuku.fcmformojo.model.Password;
 import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.profile.ProfileList;
 import moe.shizuku.fcmformojo.service.FFMIntentService;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
+import moe.shizuku.preference.EditTextPreference;
 import moe.shizuku.preference.ListPreference;
 import moe.shizuku.preference.Preference;
 import moe.shizuku.preference.SwitchPreference;
@@ -52,6 +54,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
     private SwitchPreference mGroupToggle;
 
     private ListPreference mForegroundList;
+    private EditTextPreference mPassword;
 
     private NotificationToggle mServerNotificationToggle;
 
@@ -64,6 +67,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
         mFriendToggle = (SwitchPreference) findPreference("notification");
         mGroupToggle = (SwitchPreference) findPreference("notification_group");
         mForegroundList = (ListPreference) findPreference("get_foreground");
+        mPassword = (EditTextPreference) findPreference("qq_password");
 
         List<CharSequence> names = new ArrayList<>();
         List<CharSequence> packages = new ArrayList<>();
@@ -111,8 +115,6 @@ public class NotificationSettingsFragment extends SettingsFragment {
             });
         }
 
-        fetchNotificationsToggle();
-
         Preference.OnPreferenceChangeListener pushListener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(final Preference preference, Object newValue) {
@@ -128,9 +130,32 @@ public class NotificationSettingsFragment extends SettingsFragment {
 
         mFriendToggle.setOnPreferenceChangeListener(pushListener);
         mGroupToggle.setOnPreferenceChangeListener(pushListener);
+
+        mPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue instanceof String) {
+                    try {
+                        FFMResult result = FFMService.updatePassword(new Password((String) newValue, null))
+                                .subscribeOn(Schedulers.io())
+                                .blockingGet();
+
+                        if (result != null && result.getCode() == 0) {
+                            return true;
+                        }
+                    } catch (Throwable tr) {
+                        Toast.makeText(getContext(), "Unknown error:\n" + tr.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                return false;
+            }
+        });
+
+        fetchRemoteConfiguration();
     }
 
-    private void fetchNotificationsToggle() {
+    private void fetchRemoteConfiguration() {
         mCompositeDisposable.add(FFMService
                 .getNotificationsToggle()
                 .subscribeOn(Schedulers.io())
@@ -145,6 +170,23 @@ public class NotificationSettingsFragment extends SettingsFragment {
 
                         mFriendToggle.setEnabled(true);
                         mGroupToggle.setEnabled(true);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }));
+
+        mCompositeDisposable.add(FFMService
+                .getPassword()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Password>() {
+                    @Override
+                    public void accept(Password pass) throws Exception {
+                        mPassword.setText(pass.getRaw());
+                        mPassword.setEnabled(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

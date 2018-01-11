@@ -158,4 +158,8 @@
     <string name="settings_notification_friend_off">关闭</string>
     <string name="settings_notification_group_on">开启</string>
     <string name="settings_notification_group_off">关闭，但 \@ 你的消息将会被当作好友消息处理</string>
+
+    <string name="qq_password">QQ 密码</string>
+    <string name="qq_password_summary">由于腾讯限制，获取 uid 需要 QQ 密码进行授权。\n需要重启 Mojo-Webqq 生效。</string>
+
 </resources>

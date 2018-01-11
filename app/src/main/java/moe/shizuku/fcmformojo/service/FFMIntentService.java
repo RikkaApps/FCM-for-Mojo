@@ -46,6 +46,7 @@ import moe.shizuku.fcmformojo.utils.URLFormatUtils;
 import moe.shizuku.support.utils.Settings;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 
 import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 import static moe.shizuku.fcmformojo.FFMApplication.OpenQQService;
@@ -251,8 +252,15 @@ public class FFMIntentService extends IntentService {
                     .url(url)
                     .build();
             okhttp3.Response headResponse = client.newCall(request).execute();
+            ResponseBody body = headResponse.body();
+            if (body == null) {
+                return false;
+            }
 
-            Bitmap bitmap = BitmapFactory.decodeStream(headResponse.body().byteStream());
+            Bitmap bitmap = BitmapFactory.decodeStream(body.byteStream());
+            if (bitmap == null) {
+                return false;
+            }
 
             if (round) {
                 Bitmap roundBitmap = ChatIcon.clipToRound(this, bitmap);

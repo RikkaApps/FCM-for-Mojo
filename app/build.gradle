@@ -17,7 +17,7 @@ repositories {
 
 def gitCommitId = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
-def baseVersionName = '0.5.1'
+def baseVersionName = '0.5.3'
 
 android {
     compileSdkVersion rootProject.ext.targetSdkVersion
@@ -33,7 +33,7 @@ android {
 
         resValue "string", "version_name", "${versionName}"
         buildConfigField "String", "DONATE_ALIPAY_URL", '"alipayqr://platformapi/startapp?saId=10000007&qrcode=https%3A%2F%2Fqr.alipay.com%2Faex01083scje5axcttivf13"'
-        buildConfigField "String", "REQUIRE_SERVER_VERSION", '"0.5.1"'
+        buildConfigField "String", "REQUIRE_SERVER_VERSION", '"0.5.3"'
     }
     signingConfigs {
         sign

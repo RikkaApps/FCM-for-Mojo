@@ -159,4 +159,8 @@
     <string name="settings_notification_friend_off">オフ</string>
     <string name="settings_notification_group_on">オン</string>
     <string name="settings_notification_group_off">オフ、 でも君を言及するメッセージは友のを見なす</string>
+
+    <string name="qq_password">QQ password</string>
+    <string name="qq_password_summary">Due to Tencent\'s restrictions, access uid need QQ password for authorization.\nMojo-Webqq needs to be restarted to take effect.</string>
+
 </resources>

@@ -8,6 +8,7 @@ import java.util.Set;
 import moe.shizuku.fcmformojo.model.Group;
 import moe.shizuku.fcmformojo.model.GroupWhitelistState;
 import moe.shizuku.fcmformojo.viewholder.GroupWhitelistItemViewHolder;
+import moe.shizuku.support.recyclerview.ClassCreatorPool;
 
 /**
  * Created by rikka on 2017/9/2.
@@ -17,6 +18,11 @@ public class GroupWhitelistAdapter extends WhitelistAdapter {
 
     public GroupWhitelistAdapter() {
         getCreatorPool().putRule(Pair.class, GroupWhitelistItemViewHolder.CREATOR);
+    }
+
+    @Override
+    public ClassCreatorPool getCreatorPool() {
+        return (ClassCreatorPool) super.getCreatorPool();
     }
 
     @Override

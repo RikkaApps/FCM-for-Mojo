@@ -8,6 +8,7 @@ import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.FFMStatus;
 import moe.shizuku.fcmformojo.model.GroupWhitelistState;
 import moe.shizuku.fcmformojo.model.NotificationToggle;
+import moe.shizuku.fcmformojo.model.Password;
 import moe.shizuku.fcmformojo.model.RegistrationId;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -56,4 +57,11 @@ public interface FFMService {
     @Headers("Content-Type: application/json")
     @POST("ffm/update_discuss_whitelist")
     Single<FFMResult> updateDiscussWhitelist(@Body DiscussWhitelistState state);
+
+    @GET("ffm/get_password")
+    Single<Password> getPassword();
+
+    @Headers("Content-Type: application/json")
+    @POST("ffm/update_password")
+    Single<FFMResult> updatePassword(@Body Password state);
 }
