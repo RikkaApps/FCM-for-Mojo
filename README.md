@@ -93,6 +93,11 @@ HTTPS 通过 [https 模块](https://nodejs.org/dist/latest/docs/api/https.html) 
 	}
 ```
 
+#### 通过 HTTP 代理连接 Google FCM 推送服务器
+
+由于众所周知的原因，中国大陆无法直连 FCM 推送服务器。这种情况下为了能够向 FFM 客户端推送消息，可以在 `config.js` 中的 `push_proxy` 选项中指定 FFM 服务端连接 Google FCM 推送服务器时所使用的 HTTP 代理。具体思路请参考 [这个issue](https://github.com/RikkaApps/FCM-for-Mojo/issues/103) 。
+
+
 ### 客户端
 
 当服务端配置完成后，[下载客户端](https://github.com/RikkaW/FCM-for-Mojo/releases)并根据应用内提示配置（在管理设备里添加正在使用的设备）即可。
