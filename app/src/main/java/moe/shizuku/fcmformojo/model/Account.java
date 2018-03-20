@@ -28,6 +28,7 @@ public class Account {
         return password == null ? new Password(null, null) : password;
     }
 
+    @Keep
     public static class Password {
 
         private String raw;
