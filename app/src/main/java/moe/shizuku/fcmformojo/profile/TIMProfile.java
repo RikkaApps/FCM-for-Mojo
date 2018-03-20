@@ -43,10 +43,9 @@ public class TIMProfile implements Profile {
             return;
         }
 
-        @SuppressLint("WrongConstant")
         Intent intent = new Intent("com.tencent.tim.action.MAINACTIVITY")
                 .setComponent(ComponentName.unflattenFromString("com.tencent.tim/com.tencent.mobileqq.activity.SplashActivity"))
-                .setFlags(0x14000000)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 .putExtra("open_chatfragment", true)
                 .putExtra("entrance", 6)
                 .putExtra("key_notification_click_action", (String) null)
@@ -62,6 +61,7 @@ public class TIMProfile implements Profile {
     @Override
     public void onStartQrCodeScanActivity(Context context) {
         Intent intent = new Intent()
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 .setClassName(getPackageName(), "com.tencent.biz.qrcode.activity.ScannerActivity");
         if (!ShizukuCompat.findAndStartActivity(context, intent, getPackageName())) {
             ProfileHelper.startLauncherActivity(context, this);

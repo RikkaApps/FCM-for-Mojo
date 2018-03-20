@@ -78,14 +78,9 @@ public class ShizukuCompat {
     }
 
     private static boolean safeStartActivity(final String packageName, final Intent intent, final int userId) {
-        if (!Looper.getMainLooper().isCurrentThread()) {
-            return Single.
-                    fromCallable(new Callable<Boolean>() {
-                        @Override
-                        public Boolean call() throws Exception {
-                            return startActivity(packageName, intent, userId);
-                        }
-                    })
+        if (Looper.getMainLooper().isCurrentThread()) {
+            return Single
+                    .fromCallable(() -> startActivity(packageName, intent, userId))
                     .subscribeOn(Schedulers.io())
                     .blockingGet();
         } else {
