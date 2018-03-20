@@ -131,40 +131,21 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
     }
 
     private static NotificationCompat.Style getStyle(Context context, Chat chat) {
-        if (chat.isFriend()) {
-            NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
-            style.setBigContentTitle(chat.getName());
+        MessagingStyle style = new MessagingStyle(chat.getName());
+        style.setConversationTitle(chat.getName());
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = chat.getMessages().size() - NOTIFICATION_MAX_MESSAGES, count = 0; i < chat.getMessages().size() && count <= 8; i++, count ++) {
-                if (i < 0) {
-                    continue;
-                }
-
-                Message message = chat.getMessages().get(i);
-                sb.append(message.getContent(context)).append('\n');
-            }
-            style.bigText(sb.toString().trim());
-            style.setSummaryText(context.getString(R.string.notification_messages, chat.getMessages().getSize()));
-
-            return style;
-        } else {
-            MessagingStyle style = new MessagingStyle(chat.getName());
-            style.setConversationTitle(chat.getName());
-
-            for (int i = chat.getMessages().size() - NOTIFICATION_MAX_MESSAGES, count = 0; i < chat.getMessages().size() && count <= 8; i++, count ++) {
-                if (i < 0) {
-                    continue;
-                }
-
-                Message message = chat.getMessages().get(i);
-                style.addMessage(message.getContent(context), message.getTimestamp(), message.getSender());
+        for (int i = chat.getMessages().size() - NOTIFICATION_MAX_MESSAGES, count = 0; i < chat.getMessages().size() && count <= 8; i++, count ++) {
+            if (i < 0) {
+                continue;
             }
 
-            style.setSummaryText(context.getString(R.string.notification_messages, chat.getMessages().getSize()));
-
-            return style;
+            Message message = chat.getMessages().get(i);
+            style.addMessage(message.getContent(context), message.getTimestamp(), chat.isFriend() ? "" : message.getSender());
         }
+
+        style.setSummaryText(context.getString(R.string.notification_messages, chat.getMessages().getSize()));
+
+        return style;
     }
 
     /**
