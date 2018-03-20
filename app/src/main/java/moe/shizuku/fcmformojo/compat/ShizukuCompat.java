@@ -1,16 +1,17 @@
 package moe.shizuku.fcmformojo.compat;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Looper;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.support.annotation.WorkerThread;
 
-import java.util.concurrent.Callable;
-
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import moe.shizuku.api.ShizukuActivityManagerV24;
 import moe.shizuku.api.ShizukuActivityManagerV26;
 import moe.shizuku.api.ShizukuClient;
 import moe.shizuku.api.ShizukuPackageManagerV26;
@@ -88,11 +89,25 @@ public class ShizukuCompat {
         }
     }
 
-    public static String getForegroundPackage() {
+    public static boolean isPackageTop(String packageName, int userId) {
         try {
-            return ShizukuActivityManagerV26.getTasks(1, 0).get(0).baseActivity.getPackageName();
-        } catch (Exception ignored) {
-            return null;
+            int state = -1;
+            if (Build.VERSION.SDK_INT >= 26) {
+                int uid = ShizukuPackageManagerV26.getPackageUid(packageName,0, userId);
+                if (uid > 0) {
+                    state = ShizukuActivityManagerV26.getUidProcessState(uid, null);
+                }
+            } else {
+                state = ShizukuActivityManagerV24.getPackageProcessState(packageName, null);
+            }
+            if (state != -1) {
+                int importance = ActivityManager.RunningAppProcessInfo.procStateToImportance(state);
+                return importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+            } else {
+                return false;
+            }
+        } catch (Throwable ignored) {
+            return false;
         }
     }
 }

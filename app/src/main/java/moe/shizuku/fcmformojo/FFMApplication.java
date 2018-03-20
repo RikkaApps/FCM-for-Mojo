@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Process;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -166,20 +167,21 @@ public class FFMApplication extends Application {
         return sNotificationBuilder;
     }
 
-    public String getForegroundPackage() {
+    public boolean isTop() {
         try {
             switch (FFMSettings.getForegroundImpl()) {
                 case ForegroundImpl.USAGE_STATS:
-                    return UsageStatsUtils.getForegroundPackage(this);
-                case ForegroundImpl.SHIZUKU:
-                    return ShizukuCompat.getForegroundPackage();
+                    return FFMSettings.getProfile().getPackageName().equals(UsageStatsUtils.getForegroundPackage(this));
+                case ForegroundImpl.SHIZUKU: {
+                    return ShizukuCompat.isPackageTop(FFMSettings.getProfile().getPackageName(), Process.myUserHandle().hashCode());
+                }
                 case ForegroundImpl.NONE:
                 default:
-                    return null;
+                    return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 

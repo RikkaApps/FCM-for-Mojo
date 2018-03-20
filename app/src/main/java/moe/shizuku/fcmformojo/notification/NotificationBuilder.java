@@ -9,7 +9,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.util.LongSparseArray;
 
 import moe.shizuku.fcmformojo.FFMApplication;
-import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.PushChat;
 import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
@@ -97,8 +96,7 @@ public class NotificationBuilder {
     }
 
     private boolean shouldNotify(Context context) {
-        String foreground = FFMApplication.get(context).getForegroundPackage();
-        if (FFMSettings.getProfile().getPackageName().equals(foreground)) {
+        if (FFMApplication.get(context).isTop()) {
             clearMessages();
             return false;
         }
