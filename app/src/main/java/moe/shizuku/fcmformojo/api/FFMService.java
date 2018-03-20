@@ -3,12 +3,12 @@ package moe.shizuku.fcmformojo.api;
 import java.util.Set;
 
 import io.reactivex.Single;
+import moe.shizuku.fcmformojo.model.Account;
 import moe.shizuku.fcmformojo.model.DiscussWhitelistState;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.FFMStatus;
 import moe.shizuku.fcmformojo.model.GroupWhitelistState;
 import moe.shizuku.fcmformojo.model.NotificationToggle;
-import moe.shizuku.fcmformojo.model.Password;
 import moe.shizuku.fcmformojo.model.RegistrationId;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -58,10 +58,10 @@ public interface FFMService {
     @POST("ffm/update_discuss_whitelist")
     Single<FFMResult> updateDiscussWhitelist(@Body DiscussWhitelistState state);
 
-    @GET("ffm/get_password")
-    Single<Password> getPassword();
+    @GET("ffm/get_account")
+    Single<Account> getAccountInfo();
 
     @Headers("Content-Type: application/json")
-    @POST("ffm/update_password")
-    Single<FFMResult> updatePassword(@Body Password state);
+    @POST("ffm/update_account")
+    Single<FFMResult> updateAccountInfo(@Body Account account);
 }

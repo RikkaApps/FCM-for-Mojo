@@ -166,8 +166,9 @@
     <string name="settings_notification_friend_off">Off</string>
     <string name="settings_notification_group_on">On</string>
     <string name="settings_notification_group_off">Off, but messages that \@ you will be treated as friend message</string>
-
-    <string name="qq_password">QQ password</string>
-    <string name="qq_password_summary">Due to Tencent\'s restrictions, access uid need QQ password for authorization.\nMojo-Webqq needs to be restarted to take effect.</string>
-
+    <string name="qq_password">Password</string>
+    <string name="account_settings">Account settings</string>
+    <string name="account_settings_summary">Change login account info</string>
+    <string name="qq_account">Account</string>
+    <string name="qq_account_summary">After filling in the account password, you will log in using the account password method.\nMojo-Webqq needs to be restarted.\n\nIf you have problem, please try login to http://qun.qq.com several times in the server network environment.</string>
 </resources>

@@ -18,13 +18,6 @@
         android:entryValues="@array/get_foreground_value"
         android:defaultValue="disable"/>
 
-    <EditTextPreference
-        android:key="qq_password"
-        android:title="@string/qq_password"
-        android:summary="@string/qq_password_summary"
-        android:inputType="textPassword"
-        android:enabled="false"/>
-
     <Preference
         android:key="update_avatar"
         android:title="@string/update_avatar"

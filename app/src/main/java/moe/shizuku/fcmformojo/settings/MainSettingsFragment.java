@@ -21,44 +21,41 @@ public class MainSettingsFragment extends SettingsFragment {
 
         addPreferencesFromResource(R.xml.main);
 
-        findPreference("server_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                getFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.animator.dir_enter, R.animator.dir_leave, R.animator.dir_enter, R.animator.dir_leave)
-                        .add(android.R.id.content, new ServerSettingsFragment())
-                        .addToBackStack(null)
-                        .commit();
-                return true;
-            }
+        findPreference("server_settings").setOnPreferenceClickListener(preference -> {
+            requireFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.animator.dir_enter, R.animator.dir_leave, R.animator.dir_enter, R.animator.dir_leave)
+                    .add(android.R.id.content, new ServerSettingsFragment())
+                    .addToBackStack(null)
+                    .commit();
+            return true;
         });
 
-        findPreference("notification_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                getFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.animator.dir_enter, R.animator.dir_leave, R.animator.dir_enter, R.animator.dir_leave)
-                        .add(android.R.id.content, new NotificationSettingsFragment())
-                        .addToBackStack(null)
-                        .commit();
-                return true;
-            }
+        findPreference("account_settings").setOnPreferenceClickListener(preference -> {
+            requireFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.animator.dir_enter, R.animator.dir_leave, R.animator.dir_enter, R.animator.dir_leave)
+                    .add(android.R.id.content, new AccountSettingsFragment())
+                    .addToBackStack(null)
+                    .commit();
+            return true;
         });
 
-        findPreference("donate").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ((BaseActivity) getActivity()).onOptionsItemSelected(R.id.action_donate);
-                return true;
-            }
+        findPreference("notification_settings").setOnPreferenceClickListener(preference -> {
+            requireFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.animator.dir_enter, R.animator.dir_leave, R.animator.dir_enter, R.animator.dir_leave)
+                    .add(android.R.id.content, new NotificationSettingsFragment())
+                    .addToBackStack(null)
+                    .commit();
+            return true;
         });
 
-        findPreference("about").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ((BaseActivity) getActivity()).onOptionsItemSelected(R.id.action_about);
-                return true;
-            }
+        findPreference("donate").setOnPreferenceClickListener(preference -> {
+            ((BaseActivity) requireActivity()).onOptionsItemSelected(R.id.action_donate);
+            return true;
+        });
+
+        findPreference("about").setOnPreferenceClickListener(preference -> {
+            ((BaseActivity) requireActivity()).onOptionsItemSelected(R.id.action_about);
+            return true;
         });
     }
 
@@ -71,7 +68,7 @@ public class MainSettingsFragment extends SettingsFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        ActionBar actionBar = getActivity().getActionBar();
+        ActionBar actionBar = requireActivity().getActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.activity_name);
             actionBar.setDisplayHomeAsUpEnabled(false);

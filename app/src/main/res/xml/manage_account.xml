@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:key="qq_account"
+        android:title="@string/qq_account"
+        android:summary="%s"
+        android:enabled="false"/>
+
+    <EditTextPreference
+        android:key="qq_password"
+        android:title="@string/qq_password"
+        android:inputType="textPassword"
+        android:enabled="false"/>
+
+    <Preference
+        android:summary="@string/qq_account_summary"
+        style="?preferenceInformationStyle"/>
+
+</PreferenceScreen>

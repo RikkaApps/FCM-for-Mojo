@@ -1,6 +1,5 @@
 package moe.shizuku.fcmformojo.settings;
 
-import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,22 +16,18 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import moe.shizuku.ShizukuState;
 import moe.shizuku.api.ShizukuClient;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
 import moe.shizuku.fcmformojo.R;
+import moe.shizuku.fcmformojo.model.Account;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.NotificationToggle;
-import moe.shizuku.fcmformojo.model.Password;
 import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.profile.ProfileList;
 import moe.shizuku.fcmformojo.service.FFMIntentService;
@@ -54,7 +49,6 @@ public class NotificationSettingsFragment extends SettingsFragment {
     private SwitchPreference mGroupToggle;
 
     private ListPreference mForegroundList;
-    private EditTextPreference mPassword;
 
     private NotificationToggle mServerNotificationToggle;
 
@@ -67,7 +61,6 @@ public class NotificationSettingsFragment extends SettingsFragment {
         mFriendToggle = (SwitchPreference) findPreference("notification");
         mGroupToggle = (SwitchPreference) findPreference("notification_group");
         mForegroundList = (ListPreference) findPreference("get_foreground");
-        mPassword = (EditTextPreference) findPreference("qq_password");
 
         List<CharSequence> names = new ArrayList<>();
         List<CharSequence> packages = new ArrayList<>();
@@ -80,77 +73,37 @@ public class NotificationSettingsFragment extends SettingsFragment {
         qq.setEntries(names.toArray(new CharSequence[names.size()]));
         qq.setEntryValues(packages.toArray(new CharSequence[packages.size()]));
 
-        findPreference("update_avatar").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(getContext(), "Progress will be shown via notification", Toast.LENGTH_SHORT).show();
-                FFMIntentService.startUpdateIcon(getContext(), null);
-                return true;
-            }
+        findPreference("update_avatar").setOnPreferenceClickListener(preference -> {
+            Toast.makeText(getContext(), "Progress will be shown via notification", Toast.LENGTH_SHORT).show();
+            FFMIntentService.startUpdateIcon(getContext(), null);
+            return true;
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            findPreference("edit_channel").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @TargetApi(Build.VERSION_CODES.O)
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-                    intent.putExtra(Settings.EXTRA_CHANNEL_ID, "friend_message_channel");
-                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
-                    startActivity(intent);
-                    return true;
-                }
+            findPreference("edit_channel").setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_CHANNEL_ID, "friend_message_channel");
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
+                startActivity(intent);
+                return true;
             });
 
-            findPreference("edit_channel_group").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @TargetApi(Build.VERSION_CODES.O)
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-                    intent.putExtra(Settings.EXTRA_CHANNEL_ID, "group_message_channel");
-                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
-                    startActivity(intent);
-                    return true;
-                }
+            findPreference("edit_channel_group").setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_CHANNEL_ID, "group_message_channel");
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
+                startActivity(intent);
+                return true;
             });
         }
 
-        Preference.OnPreferenceChangeListener pushListener = new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(final Preference preference, Object newValue) {
-                getListView().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        uploadNotificationsToggle(preference);
-                    }
-                });
-                return true;
-            }
+        Preference.OnPreferenceChangeListener pushListener = (preference, newValue) -> {
+            getListView().post(() -> uploadNotificationsToggle(preference));
+            return true;
         };
 
         mFriendToggle.setOnPreferenceChangeListener(pushListener);
         mGroupToggle.setOnPreferenceChangeListener(pushListener);
-
-        mPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (newValue instanceof String) {
-                    try {
-                        FFMResult result = FFMService.updatePassword(new Password((String) newValue, null))
-                                .subscribeOn(Schedulers.io())
-                                .blockingGet();
-
-                        if (result != null && result.getCode() == 0) {
-                            return true;
-                        }
-                    } catch (Throwable tr) {
-                        Toast.makeText(getContext(), "Unknown error:\n" + tr.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-                return false;
-            }
-        });
 
         fetchRemoteConfiguration();
     }
@@ -160,40 +113,15 @@ public class NotificationSettingsFragment extends SettingsFragment {
                 .getNotificationsToggle()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<NotificationToggle>() {
-                    @Override
-                    public void accept(NotificationToggle toggle) throws Exception {
-                        mServerNotificationToggle = toggle;
+                .subscribe(toggle -> {
+                    mServerNotificationToggle = toggle;
 
-                        mFriendToggle.setChecked(toggle.isFriendEnable());
-                        mGroupToggle.setChecked(toggle.isGroupEnable());
+                    mFriendToggle.setChecked(toggle.isFriendEnable());
+                    mGroupToggle.setChecked(toggle.isGroupEnable());
 
-                        mFriendToggle.setEnabled(true);
-                        mGroupToggle.setEnabled(true);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }));
-
-        mCompositeDisposable.add(FFMService
-                .getPassword()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Password>() {
-                    @Override
-                    public void accept(Password pass) throws Exception {
-                        mPassword.setText(pass.getRaw());
-                        mPassword.setEnabled(true);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }));
+                    mFriendToggle.setEnabled(true);
+                    mGroupToggle.setEnabled(true);
+                }, throwable -> Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show()));
     }
 
     private void uploadNotificationsToggle(final Preference preference) {
@@ -208,28 +136,17 @@ public class NotificationSettingsFragment extends SettingsFragment {
                 .updateNotificationsToggle(NotificationToggle.create(mFriendToggle.isChecked(), mGroupToggle.isChecked()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        preference.setEnabled(true);
-                    }
-                })
-                .subscribe(new Consumer<FFMResult>() {
-                    @Override
-                    public void accept(FFMResult result) throws Exception {
-                        mServerNotificationToggle = newNotificationToggle;
+                .doFinally(() -> preference.setEnabled(true))
+                .subscribe(result -> {
+                    mServerNotificationToggle = newNotificationToggle;
 
-                        //Toast.makeText(getContext(), "Succeed.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "Succeed.", Toast.LENGTH_SHORT).show();
 
-                        Log.d("Sync", "updateNotificationsToggle success, new state: " + newNotificationToggle);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("Sync", "updateNotificationsToggle success, new state: " + newNotificationToggle);
+                }, throwable -> {
+                    Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
 
-                        Log.w("Sync", "updateNotificationsToggle failed", throwable);
-                    }
+                    Log.w("Sync", "updateNotificationsToggle failed", throwable);
                 }));
     }
 
@@ -291,12 +208,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
                             getContext().startActivity(new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS));
                         }
                     case ForegroundImpl.NONE:
-                        AsyncTask.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                FFMApplication.get(getContext()).unregisterTaskStackListener();
-                            }
-                        });
+                        AsyncTask.execute(() -> FFMApplication.get(getContext()).unregisterTaskStackListener());
                         break;
                     case ForegroundImpl.SHIZUKU:
                         if (ShizukuClient.getManagerVersion(getContext()) < 106) {
@@ -307,27 +219,19 @@ public class NotificationSettingsFragment extends SettingsFragment {
                         }
 
                         Single
-                                .fromCallable(new Callable<ShizukuState>() {
-                                    @Override
-                                    public ShizukuState call() throws Exception {
-                                        return ShizukuClient.getState();
-                                    }
-                                })
+                                .fromCallable(() -> ShizukuClient.getState())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<ShizukuState>() {
-                                    @Override
-                                    public void accept(ShizukuState state) throws Exception {
-                                        if (isDetached()) {
-                                            return;
-                                        }
+                                .subscribe(state -> {
+                                    if (isDetached()) {
+                                        return;
+                                    }
 
-                                        if (!ShizukuClient.getState().isAuthorized()) {
-                                            if (!ShizukuClient.checkSelfPermission(getContext())) {
-                                                ShizukuClient.requestPermission(NotificationSettingsFragment.this);
-                                            } else {
-                                                ShizukuClient.requestAuthorization(NotificationSettingsFragment.this);
-                                            }
+                                    if (!ShizukuClient.getState().isAuthorized()) {
+                                        if (!ShizukuClient.checkSelfPermission(getContext())) {
+                                            ShizukuClient.requestPermission(NotificationSettingsFragment.this);
+                                        } else {
+                                            ShizukuClient.requestAuthorization(NotificationSettingsFragment.this);
                                         }
                                     }
                                 });
@@ -361,12 +265,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
                     ShizukuClient.setToken(data);
                     FFMSettings.putToken(ShizukuClient.getToken());
 
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            FFMApplication.get(getContext()).registerTaskStackListener();
-                        }
-                    });
+                    AsyncTask.execute(() -> FFMApplication.get(getContext()).registerTaskStackListener());
                 } else {
                     // error
                     mForegroundList.setValue(ForegroundImpl.NONE);
