@@ -11,11 +11,11 @@ import moe.shizuku.support.recyclerview.ClassCreatorPool;
  * Created by rikka on 2017/8/16.
  */
 
-public class RegistrationIdsAdapter extends BaseRecyclerViewAdapter {
+public class RegistrationIdsAdapter extends BaseRecyclerViewAdapter<ClassCreatorPool> {
 
     @Override
-    public ClassCreatorPool getCreatorPool() {
-        return (ClassCreatorPool) super.getCreatorPool();
+    public ClassCreatorPool onCreateCreatorPool() {
+        return new ClassCreatorPool();
     }
 
     public Set<RegistrationId> getRegistrationIds() {

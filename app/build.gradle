@@ -17,7 +17,7 @@ repositories {
 
 def gitCommitId = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
-def baseVersionName = '0.5.3'
+def baseVersionName = '0.5.4'
 
 android {
     compileSdkVersion rootProject.ext.targetSdkVersion
@@ -84,8 +84,8 @@ dependencies {
     implementation "moe.shizuku.preference:preference:$preferenceLibraryVersion"
     implementation "moe.shizuku.preference:preference-dialog-android:$preferenceLibraryVersion"
     implementation "moe.shizuku.preference:preference-simplemenu:$preferenceLibraryVersion"
-    implementation 'moe.shizuku.support:support-utils:2.1.0'
-    implementation 'moe.shizuku.support:recyclerview-utils:2.0.4'
+    implementation 'moe.shizuku.support:support-utils:2.2.2'
+    implementation 'moe.shizuku.support:recyclerview-utils:2.1.1'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'

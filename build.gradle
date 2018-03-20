@@ -28,7 +28,7 @@ task clean(type: Delete) {
 }
 
 ext {
-    supportLibraryVersion = '27.0.2'
+    supportLibraryVersion = '27.1.0'
     preferenceLibraryVersion = '2.2.3'
     shizukuPrivilegeBaseApiVersion = '9'
     shizukuPrivilegeApiVersion = '4'
