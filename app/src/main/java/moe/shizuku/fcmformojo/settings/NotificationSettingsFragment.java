@@ -25,14 +25,11 @@ import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.FFMSettings.ForegroundImpl;
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.fcmformojo.model.Account;
-import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.NotificationToggle;
 import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.profile.ProfileList;
 import moe.shizuku.fcmformojo.service.FFMIntentService;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
-import moe.shizuku.preference.EditTextPreference;
 import moe.shizuku.preference.ListPreference;
 import moe.shizuku.preference.Preference;
 import moe.shizuku.preference.SwitchPreference;
@@ -65,7 +62,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
         List<CharSequence> names = new ArrayList<>();
         List<CharSequence> packages = new ArrayList<>();
         for (Profile profile : ProfileList.getProfile()) {
-            names.add(getContext().getString(profile.getDisplayName()));
+            names.add(requireContext().getString(profile.getDisplayName()));
             packages.add(profile.getPackageName());
         }
 
@@ -75,7 +72,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
 
         findPreference("update_avatar").setOnPreferenceClickListener(preference -> {
             Toast.makeText(getContext(), "Progress will be shown via notification", Toast.LENGTH_SHORT).show();
-            FFMIntentService.startUpdateIcon(getContext(), null);
+            FFMIntentService.startUpdateIcon(requireContext(), null);
             return true;
         });
 
@@ -83,7 +80,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
             findPreference("edit_channel").setOnPreferenceClickListener(preference -> {
                 Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
                 intent.putExtra(Settings.EXTRA_CHANNEL_ID, "friend_message_channel");
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().getPackageName());
                 startActivity(intent);
                 return true;
             });
@@ -91,7 +88,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
             findPreference("edit_channel_group").setOnPreferenceClickListener(preference -> {
                 Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
                 intent.putExtra(Settings.EXTRA_CHANNEL_ID, "group_message_channel");
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().getPackageName());
                 startActivity(intent);
                 return true;
             });
@@ -159,7 +156,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        ActionBar actionBar = getActivity().getActionBar();
+        ActionBar actionBar = requireActivity().getActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.notification_settings);
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -178,7 +175,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
                     .setSummary(R.string.settings_per_group_summary_off);
         } else {
             findPreference(FFMSettings.LOCAL_GROUP_WHITELIST)
-                    .setSummary(getContext().getResources().getQuantityString(R.plurals.settings_per_group_summary_on, group, group));
+                    .setSummary(requireContext().getResources().getQuantityString(R.plurals.settings_per_group_summary_on, group, group));
         }
 
         int discuss = FFMSettings.getLocalDiscussWhitelistValue();
@@ -187,7 +184,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
                     .setSummary(R.string.settings_per_discuss_summary_off);
         } else {
             findPreference(FFMSettings.LOCAL_DISCUSS_WHITELIST)
-                    .setSummary(getContext().getResources().getQuantityString(R.plurals.settings_per_discuss_summary_on, discuss, discuss));
+                    .setSummary(requireContext().getResources().getQuantityString(R.plurals.settings_per_discuss_summary_on, discuss, discuss));
         }
     }
 
@@ -204,22 +201,22 @@ public class NotificationSettingsFragment extends SettingsFragment {
             case FFMSettings.GET_FOREGROUND:
                 switch (sharedPreferences.getString(key, ForegroundImpl.NONE)) {
                     case ForegroundImpl.USAGE_STATS:
-                        if (!UsageStatsUtils.granted(getContext())) {
-                            getContext().startActivity(new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS));
+                        if (!UsageStatsUtils.granted(requireContext())) {
+                            requireContext().startActivity(new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS));
                         }
                     case ForegroundImpl.NONE:
-                        AsyncTask.execute(() -> FFMApplication.get(getContext()).unregisterTaskStackListener());
+                        AsyncTask.execute(() -> FFMApplication.get(requireContext()).unregisterTaskStackListener());
                         break;
                     case ForegroundImpl.SHIZUKU:
-                        if (ShizukuClient.getManagerVersion(getContext()) < 106) {
+                        if (ShizukuClient.getManagerVersion(requireContext()) < 106) {
                             mForegroundList.setValue(ForegroundImpl.NONE);
 
-                            Toast.makeText(getContext(), "Shizuku version too low", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "Shizuku version too low", Toast.LENGTH_SHORT).show();
                             break;
                         }
 
                         Single
-                                .fromCallable(() -> ShizukuClient.getState())
+                                .fromCallable(ShizukuClient::getState)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(state -> {
@@ -265,7 +262,7 @@ public class NotificationSettingsFragment extends SettingsFragment {
                     ShizukuClient.setToken(data);
                     FFMSettings.putToken(ShizukuClient.getToken());
 
-                    AsyncTask.execute(() -> FFMApplication.get(getContext()).registerTaskStackListener());
+                    AsyncTask.execute(() -> FFMApplication.get(requireContext()).registerTaskStackListener());
                 } else {
                     // error
                     mForegroundList.setValue(ForegroundImpl.NONE);

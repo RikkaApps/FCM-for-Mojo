@@ -1,6 +1,9 @@
 package moe.shizuku.fcmformojo.settings;
 
+import android.app.ActionBar;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -77,5 +80,21 @@ public class AccountSettingsFragment extends SettingsFragment {
                     mAccountInfo = account;
                     updateData(mAccountInfo);
                 }, throwable -> Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show()));
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        ActionBar actionBar = requireActivity().getActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.account_settings);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 }
