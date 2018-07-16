@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="notification_messages">通知 %d件</string>
-    <string name="notification_messages_multi_sender">%2$dつ 連絡先からの %1$d件 メッセージ</string>
+    <string name="notification_messages">通知%d件</string>
+    <string name="notification_messages_multi_sender">%2$dつ連絡先からの%1$d件メッセージ</string>
     <string name="notification_action_reply" formatted="false">%s に返信</string>
 
     <string name="update_avatar">画像を更新</string>
@@ -42,12 +42,12 @@
     <string name="get_foreground">フォアグラウンドアプリを取得する方法</string>
     <string-array name="get_foreground">
         <item>フォアグランドアプリを検出しない</item>
-        <item>使用統計API（複数ユーザーをサポートしない）</item>
-        <item>Shizuku（複数ユーザーをサポートする）</item>
+        <item>使用統計API</item>
+        <item>Shizuku（複数ユーザーサポート）</item>
     </string-array>
 
-    <string name="http_usernames">HTTP ユーザ</string>
-    <string name="http_password">HTTP パスワード</string>
+    <string name="http_usernames">HTTPユーザ</string>
+    <string name="http_password">HTTPパスワード</string>
     <string name="show_advanced_options">高度なオプションを表示する</string>
     <string name="summary_uri_when_authorization_set">%s（許可付き）</string>
 
@@ -62,7 +62,7 @@
     <string name="notification_style">通知スタイル</string>
 
     <string name="notification_fetching_list">友達やグループのリストを取得しています…</string>
-    <string name="notification_fetching">を取得しています</string>
+    <string name="notification_fetching">アバターを取得しています</string>
     <string name="notification_fetching_progress">%2$d 中の %1$d</string>
 
     <string name="display_name_qq">QQ</string>
@@ -74,13 +74,13 @@
 
     <string name="action_about">アプリについて</string>
 
-    <string name="about_icon_credits"><![CDATA[アイコン:<a href="https://twitter.com/xiaoya_er">小雅</a><br/>日本語翻訳:<a href="https://twitter.com/SakuraSakuw">佐倉さく</a>]]></string>
+    <string name="about_icon_credits"><![CDATA[アイコン:<a href="https://twitter.com/xiaoya_er">小雅</a><br/>日本語翻訳:<a href="https://twitter.com/SakuraSa233">小鳥遊桜</a>]]></string>
 
     <string name="notification_message_image">[画像]</string>
 
-    <string name="notification_qr_code_downloaded">QRコードダウンロードした</string>
-    <string name="notification_cannot_download">QRコードをダウンロード出来ません</string>
-    <string name="notification_tap_open_qq">タップして %s を開く、QRコードをスキャンする</string>
+    <string name="notification_qr_code_downloaded">QRコードをダウンロードした</string>
+    <string name="notification_cannot_download">QRコードをダウンロードできません</string>
+    <string name="notification_tap_open_qq">タップして%sを開く、QRコードをスキャンする</string>
     <string name="notification_network_issue">ネットワークエラー</string>
     <string name="notification_permission_issue">必要な許可が与えられていない</string>
     <string name="notification_singing_in">サインイン…</string>
@@ -92,18 +92,18 @@
     <string name="dialog_title_send_via">送信…</string>
     <string name="cannot_request_permission">権限がありません</string>
 
-    <string name="notification_server_stop">Mojo-Webqq 停止した</string>
+    <string name="notification_server_stop">Mojo-Webqq停止した</string>
     <string name="notification_tap_to_restart">サーバーで再起動するが必要</string>
     <string name="action_upload_to_server">サーバーにアップロードする</string>
-    <string name="manage_devices">デバイスを管理</string>
+    <string name="manage_devices">デバイス管理</string>
     <string name="manage_devices_summary">登録済みのデバイスを管理する</string>
     <string name="devices_name">%s</string>
-    <string name="devices_name_this">%s (このデバイス)</string>
-    <string name="register_time">登録時間: %s</string>
-    <string name="manage_devices_header">ここに登録済みのデバイスを管理することができます\nデバイスを追加するには、ツールバーの追加ボタンをタップしてください。\n編集後、ツールバーのアップロードボタンをタップして新しい設定をアップロードする。</string>
+    <string name="devices_name_this">%s(このデバイス)</string>
+    <string name="register_time">登録時間:%s</string>
+    <string name="manage_devices_header">ここに登録済みのデバイスを管理することができます。\nデバイスを追加するには、ツールバーの追加ボタンをタップしてください。\n編集後、ツールバーのアップロードボタンをタップして新しい設定をアップロードする。</string>
     <string name="action_add_this_device">デバイスを追加</string>
     <string name="button_delete">削除</string>
-    <string name="manage_webqq">Mojo-Webqq コントロール</string>
+    <string name="manage_webqq">Mojo-Webqqコントロール</string>
     <string name="manage_webqq_summary">サーバ設定とMojo-Webqqサービスの管理</string>
     <string name="stop_webqq">停止</string>
     <string name="restart_webqq">再開</string>
@@ -119,9 +119,9 @@
     <string name="status_webqq_dead">Mojo-Webqq が実行していません</string>
     <string name="status_webqq_error">実行中、QRコードがまだスキャンされていないか、その他のエラーです。</string>
     <string name="status_waiting_refresh">更新を待ち…</string>
-    <string name="status_cannot_connect_server_error">サーバーに接続できない: %s.</string>
-    <string name="status_token_changed">トークンが変更されたの可能性がある。このデバイスを追加するのため、マネージャーデバイスで再度アップロードするの必要があります。</string>
-    <string name="restart_webqq_summary">サーバーのMojo-Webqqを再開する</string>
+    <string name="status_cannot_connect_server_error">サーバーに接続できません: %s.</string>
+    <string name="status_token_changed">tokenが変更されたの可能性がある。このデバイスを追加するのため、マネージャーデバイスで再度アップロードするの必要があります。</string>
+    <string name="restart_webqq_summary">サーバーのMojo-Webqqを再起動</string>
     <string name="action_donate">寄付</string>
     <string name="dialog_donate_title">今すっぐRikkaに寄付する ////</string>
     <string name="dialog_donate_message">Rikkaはこのプロジェクトに多くの時間を費やしたので、Rikkaは寄付を受けるべきです。（Alipayのみ）</string>
@@ -159,9 +159,9 @@
     <string name="settings_notification_friend_off">オフ</string>
     <string name="settings_notification_group_on">オン</string>
     <string name="settings_notification_group_off">オフ、 でも君を言及するメッセージは友のを見なす</string>
-    <string name="qq_password">Password</string>
-    <string name="account_settings">Account settings</string>
-    <string name="account_settings_summary">Change login account info</string>
-    <string name="qq_account">Account</string>
-    <string name="qq_account_summary">After filling in the account password, you will log in using the account password method.\nMojo-Webqq needs to be restarted.\n\nIf you have problem, please try login to http://qun.qq.com several times in the server network environment.</string>
+    <string name="qq_password">パスワード</string>
+    <string name="account_settings">アカウント設定</string>
+    <string name="account_settings_summary">アカウントログイン情報を変更</string>
+    <string name="qq_account">アカウント</string>
+    <string name="qq_account_summary">パスワードを入力した後、パスワードの方式でログインします。\nMojo-Webqqを再起動の必要があります。\n\n問題がある場合は、サーバーのネットワーク環境で http://qun.qq.com に何度かログインしてください。</string>
 </resources>
