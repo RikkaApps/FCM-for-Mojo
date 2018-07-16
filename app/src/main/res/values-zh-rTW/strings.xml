@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_messages">%d 條訊息</string>
+    <string name="notification_messages_multi_sender">來自 %2$d 個聯絡人的 %1$d 條訊息</string>
+    <string name="notification_action_reply" formatted="false">回覆給 %s</string>
+
+    <string name="update_avatar">更新頭像</string>
+    <string name="update_avatar_summary">更新好友及群組的頭像（可能需要重啟生效）</string>
+
+    <string name="friend_messages">好友訊息</string>
+    <string name="group_messages">群組訊息</string>
+
+    <string name="server_url">伺服器 URL</string>
+
+    <string name="notification">通知</string>
+
+    <string name="priority">優先度</string>
+    <string-array name="priority">
+        <item>最低</item>
+        <item>低</item>
+        <item>預設</item>
+        <item>高</item>
+        <item>最高</item>
+    </string-array>
+
+    <string name="vibrate">震動</string>
+    <string-array name="vibrate">
+        <item>禁用</item>
+        <item>預設</item>
+        <item>短</item>
+        <item>長</item>
+    </string-array>
+
+    <string name="led_light">呼吸燈</string>
+    <string name="sound">提示音</string>
+
+    <string name="select_qq">選擇 QQ 程式</string>
+    <string name="select_qq_summary">這將被用於輕觸通知或是檢測是否是前台</string>
+
+    <string name="dialog_token_share">分享</string>
+
+    <string name="get_foreground">取得前台程式方式</string>
+    <string-array name="get_foreground">
+        <item>不檢查前台程式</item>
+        <item>使用量資料存取（不支援多使用者）</item>
+        <item>Shizuku（支援多使用者）</item>
+    </string-array>
+
+    <string name="http_usernames">HTTP 使用者名稱</string>
+    <string name="http_password">HTTP 密碼</string>
+    <string name="show_advanced_options">顯示進階選項</string>
+    <string name="summary_uri_when_authorization_set">%s (附加登入訊息)</string>
+
+    <string name="notification_channel_friend_message">好友訊息</string>
+    <string name="notification_channel_group_message">群組訊息</string>
+    <string name="notification_channel_progress_message">進度</string>
+    <string name="notification_channel_server_message">伺服器訊息</string>
+    <string name="notification_channel_group_summary">通知摘要</string>
+    <string name="notification_channel_group_summary_description">請不要將重要程度改為高或緊急，否則一條訊息會產生兩次聲音。</string>
+
+    <string name="notification_style">通知樣式</string>
+
+    <string name="notification_fetching_list">正在取得好友及群組列表…</string>
+    <string name="notification_fetching">正在取得頭像…</string>
+    <string name="notification_fetching_progress">第 %1$d 個 共 %2$d 個</string>
+
+    <string name="display_name_qq">QQ</string>
+    <string name="display_name_tim">TIM</string>
+    <string name="display_name_qql">QQ 輕聊版</string>
+    <string name="display_name_qqhd">QQ HD</string>
+    <string name="display_name_qqi">QQ 國際版</string>
+    <string name="display_name_qqjp">QQ 日本版</string>
+
+    <string name="action_about">關於</string>
+
+    <string name="about_icon_credits"><![CDATA[感謝 <a href="http://weibo.com/528556720">小雅</a> 製作程式圖示]]></string>
+
+    <string name="notification_message_image">[圖片]</string>
+
+    <string name="notification_qr_code_downloaded">二維碼已下載</string>
+    <string name="notification_cannot_download">無法下載二維碼</string>
+    <string name="notification_tap_open_qq">輕觸打開 %s 來掃描二維碼。</string>
+    <string name="notification_network_issue">這可能是網路問題。</string>
+    <string name="notification_permission_issue">這可能是因為需要的權限沒有授予。</string>
+    <string name="notification_singing_in">登入中…</string>
+    <string name="notification_tap_open_qr_code_in_browser">輕觸在瀏覽器中打開二維碼。</string>
+    <string name="notification_tap_copy_qr_code">輕觸複製二維碼 URL。</string>
+    <string name="notification_action_open_in_browser">在瀏覽器中打開</string>
+    <string name="notification_action_copy_to_clipboard">複製到剪貼簿</string>
+    <string name="notification_action_send">發送</string>
+    <string name="dialog_title_send_via">發送方式…</string>
+    <string name="cannot_request_permission">無法申請權限。</string>
+
+    <string name="notification_server_stop">Mojo-Webqq 已停止</string>
+    <string name="notification_tap_to_restart">輕觸重啟。</string>
+    <string name="action_upload_to_server">上傳到伺服器</string>
+    <string name="manage_devices">管理設備</string>
+    <string name="manage_devices_summary">管理將會收到訊息的設備</string>
+    <string name="devices_name">%s</string>
+    <string name="devices_name_this">%s（這台設備）</string>
+    <string name="register_time">註冊時間：%s</string>
+    <string name="manage_devices_header">在這裡您可以管理會收到訊息的設備。\n若要新增這台設備，請輕觸工具列上的新增按鈕。\n修改完成需要輕觸工具列上的上傳按鈕將新的設定上傳到伺服器。</string>
+    <string name="action_add_this_device">新增這台設備</string>
+    <string name="button_delete">刪除</string>
+    <string name="manage_webqq">管理 Mojo-Webqq</string>
+    <string name="manage_webqq_summary">管理伺服器設定及管理 Mojo-Webqq 服務</string>
+    <string name="stop_webqq">停止</string>
+    <string name="restart_webqq">重啟</string>
+    <string name="server_status">伺服器狀態</string>
+    <string name="server_settings">伺服器設定</string>
+    <string name="server_settings_summary">更改伺服器 URL、已註冊的設備及控制 Mojo-Webqq</string>
+    <string name="notification_settings">通知設定</string>
+    <string name="notification_settings_summary">更改通知行為及樣式</string>
+    <plurals name="status_running">
+        <item quantity="other">執行中，已註冊 %d 台設備。</item>
+    </plurals>
+    <string name="status_running_no_device">執行中，但沒有已註冊的設備。</string>
+    <string name="status_webqq_dead">Mojo-Webqq 沒有執行。</string>
+    <string name="status_webqq_error">執行中，但登入二維碼尚未被掃描或是其他錯誤。</string>
+    <string name="status_waiting_refresh">等待更新…</string>
+    <string name="status_cannot_connect_server_error">無法連接伺服器：%s。</string>
+    <string name="status_token_changed">令牌可能已發生變化，您可能需要在管理設備中重新新增這台設備並上傳。</string>
+    <string name="restart_webqq_summary">重啟伺服器上的 Mojo-Webqq</string>
+    <string name="action_donate">捐贈</string>
+    <string name="dialog_donate_title">Pay Rikka NOW ////</string>
+    <string name="dialog_donate_message">做了很多事情的 Rikka 是不是應該得到很多錢錢呢，是就快點給 Rikka 錢錢吧（逃跑），但是只支援支付寶..</string>
+    <string name="dialog_donate_ok">好耶</string>
+    <string name="dialog_donate_no">壞耶</string>
+    <string name="dialog_donate_copy">複製帳號</string>
+    <string name="stop_webqq_summary">強行停止伺服器上的 Mojo-Webqq</string>
+    <string name="status_version_not_match">伺服器版本（%1$s）與使用者端需求的版本（%2$s）不匹配，部分功能可能不按預期工作。</string>
+    <string name="dialog_config_not_uploaded_title">設定已被修改</string>
+    <string name="dialog_config_not_uploaded_message">若不將設定上傳至伺服器，您將丟失作出的修改。</string>
+    <string name="settings_per_group_title">分群組設定</string>
+    <string name="whitelist_summary_group_on">只接受開啟的群的訊息</string>
+    <string name="whitelist_summary_group_off">接收全部群訊息</string>
+    <string name="dialog_config_not_uploaded_exit">放棄修改</string>
+    <string name="dialog_config_not_uploaded_upload">上傳</string>
+    <string name="dialog_no_google_title">找不到 Google 服務框架</string>
+    <string name="dialog_no_google_message">沒有安裝 Google 服務框架或已安裝但被禁用。\nFFM 依賴需要 Google 服務框架的 Firebase 雲訊息傳遞。</string>
+    <string name="dialog_no_google_exit">退出 FFM</string>
+    <string name="toast_succeeded">成功。</string>
+    <string name="toast_something_wroing">出錯了：\n%s</string>
+    <string name="toast_nothing_changed">沒有改動。</string>
+    <string name="toast_token_exists">已新增過這台設備。</string>
+    <string name="toast_token_requesting">無法取得令牌，正在嘗試請求…</string>
+    <string name="whitelist_group_no_uid">由於無法取得群號無法修改</string>
+    <string name="whitelist_summary_discuss_on">只接受開啟的討論組的訊息</string>
+    <string name="whitelist_summary_discuss_off">接收全部討論組訊息</string>
+    <string name="settings_per_discuss_title">分討論組設定</string>
+    <plurals name="settings_per_group_summary_on">
+        <item quantity="other">只接收 %d 個群的訊息</item>
+    </plurals>
+    <plurals name="settings_per_discuss_summary_on">
+        <item quantity="other">只接收 %d 個討論組的訊息</item>
+    </plurals>
+    <string name="settings_notification_friend_on">開啟</string>
+    <string name="settings_notification_friend_off">關閉</string>
+    <string name="settings_notification_group_on">開啟</string>
+    <string name="settings_notification_group_off">關閉，但 \@ 你的訊息將會被當作好友訊息處理</string>
+    <string name="qq_password">密碼</string>
+    <string name="account_settings">帳號設定</string>
+    <string name="account_settings_summary">更改登入帳號訊息</string>
+    <string name="qq_account">帳號</string>
+    <string name="qq_account_summary">填寫帳號密碼後，將使用帳號密碼方式登入。\n需要重啟 Mojo-Webqq。\n\n如果有問題，請以服務端所在的網路環境登入 http://qun.qq.com 幾次。</string>
+</resources>
