@@ -6,8 +6,8 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0-rc02'
-        classpath 'com.google.gms:google-services:3.1.1'
+        classpath 'com.android.tools.build:gradle:3.2.0-beta01'
+        classpath 'com.google.gms:google-services:4.0.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -16,10 +16,10 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()
-        jcenter()
         google()
         maven { url 'https://dl.bintray.com/rikkaw/Shizuku' }
+        jcenter()
+        mavenLocal()
     }
 }
 
@@ -28,11 +28,11 @@ task clean(type: Delete) {
 }
 
 ext {
-    supportLibraryVersion = '27.1.0'
+    supportLibraryVersion = '27.1.1'
     preferenceLibraryVersion = '2.2.3'
     shizukuPrivilegeBaseApiVersion = '10'
     shizukuPrivilegeApiVersion = '4'
     minSdkVersion = 24
-    targetSdkVersion = 27
-    buildToolsVersion = "27.0.3"
+    targetSdkVersion = 28
+    buildToolsVersion = "28.0.0"
 }

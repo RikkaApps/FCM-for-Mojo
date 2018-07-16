@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.25.1'
+        classpath 'io.fabric.tools:gradle:1.25.4'
     }
 }
 apply plugin: 'com.android.application'
@@ -17,7 +17,7 @@ repositories {
 
 def gitCommitId = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
-def baseVersionName = '0.6.0'
+def baseVersionName = '0.6.1'
 
 android {
     compileSdkVersion rootProject.ext.targetSdkVersion
@@ -33,7 +33,7 @@ android {
 
         resValue "string", "version_name", "${versionName}"
         buildConfigField "String", "DONATE_ALIPAY_URL", '"alipayqr://platformapi/startapp?saId=10000007&qrcode=https%3A%2F%2Fqr.alipay.com%2Faex01083scje5axcttivf13"'
-        buildConfigField "String", "REQUIRE_SERVER_VERSION", '"0.6.0"'
+        buildConfigField "String", "REQUIRE_SERVER_VERSION", '"0.6.1"'
     }
     signingConfigs {
         sign
@@ -84,15 +84,16 @@ dependencies {
     implementation "moe.shizuku.preference:preference:$preferenceLibraryVersion"
     implementation "moe.shizuku.preference:preference-dialog-android:$preferenceLibraryVersion"
     implementation "moe.shizuku.preference:preference-simplemenu:$preferenceLibraryVersion"
-    implementation 'moe.shizuku.support:support-utils:2.2.2'
-    implementation 'moe.shizuku.support:recyclerview-utils:2.1.1'
+    implementation 'moe.shizuku.support:support-utils:2.3.1'
+    implementation 'moe.shizuku.support:recyclerview-utils:2.1.2'
     implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    implementation 'com.google.firebase:firebase-messaging:11.8.0'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.6'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'moe.shizuku.fontprovider:api:10'
     implementation('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true
@@ -101,7 +102,7 @@ dependencies {
     implementation "moe.shizuku.privilege:api-24:$shizukuPrivilegeApiVersion"
     implementation "moe.shizuku.privilege:api-25:$shizukuPrivilegeApiVersion"
     implementation "moe.shizuku.privilege:api-26:$shizukuPrivilegeApiVersion"
-    implementation 'com.android.billingclient:billing:1.0'
+    implementation 'com.android.billingclient:billing:1.1'
 }
 
 def ksFile = rootProject.file('signing.properties')
