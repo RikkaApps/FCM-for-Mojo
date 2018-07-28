@@ -29,7 +29,7 @@ android {
         versionCode gitCommitCount
         versionName "${baseVersionName}.r${gitCommitCount}.${gitCommitId}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        resConfigs "en", "zh-rCN", "ja"
+        resConfigs "en", "zh-rCN", "zh-rTW", "ja"
 
         resValue "string", "version_name", "${versionName}"
         buildConfigField "String", "DONATE_ALIPAY_URL", '"alipayqr://platformapi/startapp?saId=10000007&qrcode=https%3A%2F%2Fqr.alipay.com%2Faex01083scje5axcttivf13"'
