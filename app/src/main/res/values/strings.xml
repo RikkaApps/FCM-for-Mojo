@@ -2,17 +2,12 @@
     <string name="notification_messages">%d messages</string>
     <string name="notification_messages_multi_sender">%1$d messages from %2$d chats</string>
     <string name="notification_action_reply">Reply to %s</string>
-
     <string name="update_avatar">Update avatar</string>
     <string name="update_avatar_summary">Update friends and groups avatar (restart app maybe required to take effect)</string>
-
     <string name="friend_messages">Friend messages</string>
     <string name="group_messages">Group messages</string>
-
     <string name="server_url">Server URL</string>
-
     <string name="notification">Notification</string>
-
     <string name="priority">Priority</string>
     <string-array name="priority">
         <item>Min</item>
@@ -21,7 +16,6 @@
         <item>High</item>
         <item>Max</item>
     </string-array>
-
     <string name="vibrate">Vibrate</string>
     <string-array name="vibrate">
         <item>Disabled</item>
@@ -29,22 +23,17 @@
         <item>Short</item>
         <item>Long</item>
     </string-array>
-
     <string name="led_light">LED light</string>
     <string name="sound">Sound</string>
-
     <string name="select_qq">Select QQ application</string>
     <string name="select_qq_summary">This will be used when notification clicked or get if is foreground</string>
-
     <string name="dialog_token_share">Share</string>
-
     <string name="get_foreground">How FFM get foreground package</string>
     <string-array name="get_foreground">
         <item>Do not check foreground package</item>
         <item>Usage stats API (no multi-user support)</item>
         <item>Shizuku (multi-user support)</item>
     </string-array>
-
     <string name="http_usernames">HTTP Username</string>
     <string name="http_password">HTTP Password</string>
     <string name="show_advanced_options">Show advanced options</string>
@@ -55,26 +44,19 @@
     <string name="notification_channel_server_message">Server messages</string>
     <string name="notification_channel_group_summary">Notification summary</string>
     <string name="notification_channel_group_summary_description">Please do not change importance to high or urgent, or a message will make sound twice.</string>
-
     <string name="notification_style">Notification behaviors</string>
-
     <string name="notification_fetching_list">Fetching friends and groups list…</string>
     <string name="notification_fetching">Fetching avatars…</string>
     <string name="notification_fetching_progress">%1$d of %2$d</string>
-
     <string name="display_name_qq">QQ</string>
     <string name="display_name_tim">TIM</string>
     <string name="display_name_qql">QQ Lite</string>
     <string name="display_name_qqhd">QQ HD</string>
     <string name="display_name_qqi">QQ International</string>
     <string name="display_name_qqjp">QQ Japan</string>
-
     <string name="action_about">About</string>
-
     <string name="about_icon_credits"><![CDATA[Thanks <a href="https://twitter.com/xiaoya_er">小雅</a> for illustrating app icon]]></string>
-
     <string name="notification_message_image">[Image]</string>
-
     <string name="notification_qr_code_downloaded">QR code downloaded</string>
     <string name="notification_cannot_download">Can\'t download QR code</string>
     <string name="notification_tap_open_qq">Tap to open %s to scan the QR code.</string>
@@ -83,14 +65,11 @@
     <string name="notification_singing_in">Signing in…</string>
     <string name="notification_tap_open_qr_code_in_browser">Tap to open QR code in browser.</string>
     <string name="notification_tap_copy_qr_code">Tap to copy QR code URL.</string>
-
     <string name="notification_action_open_in_browser">Open in browser</string>
     <string name="notification_action_copy_to_clipboard">Copy to clipboard</string>
     <string name="notification_action_send">Send</string>
     <string name="dialog_title_send_via">Send via…</string>
-
     <string name="cannot_request_permission">Can\'t request permission.</string>
-
     <string name="notification_server_stop">Mojo-Webqq stopped</string>
     <string name="notification_tap_to_restart">Tap to restart.</string>
     <string name="action_upload_to_server">Upload to server</string>

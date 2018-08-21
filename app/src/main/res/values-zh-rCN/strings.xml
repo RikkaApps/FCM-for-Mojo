@@ -3,17 +3,12 @@
     <string name="notification_messages">%d 条消息</string>
     <string name="notification_messages_multi_sender">来自 %2$d 个联系人的 %1$d 条消息</string>
     <string name="notification_action_reply" formatted="false">回复给 %s</string>
-
     <string name="update_avatar">更新头像</string>
     <string name="update_avatar_summary">更新好友及群组的头像（可能需要重启生效）</string>
-
     <string name="friend_messages">好友消息</string>
     <string name="group_messages">群组消息</string>
-
     <string name="server_url">服务器 URL</string>
-
     <string name="notification">通知</string>
-
     <string name="priority">优先级</string>
     <string-array name="priority">
         <item>最低</item>
@@ -22,7 +17,6 @@
         <item>高</item>
         <item>最高</item>
     </string-array>
-
     <string name="vibrate">震动</string>
     <string-array name="vibrate">
         <item>禁用</item>
@@ -30,53 +24,40 @@
         <item>短</item>
         <item>长</item>
     </string-array>
-
     <string name="led_light">呼吸灯</string>
     <string name="sound">提示音</string>
-
     <string name="select_qq">选择 QQ 程序</string>
     <string name="select_qq_summary">这将被用于点击通知或是检测是否是前台</string>
-
     <string name="dialog_token_share">分享</string>
-
     <string name="get_foreground">获取前台应用方式</string>
     <string-array name="get_foreground">
         <item>不检查前台应用</item>
         <item>使用情况访问（不支持多用户）</item>
         <item>Shizuku（支持多用户）</item>
     </string-array>
-
     <string name="http_usernames">HTTP 用户名</string>
     <string name="http_password">HTTP 密码</string>
     <string name="show_advanced_options">显示高级选项</string>
     <string name="summary_uri_when_authorization_set">%s (附加登录信息)</string>
-
     <string name="notification_channel_friend_message">好友消息</string>
     <string name="notification_channel_group_message">群组消息</string>
     <string name="notification_channel_progress_message">进度</string>
     <string name="notification_channel_server_message">服务器消息</string>
     <string name="notification_channel_group_summary">通知摘要</string>
     <string name="notification_channel_group_summary_description">请不要将重要程度改为高或紧急，否则一条消息会产生两次声音。</string>
-
     <string name="notification_style">通知样式</string>
-
     <string name="notification_fetching_list">正在获取好友及群组列表…</string>
     <string name="notification_fetching">正在获取头像…</string>
     <string name="notification_fetching_progress">第 %1$d 个 共 %2$d 个</string>
-
     <string name="display_name_qq">QQ</string>
     <string name="display_name_tim">TIM</string>
     <string name="display_name_qql">QQ 轻聊版</string>
     <string name="display_name_qqhd">QQ HD</string>
     <string name="display_name_qqi">QQ 国际版</string>
     <string name="display_name_qqjp">QQ 日本版</string>
-
     <string name="action_about">关于</string>
-
     <string name="about_icon_credits"><![CDATA[感谢 <a href="http://weibo.com/528556720">小雅</a> 制作应用图标]]></string>
-
     <string name="notification_message_image">[图片]</string>
-
     <string name="notification_qr_code_downloaded">二维码已下载</string>
     <string name="notification_cannot_download">无法下载二维码</string>
     <string name="notification_tap_open_qq">点击打开 %s 来扫描二维码。</string>
@@ -90,7 +71,6 @@
     <string name="notification_action_send">发送</string>
     <string name="dialog_title_send_via">发送方式…</string>
     <string name="cannot_request_permission">无法申请权限。</string>
-
     <string name="notification_server_stop">Mojo-Webqq 已停止</string>
     <string name="notification_tap_to_restart">点击重启。</string>
     <string name="action_upload_to_server">上传到服务器</string>

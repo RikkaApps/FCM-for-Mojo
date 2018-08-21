@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
-import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import io.reactivex.Single;
@@ -16,14 +14,14 @@ import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.adapter.WhitelistAdapter;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.WhitelistState;
+import moe.shizuku.support.design.SwitchBar;
 import moe.shizuku.support.recyclerview.RecyclerViewHelper;
 
 public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
 
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    private View mToggleContainer;
-    private CompoundButton mToggle;
+    protected SwitchBar mSwitchBar;
 
     private WhitelistAdapter mAdapter;
     private WhitelistState mServerWhitelistState;
@@ -48,31 +46,17 @@ public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
 
         RecyclerViewHelper.fixOverScroll(recyclerView);
 
-        mToggle = findViewById(android.R.id.switch_widget);
-        mToggle.setEnabled(false);
-        mToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton button, boolean checked) {
-                setToggleText(button, checked);
+        mSwitchBar = findViewById(android.R.id.switch_widget);
+        mSwitchBar.setEnabled(false);
+        mSwitchBar.setOnCheckedChangeListener((button, checked) -> {
+            mAdapter.setEnabled(checked);
+            mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount(), checked);
 
-                mAdapter.setEnabled(checked);
-                mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount(), checked);
-            }
-        });
-
-        mToggleContainer = findViewById(R.id.switch_container);
-        mToggleContainer.setEnabled(false);
-        mToggleContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mToggle.setChecked(!mToggle.isChecked());
-            }
+            return true;
         });
 
         fetchWhitelistState();
     }
-
-    public abstract void setToggleText(CompoundButton button, boolean checked);
 
     public abstract WhitelistAdapter createListAdapter();
 
@@ -92,27 +76,18 @@ public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
         mCompositeDisposable.add(startFetchWhitelistState()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<WhitelistState>() {
-                    @Override
-                    public void accept(WhitelistState state) throws Exception {
-                        mServerWhitelistState = state;
+                .subscribe((Consumer<WhitelistState>) state -> {
+                    mServerWhitelistState = state;
 
-                        mToggleContainer.setEnabled(true);
-                        mToggle.setEnabled(true);
-                        mToggle.setChecked(state.isEnabled());
-                        mAdapter.updateData(state);
-                        mRefreshed = true;
+                    mSwitchBar.setEnabled(true);
+                    mSwitchBar.setChecked(state.isEnabled());
+                    mAdapter.updateData(state);
+                    mRefreshed = true;
 
-                        invalidateOptionsMenu();
+                    invalidateOptionsMenu();
 
-                        onFetchSucceed(state);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
-                    }
-                }));
+                    onFetchSucceed(state);
+                }, throwable -> Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show()));
     }
 
     @Override
@@ -139,21 +114,13 @@ public abstract class AbsWhitelistActivity extends AbsConfigurationsActivity {
         mCompositeDisposable.add(startUpdateWhitelistState(whitelistState)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<FFMResult>() {
-                    @Override
-                    public void accept(FFMResult result) throws Exception {
-                        mServerWhitelistState = whitelistState;
+                .subscribe(result -> {
+                    mServerWhitelistState = whitelistState;
 
-                        Toast.makeText(getApplicationContext(), R.string.toast_succeeded, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.toast_succeeded, Toast.LENGTH_SHORT).show();
 
-                        onUploadSucceed(whitelistState);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
-                    }
-                })
+                    onUploadSucceed(whitelistState);
+                }, throwable -> Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show())
         );
     }
 

@@ -6,32 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/switch_container"
+    <moe.shizuku.support.design.SwitchBar
+        android:id="@android:id/switch_widget"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/list_padding"
-        android:paddingEnd="@dimen/list_padding"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:background="#0288D1"
-        android:foreground="?android:selectableItemBackground">
-
-        <Switch
-            android:id="@android:id/switch_widget"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:background="@null"
-            android:layout_marginStart="56dp"
-            android:switchPadding="16dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:textColor="?android:textColorPrimaryInverse"
-            android:text="@string/whitelist_summary_group_off"/>
-
-    </FrameLayout>
+        android:layout_height="wrap_content"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@android:id/list"
