@@ -16,7 +16,7 @@ import moe.shizuku.fontprovider.FontRequests;
  * Created by rikka on 2017/8/16.
  */
 
-public class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends FragmentActivity {
 
     private static boolean sFontInitialized = false;
 

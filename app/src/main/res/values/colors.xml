@@ -21,4 +21,8 @@
     <color name="serverError">#EF5350</color>
     <color name="serverUnknown">#78909C</color>
 
+    <color name="navigation_bar_light">#fff</color>
+
+    <color name="navigation_bar_dark">@color/material_grey_800</color>
+
 </resources>

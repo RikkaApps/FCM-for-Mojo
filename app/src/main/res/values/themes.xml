@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.Light" parent="android:Theme.Material.Light.LightStatusBar">
+        <item name="android:popupTheme">@android:style/ThemeOverlay.Material.Light</item>
+    </style>
+
+    <style name="Base" parent="android:Theme.Material">
+    </style>
+
+    <style name="Theme.Light" parent="Base.Light"/>
+    <style name="Theme" parent="Base"/>
+
+    <style name="Theme.DayNight" parent="Theme.Light"/>
+</resources>
