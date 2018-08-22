@@ -3,7 +3,6 @@ package moe.shizuku.fcmformojo;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,9 +12,7 @@ import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.support.annotation.Nullable;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.billingclient.api.BillingClient;
@@ -32,6 +29,7 @@ import java.util.List;
 import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.settings.MainSettingsFragment;
 import moe.shizuku.fcmformojo.utils.ClipboardUtils;
+import moe.shizuku.support.design.AboutDialogHelper;
 
 public class MainActivity extends BaseActivity implements PurchasesUpdatedListener {
 
@@ -108,12 +106,11 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
     public boolean onOptionsItemSelected(int itemId) {
         switch (itemId) {
             case R.id.action_about:
-                Dialog dialog = new AlertDialog.Builder(this)
-                        .setView(R.layout.dialog_about)
-                        .show();
-                ((TextView) dialog.findViewById(R.id.icon_credits)).setMovementMethod(LinkMovementMethod.getInstance());
-                ((TextView) dialog.findViewById(R.id.icon_credits)).setText(Html.fromHtml(getString(R.string.about_icon_credits), Html.FROM_HTML_MODE_COMPACT));
-
+                AboutDialogHelper.show(new AlertDialog.Builder(this),
+                        getDrawable(R.mipmap.product_logo_fcmformojo_launcher_color_48),
+                        getString(R.string.app_name),
+                        BuildConfig.VERSION_NAME,
+                        Html.fromHtml(getString(R.string.about_icon_credits), Html.FROM_HTML_MODE_COMPACT));
                 return true;
             case R.id.action_donate:
                 onDonateSelected();
