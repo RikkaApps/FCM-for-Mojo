@@ -15,7 +15,6 @@ import moe.shizuku.fcmformojo.R;
 
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_FRIENDS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUPS;
-import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUP_SUMMARY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_PROGRESS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_SERVER;
 
@@ -24,9 +23,9 @@ import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_SERVER;
  */
 
 @TargetApi(Build.VERSION_CODES.O)
-public class NotificationBuilderImplO extends NotificationBuilderImplBase {
+class NotificationBuilderImplO extends NotificationBuilderImplBase {
 
-    public NotificationBuilderImplO(Context context) {
+    NotificationBuilderImplO(Context context) {
         super();
 
         // TODO let user select value first
@@ -60,16 +59,6 @@ public class NotificationBuilderImplO extends NotificationBuilderImplBase {
         channel.setShowBadge(false);
         channels.add(channel);
 
-        channel = new NotificationChannel(NOTIFICATION_CHANNEL_GROUP_SUMMARY,
-                context.getString(R.string.notification_channel_group_summary),
-                NotificationManager.IMPORTANCE_LOW);
-        channel.setDescription(context.getString(R.string.notification_channel_group_summary_description));
-        channel.enableLights(true);
-        channel.setLightColor(context.getColor(R.color.colorNotification));
-        channel.enableVibration(false);
-        channel.setShowBadge(false);
-        channels.add(channel);
-
         channel = new NotificationChannel(NOTIFICATION_CHANNEL_PROGRESS,
                 context.getString(R.string.notification_channel_progress_message),
                 NotificationManager.IMPORTANCE_LOW);
@@ -87,6 +76,9 @@ public class NotificationBuilderImplO extends NotificationBuilderImplBase {
         channel.setShowBadge(false);
         channels.add(channel);
 
-        notificationManager.createNotificationChannels(channels);
+        if (notificationManager != null) {
+            notificationManager.deleteNotificationChannel("group_summary_channel");
+            notificationManager.createNotificationChannels(channels);
+        }
     }
 }

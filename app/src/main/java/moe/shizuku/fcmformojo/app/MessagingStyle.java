@@ -1,7 +1,10 @@
 package moe.shizuku.fcmformojo.app;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.Person;
 
 /**
  * Created by Rikka on 2017/4/19.
@@ -18,7 +21,11 @@ public class MessagingStyle extends NotificationCompat.MessagingStyle {
      *                        {@link #addMessage(Message)}
      */
     public MessagingStyle(CharSequence userDisplayName) {
-        super(userDisplayName);
+        super(new Person.Builder().setName(userDisplayName).build());
+    }
+
+    public MessagingStyle(@NonNull Person user) {
+        super(user);
     }
 
     public void setSummaryText(CharSequence summaryText) {
@@ -32,6 +39,7 @@ public class MessagingStyle extends NotificationCompat.MessagingStyle {
         extras.putCharSequence(NotificationCompat.EXTRA_SUMMARY_TEXT, mSummaryText);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void restoreFromCompatExtras(Bundle extras) {
         super.restoreFromCompatExtras(extras);

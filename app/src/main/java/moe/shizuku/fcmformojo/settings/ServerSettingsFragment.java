@@ -3,20 +3,20 @@ package moe.shizuku.fcmformojo.settings;
 import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.utils.LocalBroadcast;
-import moe.shizuku.preference.Preference;
+import moe.shizuku.fcmformojo.utils.ViewUtils;
 
 import static moe.shizuku.fcmformojo.FFMApplication.FFMService;
 
@@ -32,69 +32,40 @@ public class ServerSettingsFragment extends SettingsFragment {
 
         addPreferencesFromResource(R.xml.manage_server);
 
-        findPreference("restart_webqq").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(final Preference preference) {
-                preference.setEnabled(false);
-                restart();
-                return true;
-            }
+        findPreference("restart_webqq").setOnPreferenceClickListener(preference -> {
+            preference.setEnabled(false);
+            restart();
+            return true;
         });
 
-        findPreference("stop_webqq").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(final Preference preference) {
-                preference.setEnabled(false);
-                stop();
-                return true;
-            }
+        findPreference("stop_webqq").setOnPreferenceClickListener(preference -> {
+            preference.setEnabled(false);
+            stop();
+            return true;
         });
+    }
+
+    @Override
+    public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        RecyclerView recyclerView = super.onCreateRecyclerView(inflater, parent, savedInstanceState);
+        ViewUtils.setPaddingVertical(recyclerView, getResources().getDimensionPixelSize(R.dimen.dp_8));
+        return recyclerView;
     }
 
     private void restart() {
         mCompositeDisposable.add(FFMService.restart()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        findPreference("restart_webqq").setEnabled(true);
-                    }
-                })
-                .subscribe(new Consumer<FFMResult>() {
-                    @Override
-                    public void accept(FFMResult ffmResult) throws Exception {
-                        Toast.makeText(getContext(), "Succeed.", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }));
+                .doFinally(() -> findPreference("restart_webqq").setEnabled(true))
+                .subscribe(ffmResult -> Toast.makeText(getContext(), "Succeed.", Toast.LENGTH_SHORT).show(), throwable -> Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show()));
     }
 
     private void stop() {
         mCompositeDisposable.add(FFMService.stop()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        findPreference("stop_webqq").setEnabled(true);
-                    }
-                })
-                .subscribe(new Consumer<FFMResult>() {
-                    @Override
-                    public void accept(FFMResult ffmResult) throws Exception {
-                        Toast.makeText(getContext(), "Succeed.", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }));
+                .doFinally(() -> findPreference("stop_webqq").setEnabled(true))
+                .subscribe(ffmResult -> Toast.makeText(getContext(), "Succeed.", Toast.LENGTH_SHORT).show(), throwable -> Toast.makeText(getContext(), "Network error:\n" + throwable.getMessage(), Toast.LENGTH_SHORT).show()));
     }
 
     @Override

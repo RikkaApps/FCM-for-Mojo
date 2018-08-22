@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -24,7 +23,6 @@ import com.android.billingclient.api.BillingClient.BillingResponse;
 import com.android.billingclient.api.BillingClient.SkuType;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.crashlytics.android.Crashlytics;
@@ -59,19 +57,14 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
         boolean ok = false;
         try {
             ok = getPackageManager().getApplicationInfo("com.google.android.gsf", 0).enabled;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
 
         if (!ok) {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.dialog_no_google_title)
                     .setMessage(R.string.dialog_no_google_message)
-                    .setPositiveButton(R.string.dialog_no_google_exit, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
+                    .setPositiveButton(R.string.dialog_no_google_exit, (dialog, which) -> finish())
                     .setCancelable(false)
                     .show();
         }
@@ -80,6 +73,7 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
     private void requestPermission() {
         try {
             StorageManager sm = getSystemService(StorageManager.class);
+            //noinspection ConstantConditions
             StorageVolume volume = sm.getPrimaryStorageVolume();
             Intent intent = volume.createAccessIntent(Environment.DIRECTORY_DOWNLOADS);
             startActivityForResult(intent, REQUEST_CODE);
@@ -151,7 +145,7 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
                             .setSku("donate_2")
                             .setType(SkuType.INAPP)
                             .build();
-                    int responseCode = mBillingClient.launchBillingFlow(MainActivity.this, flowParams);
+                    mBillingClient.launchBillingFlow(MainActivity.this, flowParams);
                 }
             }
             @Override
@@ -166,26 +160,13 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
         new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_donate_title)
                 .setMessage(R.string.dialog_donate_message)
-                .setPositiveButton(R.string.dialog_donate_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse(BuildConfig.DONATE_ALIPAY_URL));
-                        ShizukuCompat.findAndStartActivity(MainActivity.this, intent, "com.eg.android.AlipayGphone");
-                    }
+                .setPositiveButton(R.string.dialog_donate_ok, (dialogInterface, i) -> {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(BuildConfig.DONATE_ALIPAY_URL));
+                    ShizukuCompat.findAndStartActivity(MainActivity.this, intent, "com.eg.android.AlipayGphone");
                 })
-                .setNegativeButton(R.string.dialog_donate_no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(MainActivity.this, "QAQ", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNeutralButton(R.string.dialog_donate_copy, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ClipboardUtils.put(MainActivity.this, "rikka@xing.moe");
-                    }
-                })
+                .setNegativeButton(R.string.dialog_donate_no, (dialogInterface, i) -> Toast.makeText(MainActivity.this, "QAQ", Toast.LENGTH_SHORT).show())
+                .setNeutralButton(R.string.dialog_donate_copy, (dialogInterface, i) -> ClipboardUtils.put(MainActivity.this, "rikka@xing.moe"))
                 .show();
     }
 
@@ -194,17 +175,9 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
         if (responseCode == BillingResponse.OK
                 && purchases != null) {
             for (Purchase purchase : purchases) {
-                mBillingClient.consumeAsync(purchase.getPurchaseToken(), new ConsumeResponseListener() {
-                    @Override
-                    public void onConsumeResponse(int responseCode, String purchaseToken) {
-
-                    }
+                mBillingClient.consumeAsync(purchase.getPurchaseToken(), (responseCode1, purchaseToken) -> {
                 });
             }
-        } else if (responseCode == BillingResponse.USER_CANCELED) {
-            // Handle an error caused by a user cancelling the purchase flow.
-        } else {
-            // Handle any other error codes.
         }
     }
 }

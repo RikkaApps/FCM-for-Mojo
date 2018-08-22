@@ -18,11 +18,6 @@
         android:entryValues="@array/get_foreground_value"
         android:defaultValue="disable"/>
 
-    <Preference
-        android:key="update_avatar"
-        android:title="@string/update_avatar"
-        android:summary="@string/update_avatar_summary"/>
-
     <PreferenceCategory
         android:title="@string/friend_messages">
 

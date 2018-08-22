@@ -69,4 +69,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             Log.e(TAG, "bad json: " + json, e);
         }
     }
+
+    @Override
+    public void onNewToken(String token) {
+        Log.d(TAG, "Refreshed token: " + token);
+    }
 }

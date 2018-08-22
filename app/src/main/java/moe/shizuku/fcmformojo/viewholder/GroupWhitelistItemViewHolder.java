@@ -11,7 +11,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.fcmformojo.model.Group;
+import moe.shizuku.fcmformojo.model.openqq.Group;
 
 /**
  * Created by rikka on 2017/8/28.

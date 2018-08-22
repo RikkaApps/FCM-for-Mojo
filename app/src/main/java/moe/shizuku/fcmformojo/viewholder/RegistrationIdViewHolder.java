@@ -27,13 +27,7 @@ import moe.shizuku.support.recyclerview.BaseViewHolder;
 
 public class RegistrationIdViewHolder extends BaseViewHolder<RegistrationId> {
 
-    public static final Creator CREATOR = new Creator<RegistrationId>() {
-
-        @Override
-        public BaseViewHolder<RegistrationId> createViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            return new RegistrationIdViewHolder(inflater.inflate(R.layout.item_registration_id, parent ,false));
-        }
-    };
+    public static final Creator CREATOR = (Creator<RegistrationId>) (inflater, parent) -> new RegistrationIdViewHolder(inflater.inflate(R.layout.item_registration_id, parent ,false));
 
     private TextView title;
     private TextView summary;
@@ -48,39 +42,23 @@ public class RegistrationIdViewHolder extends BaseViewHolder<RegistrationId> {
         summary = itemView.findViewById(android.R.id.summary);
         delete = itemView.findViewById(android.R.id.button1);
 
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int index = getAdapterPosition();
-                getAdapter().getItems().remove(index);
-                getAdapter().notifyItemRemoved(index);
-            }
+        delete.setOnClickListener(view -> {
+            int index = getAdapterPosition();
+            getAdapter().getItems().remove(index);
+            getAdapter().notifyItemRemoved(index);
         });
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Context context = view.getContext();
-                new AlertDialog.Builder(context)
-                        .setMessage(Html.fromHtml(context.getString(R.string.dialog_token_message, getData().getId()), Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE))
-                        .setPositiveButton(android.R.string.copy, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ClipboardUtils.put(context, getData().getId());
-                            }
-                        })
-                        .setNeutralButton(R.string.dialog_token_share, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                context.startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
-                                                .putExtra(Intent.EXTRA_TEXT, FirebaseInstanceId.getInstance().getToken())
-                                                .setType("text/plain")
-                                        , context.getString(R.string.dialog_token_share)));
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .show();
-            }
+        itemView.setOnClickListener(view -> {
+            final Context context = view.getContext();
+            new AlertDialog.Builder(context)
+                    .setMessage(Html.fromHtml(context.getString(R.string.dialog_token_message, getData().getId()), Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE))
+                    .setPositiveButton(android.R.string.copy, (dialog, which) -> ClipboardUtils.put(context, getData().getId()))
+                    .setNeutralButton(R.string.dialog_token_share, (dialog, which) -> context.startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
+                                    .putExtra(Intent.EXTRA_TEXT, FirebaseInstanceId.getInstance().getToken())
+                                    .setType("text/plain")
+                            , context.getString(R.string.dialog_token_share))))
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show();
         });
 
         mDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());

@@ -3,6 +3,8 @@ package moe.shizuku.fcmformojo.model;
 import java.util.Objects;
 import java.util.Set;
 
+import moe.shizuku.fcmformojo.model.openqq.Discuss;
+
 /**
  * Created by rikka on 2017/9/2.
  */

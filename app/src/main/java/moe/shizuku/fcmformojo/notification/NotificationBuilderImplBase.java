@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -32,7 +33,6 @@ import moe.shizuku.fcmformojo.utils.FileUtils;
 
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_FRIENDS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUPS;
-import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUP_SUMMARY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_SERVER;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_GROUP_SUMMARY;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_ID_SYSTEM;
@@ -57,14 +57,14 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         notifyGroupSummary(context, chat, nb);
 
         NotificationCompat.Builder builder = createBuilder(context, chat)
-                .setLargeIcon(chat.loadIcon(context))
+                .setLargeIcon(loadLargeIcon(context, chat))
                 .setContentTitle(chat.getName())
                 .setContentText(chat.getLatestMessage().getContent(context))
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(false)
                 .setShowWhen(true)
                 .setWhen(chat.getLatestMessage().getTimestamp() * 1000)
-                .setStyle(getStyle(context, chat))
+                .setStyle(createStyle(context, chat))
                 .setContentIntent(NotificationBuilder.createContentIntent(context, id, chat))
                 .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, id, chat))
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
@@ -130,9 +130,14 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         }
     }
 
-    private static NotificationCompat.Style getStyle(Context context, Chat chat) {
-        MessagingStyle style = new MessagingStyle(chat.getName());
+    public Bitmap loadLargeIcon(Context context, Chat chat) {
+        return chat.loadIcon(context);
+    }
+
+    public NotificationCompat.Style createStyle(Context context, Chat chat) {
+        MessagingStyle style = new MessagingStyle(context.getString(R.string.you));
         style.setConversationTitle(chat.getName());
+        style.setGroupConversation(chat.isGroup());
 
         for (int i = chat.getMessages().size() - NOTIFICATION_MAX_MESSAGES, count = 0; i < chat.getMessages().size() && count <= 8; i++, count ++) {
             if (i < 0) {
@@ -140,7 +145,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
             }
 
             Message message = chat.getMessages().get(i);
-            style.addMessage(message.getContent(context), message.getTimestamp(), chat.isFriend() ? "" : message.getSender());
+            style.addMessage(message.getContent(context), message.getTimestamp(), message.getSender());
         }
 
         style.setSummaryText(context.getString(R.string.notification_messages, chat.getMessages().getSize()));
@@ -178,14 +183,20 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = createBuilder(context, null)
-                .setChannelId(NOTIFICATION_CHANNEL_GROUP_SUMMARY)
+                .setChannelId(NOTIFICATION_CHANNEL_GROUPS)
                 .setSubText(String.format(context.getString(R.string.notification_messages_multi_sender), nb.getMessageCount(), nb.getSendersCount()))
                 .setShowWhen(true)
                 .setWhen(System.currentTimeMillis())
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(true)
+                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                 .setContentIntent(NotificationBuilder.createContentIntent(context, 0, null))
                 .setDeleteIntent(NotificationBuilder.createDeleteIntent(context, 0, null));
+
+        boolean isFriend = chat.isFriend() || (chat.isGroup() && chat.getLatestMessage().isAt());
+        if (isFriend) {
+            builder.setChannelId(NOTIFICATION_CHANNEL_FRIENDS);
+        }
 
         notificationManager.notify(NOTIFICATION_ID_GROUP_SUMMARY, builder.build());
     }

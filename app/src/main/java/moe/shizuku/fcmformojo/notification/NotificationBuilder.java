@@ -10,7 +10,9 @@ import android.support.v4.util.LongSparseArray;
 
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.model.Chat;
+import moe.shizuku.fcmformojo.model.Message;
 import moe.shizuku.fcmformojo.model.PushChat;
+import moe.shizuku.fcmformojo.model.openqq.User;
 import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
 import moe.shizuku.fcmformojo.utils.ChatMessagesList;
 
@@ -34,7 +36,9 @@ public class NotificationBuilder {
     }
 
     private NotificationBuilderImpl createImpl(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return new NotificationBuilderImplP(context);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return new NotificationBuilderImplO(context);
         } else {
             return new NotificationBuilderImplBase();
@@ -83,6 +87,20 @@ public class NotificationBuilder {
             pushChat.setIcon(chat.getIcon());
         }
         chat = pushChat;
+
+        boolean clear = false;
+        for (Message message : chat.getMessages()) {
+            if (message.getSenderUser().getUid() == User.getSelf().getUid()) {
+                clear = true;
+                break;
+            }
+        }
+        if (clear) {
+            mMessageCount -= chat.getMessages().size();
+            mMessageCount = mMessageCount > 0 ? mMessageCount : 0;
+            chat.getMessages().clear();
+        }
+
         chat.getMessages().add(chat.getLatestMessage());
 
         mMessages.put(id, chat);
@@ -90,6 +108,24 @@ public class NotificationBuilder {
         mMessageCount ++;
         mSendersCount = mMessages.size();
 
+        notify(context, chat);
+    }
+
+    public void addMessage(Context context, long id, Message message) {
+        Chat chat = mMessages.get(id);
+        if (chat == null || chat.isSystem()) {
+            return;
+        }
+
+        chat.getMessages().add(message);
+
+        mMessageCount ++;
+        mSendersCount = mMessages.size();
+
+        notify(context, chat);
+    }
+
+    private void notify(Context context, Chat chat) {
         if (shouldNotify(context)) {
             getImpl().notify(context, chat, this);
         }
@@ -116,22 +152,27 @@ public class NotificationBuilder {
         mNotificationManager.cancelAll();
     }
 
+    public void clearMessages(long id, boolean removeNotification) {
+        Chat chat = mMessages.get(id);
+        if (chat == null) {
+            return;
+        }
+        mMessageCount -= chat.getMessages().size();
+        mSendersCount = mMessages.size();
+
+        chat.getMessages().clear();
+
+        if (removeNotification)
+            getImpl().clear(chat, this);
+    }
+
     /**
      * 清空消息
      *
      * @param id 唯一的 id
      */
     public void clearMessages(long id) {
-        Chat chat = mMessages.get(id);
-        if (chat == null) {
-            return;
-        }
-        mMessageCount -= chat.getMessages().size();
-        mMessages.remove(id);
-
-        mSendersCount = mMessages.size();
-
-        getImpl().clear(chat, this);
+        clearMessages(id, true);
     }
 
     public static PendingIntent createContentIntent(Context context, int requestCode, @Nullable Chat chat) {

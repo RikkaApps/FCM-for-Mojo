@@ -2,4 +2,5 @@
 <resources>
     <dimen name="list_padding">16dp</dimen>
     <dimen name="dir_elevation">8dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
 </resources>

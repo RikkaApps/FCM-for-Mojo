@@ -4,7 +4,7 @@
     <string name="notification_messages_multi_sender">%2$dつ連絡先からの%1$d件メッセージ</string>
     <string name="notification_action_reply" formatted="false">%s に返信</string>
     <string name="update_avatar">画像を更新</string>
-    <string name="update_avatar_summary">友達やグループの画像を更新する(アプリを再開)</string>
+    <string name="update_avatar_summary">友達やグループの画像を更新する</string>
     <string name="friend_messages">友達メッセージ</string>
     <string name="group_messages">グループメッセージ</string>
     <string name="server_url">サーバーのURL</string>
@@ -43,8 +43,6 @@
     <string name="notification_channel_group_message">グループメッセージ</string>
     <string name="notification_channel_progress_message">進行している</string>
     <string name="notification_channel_server_message">サーバーメッセージ</string>
-    <string name="notification_channel_group_summary">通知概要</string>
-    <string name="notification_channel_group_summary_description">重要度を高いや緊急に変更しないでください、そうするとメッセージが2回になります。</string>
     <string name="notification_style">通知スタイル</string>
     <string name="notification_fetching_list">友達やグループのリストを取得しています…</string>
     <string name="notification_fetching">アバターを取得しています</string>
@@ -61,7 +59,7 @@
     <string name="notification_qr_code_downloaded">QRコードをダウンロードした</string>
     <string name="notification_cannot_download">QRコードをダウンロードできません</string>
     <string name="notification_tap_open_qq">タップして%sを開く、QRコードをスキャンする</string>
-    <string name="notification_network_issue">ネットワークエラー</string>
+    <string name="notification_network_issue">ネットワークエラー%s</string>
     <string name="notification_permission_issue">必要な許可が与えられていない</string>
     <string name="notification_singing_in">サインイン…</string>
     <string name="notification_tap_open_qr_code_in_browser">タップして、ブラウザでQRコードが開く</string>
@@ -143,4 +141,8 @@
     <string name="account_settings_summary">アカウントログイン情報を変更</string>
     <string name="qq_account">アカウント</string>
     <string name="qq_account_summary">パスワードを入力した後、パスワードの方式でログインします。\nMojo-Webqqを再起動の必要があります。\n\n問題がある場合は、サーバーのネットワーク環境で http://qun.qq.com に何度かログインしてください。</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="dialog_skip_exists_avatar">ダウンロードしたアバターをスキップしますか？</string>
+    <string name="you">You</string>
 </resources>

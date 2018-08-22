@@ -6,15 +6,24 @@ import android.os.Parcelable;
 import android.support.annotation.Keep;
 
 import moe.shizuku.fcmformojo.R;
+import moe.shizuku.fcmformojo.model.openqq.User;
 
 
 @Keep
 public class Message implements Parcelable {
 
+    private final User sender_user;
     private final String sender;
     private final String content;
     private final long timestamp;
     private final int isAt;
+
+    public User getSenderUser() {
+        if (sender_user == null) {
+            return new User(0, 0, sender);
+        }
+        return sender_user;
+    }
 
     /**
      * 返回该条消息的发送者名称。
@@ -70,20 +79,34 @@ public class Message implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.sender_user, flags);
         dest.writeString(this.sender);
         dest.writeString(this.content);
         dest.writeLong(this.timestamp);
-        dest.writeByte((byte) this.isAt);
+        dest.writeInt(this.isAt);
+    }
+
+    public static Message createSelfMessage(String content, long timestamp) {
+        return new Message(User.getSelf(), null, content, timestamp, 0);
+    }
+
+    public Message(User sender_user, String sender, String content, long timestamp, int isAt) {
+        this.sender_user = sender_user;
+        this.sender = sender;
+        this.content = content;
+        this.timestamp = timestamp;
+        this.isAt = isAt;
     }
 
     protected Message(Parcel in) {
+        this.sender_user = in.readParcelable(User.class.getClassLoader());
         this.sender = in.readString();
         this.content = in.readString();
         this.timestamp = in.readLong();
-        this.isAt = in.readByte();
+        this.isAt = in.readInt();
     }
 
-    public static final Parcelable.Creator<Message> CREATOR = new Parcelable.Creator<Message>() {
+    public static final Creator<Message> CREATOR = new Creator<Message>() {
         @Override
         public Message createFromParcel(Parcel source) {
             return new Message(source);

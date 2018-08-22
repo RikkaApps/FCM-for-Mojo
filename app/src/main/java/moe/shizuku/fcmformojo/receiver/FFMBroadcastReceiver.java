@@ -67,7 +67,7 @@ public class FFMBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        if (intent == null) {
+        if (intent == null || intent.getAction() == null) {
             return;
         }
 
@@ -117,7 +117,7 @@ public class FFMBroadcastReceiver extends BroadcastReceiver {
             FFMSettings.getProfile().onStartChatActivity(context, null);
         } else {
             FFMApplication.get(context).getNotificationBuilder()
-                    .clearMessages();
+                    .clearMessages(chat.getUniqueId());
 
             FFMSettings.getProfile().onStartChatActivity(context, chat);
         }

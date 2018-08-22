@@ -3,10 +3,10 @@ package moe.shizuku.fcmformojo.api;
 import java.util.List;
 
 import io.reactivex.Single;
-import moe.shizuku.fcmformojo.model.Discuss;
-import moe.shizuku.fcmformojo.model.Friend;
-import moe.shizuku.fcmformojo.model.Group;
-import moe.shizuku.fcmformojo.model.SendResult;
+import moe.shizuku.fcmformojo.model.openqq.Discuss;
+import moe.shizuku.fcmformojo.model.openqq.User;
+import moe.shizuku.fcmformojo.model.openqq.Group;
+import moe.shizuku.fcmformojo.model.openqq.SendResult;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -22,7 +22,7 @@ public interface OpenQQService {
      * 获取好友数据
      */
     @GET("openqq/get_friend_info")
-    Single<List<Friend>> getFriendsInfo();
+    Single<List<User>> getFriendsInfo();
 
     /**
      * 查询群信息

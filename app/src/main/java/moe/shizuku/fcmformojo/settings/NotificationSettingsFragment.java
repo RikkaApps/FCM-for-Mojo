@@ -9,9 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.profile.ProfileList;
 import moe.shizuku.fcmformojo.service.FFMIntentService;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
+import moe.shizuku.fcmformojo.utils.ViewUtils;
 import moe.shizuku.preference.ListPreference;
 import moe.shizuku.preference.Preference;
 import moe.shizuku.preference.SwitchPreference;
@@ -67,14 +71,8 @@ public class NotificationSettingsFragment extends SettingsFragment {
         }
 
         ListPreference qq = (ListPreference) findPreference("qq_package");
-        qq.setEntries(names.toArray(new CharSequence[names.size()]));
-        qq.setEntryValues(packages.toArray(new CharSequence[packages.size()]));
-
-        findPreference("update_avatar").setOnPreferenceClickListener(preference -> {
-            Toast.makeText(getContext(), "Progress will be shown via notification", Toast.LENGTH_SHORT).show();
-            FFMIntentService.startUpdateIcon(requireContext(), null);
-            return true;
-        });
+        qq.setEntries(names.toArray(new CharSequence[0]));
+        qq.setEntryValues(packages.toArray(new CharSequence[0]));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             findPreference("edit_channel").setOnPreferenceClickListener(preference -> {
@@ -103,6 +101,13 @@ public class NotificationSettingsFragment extends SettingsFragment {
         mGroupToggle.setOnPreferenceChangeListener(pushListener);
 
         fetchRemoteConfiguration();
+    }
+
+    @Override
+    public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        RecyclerView recyclerView = super.onCreateRecyclerView(inflater, parent, savedInstanceState);
+        ViewUtils.setPaddingVertical(recyclerView, getResources().getDimensionPixelSize(R.dimen.dp_8));
+        return recyclerView;
     }
 
     private void fetchRemoteConfiguration() {

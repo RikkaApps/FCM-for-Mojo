@@ -13,21 +13,16 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import java.io.File;
 
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Chat.ChatType;
 import moe.shizuku.fcmformojo.utils.DrawableUtils;
 import moe.shizuku.fcmformojo.utils.FileUtils;
 
-/**
- * Created by rikka on 2017/7/29.
- */
 
-public class ChatIcon {
+public class UserIcon {
 
     private static final int[] COLORS = {
             R.color.colorNotificationRed,
             R.color.colorNotificationOrange,
-            R.color.colorNotificationYellow,
             R.color.colorNotificationGreen,
             R.color.colorNotificationIndigo,
             R.color.colorNotificationBlue,
@@ -50,6 +45,10 @@ public class ChatIcon {
                 String.format(type == ChatType.GROUP ? PATH_GROUP : PATH_FRIEND, Long.toString(uid)));
     }
 
+    public static Bitmap requestIcon(Context context, long uid, @ChatType int type) {
+        return getIcon(context, uid, type);
+    }
+
     /**
      * 根据聊天类型来生成头像 Bitmap。<p>
      *
@@ -70,7 +69,7 @@ public class ChatIcon {
 
         Bitmap bitmap = loadIcon(context, uid, type);
         if (bitmap == null) {
-            bitmap = getDefault(context, (int) (uid % 7), type != ChatType.FRIEND);
+            bitmap = getDefault(context, (int) uid, type != ChatType.FRIEND);
         }
         return bitmap;
     }
@@ -100,14 +99,14 @@ public class ChatIcon {
      * 返回生成的默认默认头像。
      *
      * @param context Context
-     * @param color 预设颜色
+     * @param random 预设颜色
      * @param isGroup 是否是群组
      * @return 头像 Bitmap
      */
-    public static Bitmap getDefault(Context context, @IntRange(from = 0, to = 6) int color, boolean isGroup) {
+    public static Bitmap getDefault(Context context, int random, boolean isGroup) {
         Drawable drawable = context.getDrawable(isGroup ? R.drawable.ic_noti_group_48dp : R.drawable.ic_noti_person_48dp);
         if (drawable != null) {
-            drawable.setTint(context.getColor(COLORS[color]));
+            drawable.setTint(context.getColor(COLORS[Math.abs(random) % 6]));
 
             return DrawableUtils.toBitmap(drawable);
         }

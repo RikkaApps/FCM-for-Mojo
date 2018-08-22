@@ -9,7 +9,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.fcmformojo.model.Discuss;
+import moe.shizuku.fcmformojo.model.openqq.Discuss;
 
 /**
  * Created by rikka on 2017/9/2.

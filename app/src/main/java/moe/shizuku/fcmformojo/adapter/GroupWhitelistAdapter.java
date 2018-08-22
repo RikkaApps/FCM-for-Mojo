@@ -5,7 +5,7 @@ import android.util.Pair;
 import java.util.HashSet;
 import java.util.Set;
 
-import moe.shizuku.fcmformojo.model.Group;
+import moe.shizuku.fcmformojo.model.openqq.Group;
 import moe.shizuku.fcmformojo.model.GroupWhitelistState;
 import moe.shizuku.fcmformojo.viewholder.GroupWhitelistItemViewHolder;
 

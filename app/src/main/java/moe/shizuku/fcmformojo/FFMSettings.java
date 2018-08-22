@@ -30,6 +30,7 @@ public class FFMSettings {
     public static final String LOCAL_GROUP_WHITELIST = "group_whitelist";
     public static final String LOCAL_DISCUSS_WHITELIST = "discuss_whitelist";
     public static final String NEW_TOKEN = "new_token";
+    public static final String CLEAR_NOTIFICATION_WHEN_TAP = "clear_notification_when_tap";
 
     public static void init(Context context) {
         Settings.init(context);
@@ -178,4 +179,13 @@ public class FFMSettings {
     public static String getNewToken() {
         return Settings.getString(NEW_TOKEN, null);
     }
+
+    public static boolean isClearNotificationWhenTap() {
+        return Settings.getBoolean(CLEAR_NOTIFICATION_WHEN_TAP, true);
+    }
+
+    public static String getSelfUid() {
+        return Settings.getString("qq_account", "0");
+    }
+
 }

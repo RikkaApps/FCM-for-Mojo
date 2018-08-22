@@ -23,6 +23,7 @@ import moe.shizuku.fcmformojo.api.FFMService;
 import moe.shizuku.fcmformojo.api.OpenQQService;
 import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.interceptor.HttpBasicAuthorizationInterceptor;
+import moe.shizuku.fcmformojo.model.openqq.User;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.utils.URLFormatUtils;
 import moe.shizuku.fcmformojo.utils.UsageStatsUtils;
@@ -119,12 +120,7 @@ public class FFMApplication extends Application {
         ShizukuClient.initialize(context);
 
         if (FFMSettings.getForegroundImpl().equals(ForegroundImpl.SHIZUKU)) {
-            AsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
-                    FFMApplication.get(context).registerTaskStackListener();
-                }
-            });
+            AsyncTask.execute(() -> FFMApplication.get(context).registerTaskStackListener());
         }
     }
 
@@ -152,6 +148,7 @@ public class FFMApplication extends Application {
         }
 
         FFMSettings.init(this);
+        User.setSelf(new User(0, Long.parseLong(FFMSettings.getSelfUid()), null));
 
         createRetrofit(FFMSettings.getBaseUrl());
         createServices();
@@ -198,7 +195,7 @@ public class FFMApplication extends Application {
         if (ShizukuClient.getState().isAuthorized()) {
             final Context context = this;
 
-            if (Build.VERSION.SDK_INT >= 26) {
+            if (Build.VERSION.SDK_INT >= 26 && Build.VERSION.SDK_INT < 28) {
                 mTaskStackListener = new TaskStackListener() {
 
                     @Override

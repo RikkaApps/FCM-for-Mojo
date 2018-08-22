@@ -3,7 +3,7 @@
     <string name="notification_messages_multi_sender">%1$d messages from %2$d chats</string>
     <string name="notification_action_reply">Reply to %s</string>
     <string name="update_avatar">Update avatar</string>
-    <string name="update_avatar_summary">Update friends and groups avatar (restart app maybe required to take effect)</string>
+    <string name="update_avatar_summary">Update friends and groups avatar</string>
     <string name="friend_messages">Friend messages</string>
     <string name="group_messages">Group messages</string>
     <string name="server_url">Server URL</string>
@@ -42,8 +42,6 @@
     <string name="notification_channel_group_message">Group messages</string>
     <string name="notification_channel_progress_message">Progress</string>
     <string name="notification_channel_server_message">Server messages</string>
-    <string name="notification_channel_group_summary">Notification summary</string>
-    <string name="notification_channel_group_summary_description">Please do not change importance to high or urgent, or a message will make sound twice.</string>
     <string name="notification_style">Notification behaviors</string>
     <string name="notification_fetching_list">Fetching friends and groups list…</string>
     <string name="notification_fetching">Fetching avatars…</string>
@@ -60,7 +58,7 @@
     <string name="notification_qr_code_downloaded">QR code downloaded</string>
     <string name="notification_cannot_download">Can\'t download QR code</string>
     <string name="notification_tap_open_qq">Tap to open %s to scan the QR code.</string>
-    <string name="notification_network_issue">A network issue may have occurred.</string>
+    <string name="notification_network_issue">A network issue may have occurred.%s</string>
     <string name="notification_permission_issue">Required permissions may not be granted.</string>
     <string name="notification_singing_in">Signing in…</string>
     <string name="notification_tap_open_qr_code_in_browser">Tap to open QR code in browser.</string>
@@ -150,4 +148,8 @@
     <string name="account_settings_summary">Change login account info</string>
     <string name="qq_account">Account</string>
     <string name="qq_account_summary">After filling in the account password, you will log in using the account password method.\nMojo-Webqq needs to be restarted.\n\nIf you have problem, please try login to http://qun.qq.com several times in the server network environment.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="dialog_skip_exists_avatar">Skip downloaded avatars?</string>
+    <string name="you">You</string>
 </resources>

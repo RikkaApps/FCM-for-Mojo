@@ -11,20 +11,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
-import android.os.ResultReceiver;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
+import android.util.Pair;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -33,10 +32,13 @@ import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Chat.ChatType;
-import moe.shizuku.fcmformojo.model.Friend;
-import moe.shizuku.fcmformojo.model.Group;
-import moe.shizuku.fcmformojo.model.SendResult;
-import moe.shizuku.fcmformojo.notification.ChatIcon;
+import moe.shizuku.fcmformojo.model.FFMResult;
+import moe.shizuku.fcmformojo.model.Message;
+import moe.shizuku.fcmformojo.model.openqq.Discuss;
+import moe.shizuku.fcmformojo.model.openqq.User;
+import moe.shizuku.fcmformojo.model.openqq.Group;
+import moe.shizuku.fcmformojo.model.openqq.SendResult;
+import moe.shizuku.fcmformojo.notification.UserIcon;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
 import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.profile.ProfileHelper;
@@ -54,6 +56,7 @@ import static moe.shizuku.fcmformojo.FFMStatic.ACTION_DOWNLOAD_QRCODE;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REPLY;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_RESTART_WEBQQ;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_ICON;
+import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_ALL;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CHAT;
 import static moe.shizuku.fcmformojo.FFMStatic.EXTRA_CONTENT;
 import static moe.shizuku.fcmformojo.FFMStatic.FILE_PROVIDER_AUTHORITY;
@@ -78,10 +81,10 @@ public class FFMIntentService extends IntentService {
         super("FFMIntentService");
     }
 
-    public static void startUpdateIcon(Context context, @Nullable ResultReceiver receiver) {
+    public static void startUpdateIcon(Context context, boolean all) {
         context.startService(new Intent(context, FFMIntentService.class)
                 .setAction(ACTION_UPDATE_ICON)
-                .putExtra(Intent.EXTRA_RESULT_RECEIVER, receiver));
+                .putExtra(EXTRA_ALL, all));
     }
 
     public static void startReply(Context context, CharSequence content, Chat chat) {
@@ -100,6 +103,15 @@ public class FFMIntentService extends IntentService {
         return new Intent(context, FFMIntentService.class).setAction(ACTION_RESTART_WEBQQ);
     }
 
+    private NotificationManager mNm;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        mNm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent == null) {
@@ -107,8 +119,7 @@ public class FFMIntentService extends IntentService {
         }
         final String action = intent.getAction();
         if (ACTION_UPDATE_ICON.equals(action)) {
-            ResultReceiver receiver = intent.getParcelableExtra(Intent.EXTRA_RESULT_RECEIVER);
-            handleUpdateIcon(receiver);
+            handleUpdateIcon(intent.getBooleanExtra(EXTRA_ALL, false));
         } else if (ACTION_REPLY.equals(action)) {
             CharSequence content = intent.getCharSequenceExtra(EXTRA_CONTENT);
             Chat chat = intent.getParcelableExtra(EXTRA_CHAT);
@@ -122,164 +133,179 @@ public class FFMIntentService extends IntentService {
 
     private void handleRestart() {
         // TODO notify user if error
-        FFMService
+        FFMResult result = FFMService
                 .restart()
                 .blockingGet();
 
-        getSystemService(NotificationManager.class).cancel(NOTIFICATION_ID_SYSTEM);
+        mNm.cancel(NOTIFICATION_ID_SYSTEM);
     }
 
-    private void handleUpdateIcon(ResultReceiver receiver) {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    private void handleUpdateIcon(boolean all) {
+        long nextNotifyTime;
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_PROGRESS)
                 .setColor(getColor(R.color.colorNotification))
                 .setContentTitle(getString(R.string.notification_fetching_list))
                 .setProgress(100, 0, true)
                 .setOngoing(true)
                 .setShowWhen(true)
+                .setOnlyAlertOnce(true)
                 .setSmallIcon(android.R.drawable.stat_sys_download)
                 .setWhen(System.currentTimeMillis());
 
-        notificationManager.notify(NOTIFICATION_ID_PROGRESS, builder.build());
+        startForeground(NOTIFICATION_ID_PROGRESS, builder.build());
 
-        OkHttpClient client = new OkHttpClient();
+        List<User> users = null;
+        List<Group> groups = null;
+        List<Discuss> discusses = null;
 
         try {
-            List<Friend> friends = OpenQQService.getFriendsInfo().blockingGet();
-            List<Group> groups = OpenQQService.getGroupsBasicInfo().blockingGet();
-
-            if (friends == null || groups == null) {
-                notificationManager.cancel(NOTIFICATION_ID_PROGRESS);
-                return;
-            }
-            int count = friends.size() + groups.size();
-
-            Bundle result = null;
-            if (receiver != null) {
-                result = new Bundle();
-                result.putInt("total", friends.size() + groups.size());
-                result.putInt("current", 0);
-
-                receiver.send(0, result);
-            }
-
-            builder.setContentTitle(getString(R.string.notification_fetching));
-            builder.setContentText(getString(R.string.notification_fetching_progress, 0, count));
-            builder.setProgress(count, 0, false);
-            notificationManager.notify(NOTIFICATION_ID_PROGRESS, builder.build());
-
-            int current = 0;
-            for (Friend friend : friends) {
-                current++;
-
-                if (receiver != null) {
-                    result.putInt("current", current);
-                    receiver.send(0, result);
-                }
-
-                builder.setContentText(getString(R.string.notification_fetching_progress, current, count));
-                builder.setProgress(count, current, false);
-                notificationManager.notify(NOTIFICATION_ID_PROGRESS, builder.build());
-
-                long uid = friend.getUid();
-                if (uid == 0) {
-                    continue;
-                }
-
-                File file = ChatIcon.getIconFile(this, uid, ChatType.FRIEND);
-                String url = URL_HEAD_FRIEND.replace(URL_UID, Long.toString(uid));
-                boolean succeeded = save(client, url, file, true);
-
-                Log.d(TAG, succeeded + " friend " + uid);
-            }
-
-            for (Group group : groups) {
-                current++;
-
-                if (receiver != null) {
-                    result.putInt("current", current);
-                    receiver.send(0, result);
-                }
-
-                builder.setContentText(getString(R.string.notification_fetching_progress, current, count));
-                builder.setProgress(count, current, false);
-                notificationManager.notify(NOTIFICATION_ID_PROGRESS, builder.build());
-
-                long uid = group.getUid();
-                if (uid == 0) {
-                    continue;
-                }
-
-                File file = ChatIcon.getIconFile(this, uid, ChatType.GROUP);
-                String url = URL_HEAD_GROUP.replace(URL_UID, Long.toString(uid));
-                boolean succeeded = save(client, url, file, true);
-
-                Log.d(TAG, succeeded + " group " + uid);
-            }
+            users = OpenQQService.getFriendsInfo().blockingGet();
+            groups = Build.VERSION.SDK_INT >= 28 ? OpenQQService.getGroupsInfo().blockingGet() : OpenQQService.getGroupsBasicInfo().blockingGet();
+            discusses = OpenQQService.getDiscussesInfo().blockingGet();
         } catch (Throwable e) {
             e.printStackTrace();
         }
 
-        if (receiver != null) {
-            receiver.send(0, null);
+        if (users == null || groups == null || discusses == null) {
+            stopForeground(true);
+            return;
         }
 
-        notificationManager.cancel(NOTIFICATION_ID_PROGRESS);
-    }
+        List<Pair<String, Integer>> uids = new ArrayList<>();
 
-    private boolean save(OkHttpClient client, String url, File file, boolean round) {
-        try {
-            if (!file.exists()) {
-                //noinspection ResultOfMethodCallIgnored
-                file.getParentFile().mkdirs();
-                //noinspection ResultOfMethodCallIgnored
-                file.createNewFile();
-            }
-            OutputStream os = new FileOutputStream(file);
+        for (User user : users) {
+            if (user.getUid() == 0)
+                continue;
 
-            return save(client, url, os, round);
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            return false;
+            Pair<String, Integer> uid = new Pair<>(Long.toString(user.getUid()), ChatType.FRIEND);
+            if (!uids.contains(uid))
+                uids.add(uid);
         }
+
+        for (Group group : groups) {
+            if (group.getUid() != 0)
+                uids.add(new Pair<>(Long.toString(group.getUid()), ChatType.GROUP));
+
+            if (group.getMember() == null)
+                continue;
+
+            for (User user : group.getMember()) {
+                if (user.getUid() == 0)
+                    continue;
+
+                Pair<String, Integer> uid = new Pair<>(Long.toString(user.getUid()), ChatType.FRIEND);
+                if (!uids.contains(uid))
+                    uids.add(uid);
+            }
+        }
+
+        for (Discuss group : discusses) {
+            if (group.getMember() == null)
+                continue;
+
+            for (User user : group.getMember()) {
+                if (user.getUid() == 0)
+                    continue;
+
+                Pair<String, Integer> uid = new Pair<>(Long.toString(user.getUid()), ChatType.FRIEND);
+                if (!uids.contains(uid))
+                    uids.add(uid);
+            }
+        }
+
+        if (!all) {
+            for (Pair<String, Integer> uid : new ArrayList<>(uids)) {
+                File file = UserIcon.getIconFile(this, Long.valueOf(uid.first), uid.second);
+                if (file.exists())
+                    uids.remove(uid);
+            }
+        }
+
+        int count = uids.size();
+
+        builder.setContentTitle(getString(R.string.notification_fetching));
+        builder.setContentText(getString(R.string.notification_fetching_progress, 0, count));
+        builder.setProgress(count, 0, false);
+
+        mNm.notify(NOTIFICATION_ID_PROGRESS, builder.build());
+        nextNotifyTime = System.currentTimeMillis() + 1000;
+
+        OkHttpClient client = new OkHttpClient();
+
+        int current = 0;
+        for (Pair<String, Integer> uid : uids) {
+            current++;
+
+            builder.setContentText(getString(R.string.notification_fetching_progress, current, count));
+            builder.setProgress(count, current, false);
+
+            if (System.currentTimeMillis() > nextNotifyTime || count == current) {
+                mNm.notify(NOTIFICATION_ID_PROGRESS, builder.build());
+                nextNotifyTime = System.currentTimeMillis() + 1000;
+            }
+
+            File file = UserIcon.getIconFile(this, Long.valueOf(uid.first), uid.second);
+            String url = uid.second == ChatType.FRIEND
+                    ? URL_HEAD_FRIEND.replace(URL_UID, uid.first)
+                    : URL_HEAD_GROUP.replace(URL_UID, uid.first);
+
+            try {
+                downloadAvatarImageUrl(client, url, file);
+                Log.d(TAG, "" + uid.first);
+            } catch (IOException e) {
+                Log.w(TAG, "" + uid.first, e);
+            }
+        }
+
+        stopForeground(true);
     }
 
-    private boolean save(OkHttpClient client, String url, OutputStream os, boolean round) {
-        try {
-            Request request = new Request.Builder()
-                    .get()
-                    .url(url)
-                    .build();
-            okhttp3.Response headResponse = client.newCall(request).execute();
-            ResponseBody body = headResponse.body();
-            if (body == null) {
-                return false;
-            }
-
-            Bitmap bitmap = BitmapFactory.decodeStream(body.byteStream());
-            if (bitmap == null) {
-                return false;
-            }
-
-            if (round) {
-                Bitmap roundBitmap = ChatIcon.clipToRound(this, bitmap);
-
-                roundBitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-
-                bitmap.recycle();
-                roundBitmap.recycle();
-            } else {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-                bitmap.recycle();
-            }
-
+    private boolean downloadAvatarImageUrl(OkHttpClient client, String url, File file) throws IOException {
+        if (file.exists()) {
             return true;
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
 
+        if (!file.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            file.getParentFile().mkdirs();
+            //noinspection ResultOfMethodCallIgnored
+            file.createNewFile();
+        }
+        OutputStream os = new FileOutputStream(file);
+
+        return downloadImageUrl(client, url, os, true);
+    }
+
+    private boolean downloadImageUrl(OkHttpClient client, String url, OutputStream os, boolean round) throws IOException {
+        Request request = new Request.Builder()
+                .get()
+                .url(url)
+                .build();
+        okhttp3.Response headResponse = client.newCall(request).execute();
+        ResponseBody body = headResponse.body();
+        if (body == null) {
             return false;
         }
+
+        Bitmap bitmap = BitmapFactory.decodeStream(body.byteStream());
+        if (bitmap == null) {
+            return false;
+        }
+
+        if (round) {
+            Bitmap roundBitmap = UserIcon.clipToRound(this, bitmap);
+
+            roundBitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+
+            bitmap.recycle();
+            roundBitmap.recycle();
+        } else {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+            bitmap.recycle();
+        }
+
+        return true;
     }
 
     private void handleReply(CharSequence content, Chat chat) {
@@ -312,25 +338,19 @@ public class FFMIntentService extends IntentService {
             final SendResult result = call.blockingGet();
 
             if (result != null) {
-                if (result.getCode() != 0) {
-                    FFMApplication.get(this).runInMainThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(FFMIntentService.this,
-                                    result.getStatus(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+                if (result.getCode() == 0) {
+                    NotificationBuilder nb = FFMApplication.get(this).getNotificationBuilder();
+                    nb.addMessage(this, chat.getUniqueId(), Message.createSelfMessage(content.toString(), System.currentTimeMillis() / 1000));
+                    return;
                 }
+
+                FFMApplication.get(this).runInMainThread(() -> Toast.makeText(FFMIntentService.this,
+                        result.getStatus(), Toast.LENGTH_LONG).show());
             }
         } catch (final Throwable t) {
             t.printStackTrace();
 
-            FFMApplication.get(this).runInMainThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(FFMIntentService.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
+            FFMApplication.get(this).runInMainThread(() -> Toast.makeText(FFMIntentService.this, t.getMessage(), Toast.LENGTH_LONG).show());
         }
 
         NotificationBuilder nb = FFMApplication.get(this).getNotificationBuilder();
@@ -340,7 +360,6 @@ public class FFMIntentService extends IntentService {
     private void handleDownloadQrCode() {
         String url = URLFormatUtils.addEndSlash(FFMSettings.getBaseUrl()) + "ffm/get_qr_code";
         Profile profile = FFMSettings.getProfile();
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
 
         NotificationCompat.Builder builder = FFMApplication.get(this).getNotificationBuilder().createBuilder(this, null)
                 .setChannelId(NOTIFICATION_CHANNEL_SERVER)
@@ -355,7 +374,7 @@ public class FFMIntentService extends IntentService {
                     .setVibrate(new long[0]);
         }
 
-        NotificationCompat.Action action;
+        NotificationCompat.Action fallbackAction;
 
         Uri authUri = Uri.parse(url);
 
@@ -375,11 +394,11 @@ public class FFMIntentService extends IntentService {
                 .getBroadcast(this, REQUEST_CODE_COPY, FFMBroadcastReceiver.copyToClipboardIntent(authUri.toString()), PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (intent.resolveActivity(getPackageManager()) != null) {
-            action = new NotificationCompat.Action.Builder(R.drawable.ic_noti_open_24dp, getString(R.string.notification_action_open_in_browser), viewIntent)
+            fallbackAction = new NotificationCompat.Action.Builder(R.drawable.ic_noti_open_24dp, getString(R.string.notification_action_open_in_browser), viewIntent)
                     .build();
         } else {
             // 这个人没有浏览器..
-            action = new NotificationCompat.Action.Builder(R.drawable.ic_noti_copy_24dp, getString(R.string.notification_action_copy_to_clipboard), copyIntent)
+            fallbackAction = new NotificationCompat.Action.Builder(R.drawable.ic_noti_copy_24dp, getString(R.string.notification_action_copy_to_clipboard), copyIntent)
                     .build();
         }
 
@@ -404,6 +423,7 @@ public class FFMIntentService extends IntentService {
                     }
                     DocumentFile file = pickedDir.createFile("image/png", "webqq-qrcode");
 
+                    //noinspection ConstantConditions
                     uri = file.getUri();
                     os = getContentResolver().openOutputStream(uri);
                 } else {
@@ -424,11 +444,26 @@ public class FFMIntentService extends IntentService {
         if (os == null) {
             builder.setContentTitle(getString(R.string.notification_cannot_download))
                     .setContentText(getString(R.string.notification_permission_issue))
-                    .addAction(action);
+                    .addAction(fallbackAction);
         } else {
             OkHttpClient client = FFMApplication.getOkHttpClient();
 
-            if (save(client, url, os, false)) {
+            boolean res;
+            try {
+                res = downloadImageUrl(client, url, os, false);
+            } catch (IOException e) {
+                Log.w(TAG, e);
+
+                builder.setContentTitle(getString(R.string.notification_cannot_download))
+                        .setContentText(getString(R.string.notification_network_issue, e.getCause()))
+                        .addAction(fallbackAction);
+
+                mNm.notify(NOTIFICATION_ID_SYSTEM, builder.build());
+
+                return;
+            }
+
+            if (res) {
                 builder.setContentTitle(getString(R.string.notification_qr_code_downloaded))
                         .setContentText(getString(R.string.notification_tap_open_qq, getString(profile.getDisplayName())))
                         .setContentIntent(PendingIntent.getBroadcast(this, REQUEST_CODE_OPEN_SCAN, FFMBroadcastReceiver.openScanIntent(), PendingIntent.FLAG_UPDATE_CURRENT));
@@ -446,7 +481,7 @@ public class FFMIntentService extends IntentService {
                                 PendingIntent.getActivity(this, REQUEST_CODE_SEND, sendIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                                 .build();
                         builder.addAction(sendAction);
-                        builder.addAction(action);
+                        builder.addAction(fallbackAction);
                     }
                 } else {
                     sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
@@ -454,11 +489,11 @@ public class FFMIntentService extends IntentService {
                 }
             } else {
                 builder.setContentTitle(getString(R.string.notification_cannot_download))
-                        .setContentText(getString(R.string.notification_network_issue))
-                        .addAction(action);
+                        .setContentText(getString(R.string.notification_network_issue, ""))
+                        .addAction(fallbackAction);
             }
         }
 
-        notificationManager.notify(NOTIFICATION_ID_SYSTEM, builder.build());
+        mNm.notify(NOTIFICATION_ID_SYSTEM, builder.build());
     }
 }

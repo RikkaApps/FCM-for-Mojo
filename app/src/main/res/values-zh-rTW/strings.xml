@@ -4,7 +4,7 @@
     <string name="notification_messages_multi_sender">來自 %2$d 個聯絡人的 %1$d 條訊息</string>
     <string name="notification_action_reply" formatted="false">回覆給 %s</string>
     <string name="update_avatar">更新頭像</string>
-    <string name="update_avatar_summary">更新好友及群組的頭像（可能需要重啟生效）</string>
+    <string name="update_avatar_summary">更新好友及群組的頭像</string>
     <string name="friend_messages">好友訊息</string>
     <string name="group_messages">群組訊息</string>
     <string name="server_url">伺服器 URL</string>
@@ -43,8 +43,6 @@
     <string name="notification_channel_group_message">群組訊息</string>
     <string name="notification_channel_progress_message">進度</string>
     <string name="notification_channel_server_message">伺服器訊息</string>
-    <string name="notification_channel_group_summary">通知摘要</string>
-    <string name="notification_channel_group_summary_description">請不要將重要程度改為高或緊急，否則一條訊息會產生兩次聲音。</string>
     <string name="notification_style">通知樣式</string>
     <string name="notification_fetching_list">正在取得好友及群組列表…</string>
     <string name="notification_fetching">正在取得頭像…</string>
@@ -61,7 +59,7 @@
     <string name="notification_qr_code_downloaded">二維碼已下載</string>
     <string name="notification_cannot_download">無法下載二維碼</string>
     <string name="notification_tap_open_qq">輕觸打開 %s 來掃描二維碼。</string>
-    <string name="notification_network_issue">這可能是網路問題。</string>
+    <string name="notification_network_issue">這可能是網路問題。%s</string>
     <string name="notification_permission_issue">這可能是因為需要的權限沒有授予。</string>
     <string name="notification_singing_in">登入中…</string>
     <string name="notification_tap_open_qr_code_in_browser">輕觸在瀏覽器中打開二維碼。</string>
@@ -143,4 +141,8 @@
     <string name="account_settings_summary">更改登入帳號訊息</string>
     <string name="qq_account">帳號</string>
     <string name="qq_account_summary">填寫帳號密碼後，將使用帳號密碼方式登入。\n需要重啟 Mojo-Webqq。\n\n如果有問題，請以服務端所在的網路環境登入 http://qun.qq.com 幾次。</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="dialog_skip_exists_avatar">是否跳過已下載頭像？</string>
+    <string name="you">你</string>
 </resources>

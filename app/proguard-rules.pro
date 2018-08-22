@@ -23,9 +23,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class android.support.v7.widget.** { *; }
--keep interface android.support.v7.widget.** { *; }
-
 -keep class com.android.vending.billing.**
 
 # Gson uses generic type information stored in a class file when working with fields. Proguard

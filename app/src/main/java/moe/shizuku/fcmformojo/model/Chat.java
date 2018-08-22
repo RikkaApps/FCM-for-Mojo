@@ -12,7 +12,7 @@ import java.lang.annotation.Retention;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 
-import moe.shizuku.fcmformojo.notification.ChatIcon;
+import moe.shizuku.fcmformojo.notification.UserIcon;
 import moe.shizuku.fcmformojo.utils.ChatMessagesList;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
@@ -95,9 +95,9 @@ public class Chat implements Parcelable {
      */
     public long getUniqueId() {
         if (getUid() == 0) {
-            return getId();
+            return isGroup() ? -getId() : getId();
         } else {
-            return getUid();
+            return isGroup() ? -getUid() : getUid();
         }
     }
 
@@ -178,7 +178,7 @@ public class Chat implements Parcelable {
         }
 
         if (icon == null || icon.get() == null) {
-            icon = new WeakReference<>(ChatIcon.getIcon(context, uid, type));
+            icon = new WeakReference<>(UserIcon.getIcon(context, uid, type));
         }
         return icon.get();
     }

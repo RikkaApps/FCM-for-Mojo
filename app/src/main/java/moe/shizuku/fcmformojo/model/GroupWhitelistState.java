@@ -1,13 +1,10 @@
 package moe.shizuku.fcmformojo.model;
 
 import android.support.annotation.Keep;
-import android.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
+
+import moe.shizuku.fcmformojo.model.openqq.Group;
 
 /**
  * Created by rikka on 2017/8/28.

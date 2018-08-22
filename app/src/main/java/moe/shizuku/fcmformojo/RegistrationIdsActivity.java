@@ -94,19 +94,11 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
         mCompositeDisposable.add(FFMService.getRegistrationIds()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Set<RegistrationId>>() {
-                    @Override
-                    public void accept(Set<RegistrationId> registrationIds) throws Exception {
-                        mServerRegistrationIds = registrationIds;
+                .subscribe(registrationIds -> {
+                    mServerRegistrationIds = registrationIds;
 
-                        updateItems(registrationIds);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
-                    }
-                })
+                    updateItems(registrationIds);
+                }, throwable -> Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show())
         );
     }
 
@@ -118,29 +110,16 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
             Toast.makeText(this, R.string.toast_token_requesting, Toast.LENGTH_SHORT).show();
 
             mCompositeDisposable.add(Single
-                    .fromCallable(new Callable<String>() {
-                        @Override
-                        public String call() throws Exception {
-                            return FirebaseInstanceId.getInstance().getToken(getString(R.string.project_id), "FCM");
-                        }
-                    })
+                    .fromCallable(() -> FirebaseInstanceId.getInstance().getToken(getString(R.string.project_id), "FCM"))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<String>() {
-                        @Override
-                        public void accept(String token) throws Exception {
-                            addDevice(RegistrationId.create(token));
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            throwable.printStackTrace();
+                    .subscribe(token -> addDevice(RegistrationId.create(token)), throwable -> {
+                        throwable.printStackTrace();
 
-                            Toast.makeText(RegistrationIdsActivity.this, getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistrationIdsActivity.this, getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
 
-                            Crashlytics.log("requesting token");
-                            Crashlytics.logException(throwable);
-                        }
+                        Crashlytics.log("requesting token");
+                        Crashlytics.logException(throwable);
                     }));
         }
     }
@@ -182,21 +161,13 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
         mCompositeDisposable.add(FFMService.updateRegistrationIds(registrationIds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<FFMResult>() {
-                    @Override
-                    public void accept(FFMResult result) throws Exception {
-                        mServerRegistrationIds = registrationIds;
+                .subscribe(result -> {
+                    mServerRegistrationIds = registrationIds;
 
-                        Toast.makeText(getApplicationContext(), R.string.toast_succeeded, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.toast_succeeded, Toast.LENGTH_SHORT).show();
 
-                        LocalBroadcast.refreshStatus(getApplicationContext());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
-                    }
-                })
+                    LocalBroadcast.refreshStatus(getApplicationContext());
+                }, throwable -> Toast.makeText(getApplicationContext(), getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show())
         );
     }
 

@@ -1,21 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--suppress ALL -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditTextPreference
+        android:enabled="false"
         android:key="qq_account"
-        android:title="@string/qq_account"
         android:summary="%s"
-        android:enabled="false"/>
+        android:title="@string/qq_account" />
 
     <EditTextPreference
-        android:key="qq_password"
-        android:title="@string/qq_password"
+        android:enabled="false"
         android:inputType="textPassword"
-        android:enabled="false"/>
+        android:key="qq_password"
+        android:title="@string/qq_password" />
 
     <Preference
+        style="?preferenceInformationStyle"
         android:summary="@string/qq_account_summary"
-        style="?preferenceInformationStyle"/>
+        app:dividerBelowVisibility="enforced" />
+
+    <Preference
+        android:key="update_avatar"
+        android:summary="@string/update_avatar_summary"
+        android:title="@string/update_avatar" />
+
 
 </PreferenceScreen>
