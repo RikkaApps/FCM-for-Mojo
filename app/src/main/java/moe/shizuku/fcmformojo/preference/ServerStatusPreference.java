@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
@@ -36,18 +38,17 @@ public class ServerStatusPreference extends Preference {
     private Disposable mDisposable;
     private PreferenceViewHolder mViewHolder;
 
-    private BroadcastReceiver mRefreshBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            refresh();
-        }
-    };
-
     public ServerStatusPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
+        BroadcastReceiver refreshBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                refresh();
+            }
+        };
         LocalBroadcastManager.getInstance(context)
-                .registerReceiver(mRefreshBroadcastReceiver, new IntentFilter(ACTION_REFRESH_STATUS));
+                .registerReceiver(refreshBroadcastReceiver, new IntentFilter(ACTION_REFRESH_STATUS));
     }
 
     public ServerStatusPreference(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -73,12 +74,7 @@ public class ServerStatusPreference extends Preference {
         mViewHolder = holder;
         mViewHolder.itemView.setOnClickListener(null);
 
-        ((ViewGroup) mViewHolder.itemView).getChildAt(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                refresh();
-            }
-        });
+        ((ViewGroup) mViewHolder.itemView).getChildAt(0).setOnClickListener(view -> refresh());
     }
 
     private void updateTokenChanged() {
@@ -109,7 +105,7 @@ public class ServerStatusPreference extends Preference {
         }
     }
 
-    private void updateStatus(CharSequence text, @ColorInt int color, Drawable icon) {
+    private void updateStatus(CharSequence text, @AttrRes int attr, Drawable icon) {
         if (mViewHolder != null) {
             CardView statusCard = (CardView) ((ViewGroup) mViewHolder.itemView).getChildAt(0);
             TextView status = statusCard.findViewById(android.R.id.text1);
@@ -121,6 +117,12 @@ public class ServerStatusPreference extends Preference {
                 status.setCompoundDrawablesRelative(null, null, null, null);
             }
             status.setText(text);
+
+            int[] attrs = {attr};
+            TypedArray a = getContext().obtainStyledAttributes(attrs);
+            int color = a.getColor(0, 0);
+            a.recycle();
+
             statusCard.setCardBackgroundColor(color);
         }
     }
@@ -129,17 +131,15 @@ public class ServerStatusPreference extends Preference {
         Context context = getContext();
 
         if (count > 0) {
-            int color = context.getColor(R.color.serverRunning);
             Drawable icon = context.getDrawable(R.drawable.ic_status_ok_24dp);
             String text = context.getResources().getQuantityString(R.plurals.status_running, count, count);
 
-            updateStatus(text, color, icon);
+            updateStatus(text, R.attr.colorSafe, icon);
         } else {
-            int color = context.getColor(R.color.serverProblem);
             Drawable icon = context.getDrawable(R.drawable.ic_status_error_24dp);
             String text = context.getString(R.string.status_running_no_device);
 
-            updateStatus(text, color, icon);
+            updateStatus(text, R.attr.colorWarning, icon);
         }
     }
 
@@ -157,17 +157,15 @@ public class ServerStatusPreference extends Preference {
         } else {
             Context context = getContext();
 
-            int color = context.getColor(R.color.serverProblem);
             Drawable icon = context.getDrawable(R.drawable.ic_status_error_24dp);
-            updateStatus(context.getString(R.string.status_webqq_dead), color, icon);
+            updateStatus(context.getString(R.string.status_webqq_dead), R.attr.colorSafe, icon);
         }
     }
 
     private void updateStatus(String error) {
         Context context = getContext();
-        int color = context.getColor(R.color.serverError);
         Drawable icon = context.getDrawable(R.drawable.ic_status_error_24dp);
-        updateStatus(context.getString(R.string.status_cannot_connect_server_error, error), color, icon);
+        updateStatus(context.getString(R.string.status_cannot_connect_server_error, error), R.attr.colorAlert, icon);
     }
 
     private void refresh() {
@@ -178,22 +176,16 @@ public class ServerStatusPreference extends Preference {
         mDisposable = FFMService.getStatus()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<FFMStatus>() {
-                    @Override
-                    public void accept(FFMStatus status) throws Exception {
-                        if (status != null) {
-                            updateStatus(status);
-                            updateVersion(status.getVersion());
-                        }
-                        updateTokenChanged();
+                .subscribe(status -> {
+                    if (status != null) {
+                        updateStatus(status);
+                        updateVersion(status.getVersion());
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        updateStatus(throwable.getMessage());
-                        updateVersion(null);
-                        updateTokenChanged();
-                    }
+                    updateTokenChanged();
+                }, throwable -> {
+                    updateStatus(throwable.getMessage());
+                    updateVersion(null);
+                    updateTokenChanged();
                 });
     }
 }

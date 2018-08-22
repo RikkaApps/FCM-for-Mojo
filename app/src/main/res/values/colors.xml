@@ -14,8 +14,6 @@
     <color name="colorNotificationBlue">@color/colorNotification</color>
     <color name="colorNotificationPurple">#7E57C2</color>
 
-    <color name="cardBackground">#FFF</color>
-
     <color name="serverRunning">#66BB6A</color>
     <color name="serverProblem">#FF9800</color>
     <color name="serverError">#EF5350</color>
@@ -24,5 +22,7 @@
     <color name="navigation_bar_light">#fff</color>
 
     <color name="navigation_bar_dark">@color/material_grey_800</color>
+
+    <color name="icon_background">#fffb8c00</color>
 
 </resources>

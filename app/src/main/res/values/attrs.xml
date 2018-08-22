@@ -5,4 +5,15 @@
         <attr name="keyHttpPassword" format="string"/>
         <attr name="summaryWhenAuthorizationSet" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="Base">
+        <!-- Alert color, such as error or dangerous action. -->
+        <attr name="colorAlert" format="color"/>
+        <!-- Safe color, such as a safe state. -->
+        <attr name="colorSafe" format="color"/>
+        <!-- Warning color, such as a warning text. -->
+        <attr name="colorWarning" format="color"/>
+        <!-- Color for cards. -->
+        <attr name="cardBackground" format="reference"/>
+    </declare-styleable>
 </resources>
