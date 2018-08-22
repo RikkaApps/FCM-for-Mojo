@@ -27,7 +27,7 @@ import moe.shizuku.support.recyclerview.BaseViewHolder;
 
 public class RegistrationIdViewHolder extends BaseViewHolder<RegistrationId> {
 
-    public static final Creator CREATOR = (Creator<RegistrationId>) (inflater, parent) -> new RegistrationIdViewHolder(inflater.inflate(R.layout.item_registration_id, parent ,false));
+    public static final Creator<RegistrationId> CREATOR = (inflater, parent) -> new RegistrationIdViewHolder(inflater.inflate(R.layout.item_registration_id, parent ,false));
 
     private TextView title;
     private TextView summary;
