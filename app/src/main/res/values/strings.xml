@@ -152,4 +152,5 @@
     <string name="no">No</string>
     <string name="dialog_skip_exists_avatar">Skip downloaded avatars?</string>
     <string name="you">You</string>
+    <string name="working">Working…</string>
 </resources>

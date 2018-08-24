@@ -158,7 +158,7 @@ public class ServerStatusPreference extends Preference {
             Context context = getContext();
 
             Drawable icon = context.getDrawable(R.drawable.ic_status_error_24dp);
-            updateStatus(context.getString(R.string.status_webqq_dead), R.attr.colorSafe, icon);
+            updateStatus(context.getString(R.string.status_webqq_dead), R.attr.colorWarning, icon);
         }
     }
 

@@ -145,4 +145,5 @@
     <string name="no">否</string>
     <string name="dialog_skip_exists_avatar">是否跳過已下載頭像？</string>
     <string name="you">你</string>
+    <string name="working">工作中…</string>
 </resources>

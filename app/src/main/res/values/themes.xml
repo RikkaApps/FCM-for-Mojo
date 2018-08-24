@@ -1,30 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Base.Light" parent="android:Theme.Material.Light.LightStatusBar">
+    <style name="AppTheme.Light" parent="Theme.Light">
         <item name="android:colorAccent">#1a73e8</item>
-        <item name="android:popupTheme">@android:style/ThemeOverlay.Material.Light</item>
-        <item name="switchBarStyle">@style/Theme.Design.Widget.SwitchBar.Light</item>
-        <item name="switchBarBackgroundNormal">@color/switchbar_background_light</item>
-        <item name="switchBarBackgroundDisabled">@color/switchbar_background_light</item>
-        <item name="colorAlert">@color/material_red_A200</item>
-        <item name="colorSafe">@color/material_green_600</item>
-        <item name="colorWarning">@color/material_orange_700</item>
-        <item name="cardBackground">@color/cardview_light_background</item>
+        <item name="preferenceTheme">@style/AppTheme.PreferenceTheme</item>
     </style>
 
-    <style name="Base" parent="android:Theme.Material">
+    <style name="AppTheme" parent="Theme">
         <item name="android:colorAccent">@color/material_light_blue_200</item>
-        <item name="switchBarBackgroundNormal">@color/switchbar_background_dark</item>
-        <item name="switchBarBackgroundDisabled">@color/switchbar_background_dark</item>
-        <item name="switchBarStyle">@style/Theme.Design.Widget.SwitchBar</item>
-        <item name="colorAlert">@color/material_red_A100</item>
-        <item name="colorSafe">@color/material_green_A100</item>
-        <item name="colorWarning">@color/material_orange_A100</item>
-        <item name="cardBackground">@color/cardview_dark_background</item>
+        <item name="preferenceTheme">@style/AppTheme.PreferenceTheme</item>
     </style>
 
-    <style name="Theme.Light" parent="Base.Light"/>
-    <style name="Theme" parent="Base"/>
-
-    <style name="Theme.DayNight" parent="Theme.Light"/>
+    <style name="AppTheme.DayNight" parent="AppTheme.Light"/>
 </resources>

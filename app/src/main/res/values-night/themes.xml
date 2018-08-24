@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.DayNight" parent="Theme"/>
+    <style name="AppTheme.DayNight" parent="AppTheme"/>
 </resources>

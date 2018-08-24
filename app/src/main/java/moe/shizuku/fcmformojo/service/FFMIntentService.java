@@ -2,6 +2,7 @@ package moe.shizuku.fcmformojo.service;
 
 import android.Manifest;
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -45,6 +46,7 @@ import moe.shizuku.fcmformojo.profile.ProfileHelper;
 import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
 import moe.shizuku.fcmformojo.utils.FileUtils;
 import moe.shizuku.fcmformojo.utils.URLFormatUtils;
+import moe.shizuku.support.app.ForegroundIntentService;
 import moe.shizuku.support.utils.Settings;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -69,7 +71,7 @@ import static moe.shizuku.fcmformojo.FFMStatic.REQUEST_CODE_OPEN_SCAN;
 import static moe.shizuku.fcmformojo.FFMStatic.REQUEST_CODE_OPEN_URI;
 import static moe.shizuku.fcmformojo.FFMStatic.REQUEST_CODE_SEND;
 
-public class FFMIntentService extends IntentService {
+public class FFMIntentService extends ForegroundIntentService {
 
     private static final String TAG = "FFMIntentService";
 
@@ -104,6 +106,24 @@ public class FFMIntentService extends IntentService {
     }
 
     private NotificationManager mNm;
+
+    @Override
+    public int getForegroundServiceNotificationId() {
+        return NOTIFICATION_ID_PROGRESS;
+    }
+
+    @Override
+    public Notification onStartForeground() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_PROGRESS)
+                .setColor(getColor(R.color.colorNotification))
+                .setContentTitle(getString(R.string.working))
+                .setOngoing(true)
+                .setShowWhen(true)
+                .setOnlyAlertOnce(true)
+                .setSmallIcon(android.R.drawable.stat_sys_download)
+                .setWhen(System.currentTimeMillis());
+        return builder.build();
+    }
 
     @Override
     public void onCreate() {
@@ -153,7 +173,7 @@ public class FFMIntentService extends IntentService {
                 .setSmallIcon(android.R.drawable.stat_sys_download)
                 .setWhen(System.currentTimeMillis());
 
-        startForeground(NOTIFICATION_ID_PROGRESS, builder.build());
+        mNm.notify(getForegroundServiceNotificationId(), builder.build());
 
         List<User> users = null;
         List<Group> groups = null;
@@ -228,7 +248,7 @@ public class FFMIntentService extends IntentService {
         builder.setContentText(getString(R.string.notification_fetching_progress, 0, count));
         builder.setProgress(count, 0, false);
 
-        mNm.notify(NOTIFICATION_ID_PROGRESS, builder.build());
+        mNm.notify(getForegroundServiceNotificationId(), builder.build());
         nextNotifyTime = System.currentTimeMillis() + 1000;
 
         OkHttpClient client = new OkHttpClient();
@@ -241,7 +261,7 @@ public class FFMIntentService extends IntentService {
             builder.setProgress(count, current, false);
 
             if (System.currentTimeMillis() > nextNotifyTime || count == current) {
-                mNm.notify(NOTIFICATION_ID_PROGRESS, builder.build());
+                mNm.notify(getForegroundServiceNotificationId(), builder.build());
                 nextNotifyTime = System.currentTimeMillis() + 1000;
             }
 
