@@ -17,7 +17,7 @@ repositories {
 
 def gitCommitId = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
-def baseVersionName = '0.7.1'
+def baseVersionName = '0.7.2'
 
 android {
     compileSdkVersion rootProject.ext.targetSdkVersion

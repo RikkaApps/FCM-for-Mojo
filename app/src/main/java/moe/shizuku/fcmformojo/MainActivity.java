@@ -123,10 +123,16 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
         boolean isGooglePlay = "com.android.vending"
                 .equals(getPackageManager().getInstallerPackageName(BuildConfig.APPLICATION_ID));
 
-        if (isGooglePlay) {
-            showDonateGooglePlay();
-        } else {
+        boolean isAlipayInstalled = false;
+        try {
+            isAlipayInstalled = null != getPackageManager().getApplicationInfo("com.eg.android.AlipayGphone", PackageManager.MATCH_UNINSTALLED_PACKAGES);
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        if (!isGooglePlay && isAlipayInstalled) {
             showDonateAlipay();
+        } else {
+            showDonateGooglePlay();
         }
     }
 
