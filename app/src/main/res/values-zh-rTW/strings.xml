@@ -101,10 +101,6 @@
     <string name="restart_webqq_summary">重啟伺服器上的 Mojo-Webqq</string>
     <string name="action_donate">捐贈</string>
     <string name="dialog_donate_title">Pay Rikka NOW ////</string>
-    <string name="dialog_donate_message">做了很多事情的 Rikka 是不是應該得到很多錢錢呢，是就快點給 Rikka 錢錢吧（逃跑），但是只支援支付寶..</string>
-    <string name="dialog_donate_ok">好耶</string>
-    <string name="dialog_donate_no">壞耶</string>
-    <string name="dialog_donate_copy">複製帳號</string>
     <string name="stop_webqq_summary">強行停止伺服器上的 Mojo-Webqq</string>
     <string name="status_version_not_match">伺服器版本（%1$s）與使用者端需求的版本（%2$s）不匹配，部分功能可能不按預期工作。</string>
     <string name="dialog_config_not_uploaded_title">設定已被修改</string>

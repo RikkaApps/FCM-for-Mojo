@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_donate_message">Rikkaはこのプロジェクトに多くの時間を費やしたので、Rikkaは寄付を受けるべきです。（Alipayのみ）</string>
+    <string name="dialog_donate_ok">今すっぐ寄付</string>
+    <string name="dialog_donate_no">Rikkaの悪い</string>
+    <string name="dialog_donate_copy">アカウントをコピー</string>
+</resources>

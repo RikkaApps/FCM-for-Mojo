@@ -99,12 +99,8 @@
     <string name="status_cannot_connect_server_error">无法连接服务器：%s。</string>
     <string name="status_token_changed">令牌可能已发生变化，您可能需要在管理设备中重新添加这台设备并上传。</string>
     <string name="restart_webqq_summary">重启服务器上的 Mojo-Webqq</string>
-    <string name="action_donate">捐赠</string>
     <string name="dialog_donate_title">Pay Rikka NOW ////</string>
-    <string name="dialog_donate_message">做了很多事情的 Rikka 是不是应该得到很多钱钱呢，是就快点给 Rikka 钱钱吧（逃跑），但是只支持支付宝..</string>
-    <string name="dialog_donate_ok">好耶</string>
-    <string name="dialog_donate_no">坏耶</string>
-    <string name="dialog_donate_copy">复制账号</string>
+    <string name="action_donate">捐赠</string>
     <string name="stop_webqq_summary">强行停止服务器上的 Mojo-Webqq</string>
     <string name="status_version_not_match">服务器版本（%1$s）与客户端需求的版本（%2$s）不匹配，部分功能可能不按预期工作。</string>
     <string name="dialog_config_not_uploaded_title">设置已被修改</string>

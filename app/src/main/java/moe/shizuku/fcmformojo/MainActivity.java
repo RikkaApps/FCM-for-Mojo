@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.storage.StorageManager;
@@ -26,9 +25,7 @@ import com.crashlytics.android.Crashlytics;
 
 import java.util.List;
 
-import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.settings.MainSettingsFragment;
-import moe.shizuku.fcmformojo.utils.ClipboardUtils;
 import moe.shizuku.support.design.AboutDialogHelper;
 
 public class MainActivity extends BaseActivity implements PurchasesUpdatedListener {
@@ -120,19 +117,11 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
     }
 
     private void onDonateSelected() {
-        boolean isGooglePlay = "com.android.vending"
-                .equals(getPackageManager().getInstallerPackageName(BuildConfig.APPLICATION_ID));
-
-        boolean isAlipayInstalled = false;
-        try {
-            isAlipayInstalled = null != getPackageManager().getApplicationInfo("com.eg.android.AlipayGphone", PackageManager.MATCH_UNINSTALLED_PACKAGES);
-        } catch (PackageManager.NameNotFoundException ignored) {
-        }
-
-        if (!isGooglePlay && isAlipayInstalled) {
-            showDonateAlipay();
-        } else {
+        //noinspection ConstantConditions
+        if ("google".equals(BuildConfig.FLAVOR)) {
             showDonateGooglePlay();
+        } else {
+            Donate.showDonate(this);
         }
     }
 
@@ -157,20 +146,6 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
                 // Google Play by calling the startConnection() method.
             }
         });
-    }
-
-    private void showDonateAlipay() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.dialog_donate_title)
-                .setMessage(R.string.dialog_donate_message)
-                .setPositiveButton(R.string.dialog_donate_ok, (dialogInterface, i) -> {
-                    Intent intent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(BuildConfig.DONATE_ALIPAY_URL));
-                    ShizukuCompat.findAndStartActivity(MainActivity.this, intent, "com.eg.android.AlipayGphone");
-                })
-                .setNegativeButton(R.string.dialog_donate_no, (dialogInterface, i) -> Toast.makeText(MainActivity.this, "QAQ", Toast.LENGTH_SHORT).show())
-                .setNeutralButton(R.string.dialog_donate_copy, (dialogInterface, i) -> ClipboardUtils.put(MainActivity.this, "rikka@xing.moe"))
-                .show();
     }
 
     @Override

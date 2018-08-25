@@ -54,9 +54,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "channel"
+    productFlavors {
+        google {
+            dimension "channel"
+            versionNameSuffix " G"
+        }
+        general {
+            dimension "channel"
+        }
+    }
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "ffm-${variant.versionCode}.apk"
+            outputFileName = "ffm-${variant.versionCode}-${variant.productFlavors[0].name}.apk"
         }
     }
     compileOptions {

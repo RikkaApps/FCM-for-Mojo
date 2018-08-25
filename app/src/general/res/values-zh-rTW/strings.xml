@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_donate_message">做了很多事情的 Rikka 是不是應該得到很多錢錢呢，是就快點給 Rikka 錢錢吧（逃跑），但是只支援支付寶..</string>
+    <string name="dialog_donate_ok">好耶</string>
+    <string name="dialog_donate_no">壞耶</string>
+    <string name="dialog_donate_copy">複製帳號</string>
+</resources>

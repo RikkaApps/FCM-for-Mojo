@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_donate_message">Rikka have spent a lot time on this project, so Rikka should be paid. (Alipay only)</string>
+    <string name="dialog_donate_ok">Pay NOW</string>
+    <string name="dialog_donate_no">Bad Rikka</string>
+    <string name="dialog_donate_copy">Copy account</string>
+</resources>

@@ -101,10 +101,6 @@
     <string name="restart_webqq_summary">サーバーのMojo-Webqqを再起動</string>
     <string name="action_donate">寄付</string>
     <string name="dialog_donate_title">今すっぐRikkaに寄付する ////</string>
-    <string name="dialog_donate_message">Rikkaはこのプロジェクトに多くの時間を費やしたので、Rikkaは寄付を受けるべきです。（Alipayのみ）</string>
-    <string name="dialog_donate_ok">今すっぐ寄付</string>
-    <string name="dialog_donate_no">Rikkaの悪い</string>
-    <string name="dialog_donate_copy">アカウントをコピー</string>
     <string name="stop_webqq_summary">サーバーのMojo-Webqqを強制的に停止する</string>
     <string name="status_version_not_match">サーバーのバージョン(%1$s)はクライアントの要求(%2$s)と一致しないので、一部の機能が停止するの可能性があります</string>
     <string name="dialog_config_not_uploaded_title">設定が変更されました</string>

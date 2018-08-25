@@ -1,13 +1,14 @@
 package moe.shizuku.fcmformojo.settings;
 
 import android.app.ActionBar;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 import moe.shizuku.fcmformojo.BaseActivity;
+import moe.shizuku.fcmformojo.BuildConfig;
 import moe.shizuku.fcmformojo.R;
-import moe.shizuku.preference.Preference;
 
 /**
  * Created by Rikka on 2017/4/22.
@@ -57,6 +58,11 @@ public class MainSettingsFragment extends SettingsFragment {
             ((BaseActivity) requireActivity()).onOptionsItemSelected(R.id.action_about);
             return true;
         });
+
+        try {
+            findPreference("about").setSummary(requireContext().getPackageManager().getPackageInfo(BuildConfig.APPLICATION_ID, 0).versionName);
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
     }
 
     @Override
