@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme.Light" parent="Theme.Light">
+    <style name="AppTheme.Light" parent="Theme.Light.LightStatusBar">
         <item name="android:colorAccent">#1a73e8</item>
         <item name="preferenceTheme">@style/AppTheme.PreferenceTheme</item>
     </style>
