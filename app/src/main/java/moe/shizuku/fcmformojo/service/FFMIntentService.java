@@ -1,7 +1,6 @@
 package moe.shizuku.fcmformojo.service;
 
 import android.Manifest;
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
@@ -36,11 +36,11 @@ import moe.shizuku.fcmformojo.model.Chat.ChatType;
 import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.Message;
 import moe.shizuku.fcmformojo.model.openqq.Discuss;
-import moe.shizuku.fcmformojo.model.openqq.User;
 import moe.shizuku.fcmformojo.model.openqq.Group;
 import moe.shizuku.fcmformojo.model.openqq.SendResult;
-import moe.shizuku.fcmformojo.notification.UserIcon;
+import moe.shizuku.fcmformojo.model.openqq.User;
 import moe.shizuku.fcmformojo.notification.NotificationBuilder;
+import moe.shizuku.fcmformojo.notification.UserIcon;
 import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.profile.ProfileHelper;
 import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
@@ -84,20 +84,20 @@ public class FFMIntentService extends ForegroundIntentService {
     }
 
     public static void startUpdateIcon(Context context, boolean all) {
-        context.startService(new Intent(context, FFMIntentService.class)
+        ContextCompat.startForegroundService(context, new Intent(context, FFMIntentService.class)
                 .setAction(ACTION_UPDATE_ICON)
                 .putExtra(EXTRA_ALL, all));
     }
 
     public static void startReply(Context context, CharSequence content, Chat chat) {
-        context.startService(new Intent(context, FFMIntentService.class)
+        ContextCompat.startForegroundService(context, new Intent(context, FFMIntentService.class)
                 .setAction(ACTION_REPLY)
                 .putExtra(EXTRA_CONTENT, content)
                 .putExtra(EXTRA_CHAT, chat));
     }
 
     public static void startDownloadQrCode(Context context) {
-        context.startService(new Intent(context, FFMIntentService.class)
+        ContextCompat.startForegroundService(context, new Intent(context, FFMIntentService.class)
                 .setAction(ACTION_DOWNLOAD_QRCODE));
     }
 
