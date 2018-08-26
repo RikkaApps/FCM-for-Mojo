@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
 import android.support.v4.provider.DocumentFile;
+import android.text.TextUtils;
 
 import java.lang.annotation.Retention;
 import java.util.UUID;
@@ -184,8 +185,15 @@ public class FFMSettings {
         return Settings.getBoolean(CLEAR_NOTIFICATION_WHEN_TAP, true);
     }
 
-    public static String getSelfUid() {
-        return Settings.getString("qq_account", "0");
+    public static long getSelfUid() {
+        String s = Settings.getString("qq_account", "0");
+        if (TextUtils.isEmpty(s)) {
+            return 0;
+        }
+        try {
+            return Long.parseLong(s);
+        } catch (NumberFormatException ignored) {
+            return 0;
+        }
     }
-
 }

@@ -148,7 +148,7 @@ public class FFMApplication extends Application {
         }
 
         FFMSettings.init(this);
-        User.setSelf(new User(0, Long.parseLong(FFMSettings.getSelfUid()), null));
+        User.setSelf(new User(0, FFMSettings.getSelfUid(), null));
 
         createRetrofit(FFMSettings.getBaseUrl());
         createServices();
