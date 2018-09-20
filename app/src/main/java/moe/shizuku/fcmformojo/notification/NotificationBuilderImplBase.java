@@ -26,6 +26,7 @@ import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.app.MessagingStyle;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Message;
+import moe.shizuku.fcmformojo.model.openqq.User;
 import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.receiver.FFMBroadcastReceiver;
 import moe.shizuku.fcmformojo.service.FFMIntentService;
@@ -63,6 +64,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(false)
                 .setShowWhen(true)
+                .setOnlyAlertOnce(chat.getLatestMessage().getSenderUser().getUid() == User.getSelf().getUid())
                 .setWhen(chat.getLatestMessage().getTimestamp() * 1000)
                 .setStyle(createStyle(context, chat))
                 .setContentIntent(NotificationBuilder.createContentIntent(context, id, chat))
