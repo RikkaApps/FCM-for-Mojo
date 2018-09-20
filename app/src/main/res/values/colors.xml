@@ -23,6 +23,6 @@
 
     <color name="navigation_bar_dark">@color/material_grey_800</color>
 
-    <color name="icon_background">#fffb8c00</color>
+    <color name="icon_background">#ffff9100</color>
 
 </resources>

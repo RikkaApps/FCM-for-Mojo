@@ -104,7 +104,7 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
         switch (itemId) {
             case R.id.action_about:
                 AboutDialogHelper.show(new AlertDialog.Builder(this),
-                        getDrawable(R.mipmap.product_logo_fcmformojo_launcher_color_48),
+                        getDrawable(R.drawable.ic_launcher_fcmformojo),
                         getString(R.string.app_name),
                         BuildConfig.VERSION_NAME,
                         Html.fromHtml(getString(R.string.about_icon_credits), Html.FROM_HTML_MODE_COMPACT));
