@@ -21,14 +21,13 @@ def baseVersionName = '0.7.3'
 
 android {
     compileSdkVersion rootProject.ext.targetSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "moe.shizuku.fcmformojo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode gitCommitCount
         versionName "${baseVersionName}.r${gitCommitCount}.${gitCommitId}"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en", "zh-rCN", "zh-rTW", "ja"
 
         resValue "string", "version_name", "${versionName}"
@@ -75,34 +74,28 @@ android {
     }
 }
 
-configurations {
-    compile.exclude group: 'com.android.support', module: 'support-v4'
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-beta01'
     testImplementation 'junit:junit:4.12'
-    implementation "com.android.support:support-compat:$supportLibraryVersion"
-    implementation "com.android.support:support-core-utils:$supportLibraryVersion"
-    implementation "com.android.support:support-core-ui:$supportLibraryVersion"
-    implementation "com.android.support:support-fragment:$supportLibraryVersion"
-    implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
-    implementation "com.android.support:cardview-v7:$supportLibraryVersion"
+    implementation "androidx.core:core:$androidXLibraryVersion"
+    implementation "androidx.fragment:fragment:$androidXLibraryVersion"
+    implementation "androidx.recyclerview:recyclerview:$androidXLibraryVersion"
+    implementation "androidx.cardview:cardview:$androidXLibraryVersion"
+    implementation "androidx.documentfile:documentfile:$androidXLibraryVersion"
+    implementation "androidx.localbroadcastmanager:localbroadcastmanager:$androidXLibraryVersion"
     implementation "moe.shizuku.preference:preference:$preferenceLibraryVersion"
     implementation "moe.shizuku.preference:preference-dialog-android:$preferenceLibraryVersion"
     implementation "moe.shizuku.preference:preference-simplemenu:$preferenceLibraryVersion"
-    implementation 'moe.shizuku.support:support-utils:2.3.6'
-    implementation "moe.shizuku.support:design:2.0.2"
-    implementation 'moe.shizuku.support:recyclerview-utils:2.1.3'
+    implementation 'moe.shizuku.support:support-utils:3.0.2'
+    implementation "moe.shizuku.support:design:3.0.0"
+    implementation 'moe.shizuku.support:recyclerview-utils:3.0.2'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-    implementation 'com.google.firebase:firebase-core:16.0.3'
-    implementation 'com.google.firebase:firebase-messaging:17.3.1'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-messaging:17.3.3'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'moe.shizuku.fontprovider:api:10'

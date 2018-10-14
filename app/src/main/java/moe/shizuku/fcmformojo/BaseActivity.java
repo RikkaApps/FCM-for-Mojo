@@ -1,13 +1,14 @@
 package moe.shizuku.fcmformojo;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 
 import java.io.File;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import moe.shizuku.fontprovider.FontProviderClient;
 import moe.shizuku.fontprovider.FontRequest;
 import moe.shizuku.fontprovider.FontRequests;
@@ -21,7 +22,7 @@ public abstract class BaseActivity extends FragmentActivity {
     private static boolean sFontInitialized = false;
 
     private static void initializeFont(Context context) {
-        if (sFontInitialized) {
+        if (sFontInitialized || Build.VERSION.SDK_INT < 28) {
             return;
         }
         sFontInitialized = true;

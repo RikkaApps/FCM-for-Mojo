@@ -1,8 +1,9 @@
 package moe.shizuku.fcmformojo;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -11,15 +12,12 @@ import com.crashlytics.android.Crashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.fcmformojo.adapter.RegistrationIdsAdapter;
-import moe.shizuku.fcmformojo.model.FFMResult;
 import moe.shizuku.fcmformojo.model.RegistrationId;
 import moe.shizuku.fcmformojo.utils.LocalBroadcast;
 import moe.shizuku.fcmformojo.viewholder.RegistrationIdViewHolder;
@@ -107,20 +105,7 @@ public class RegistrationIdsActivity extends AbsConfigurationsActivity {
         if (registrationId != null) {
             addDevice(registrationId);
         } else {
-            Toast.makeText(this, R.string.toast_token_requesting, Toast.LENGTH_SHORT).show();
-
-            mCompositeDisposable.add(Single
-                    .fromCallable(() -> FirebaseInstanceId.getInstance().getToken(getString(R.string.project_id), "FCM"))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(token -> addDevice(RegistrationId.create(token)), throwable -> {
-                        throwable.printStackTrace();
-
-                        Toast.makeText(RegistrationIdsActivity.this, getString(R.string.toast_something_wroing, throwable.getMessage()), Toast.LENGTH_SHORT).show();
-
-                        Crashlytics.log("requesting token");
-                        Crashlytics.logException(throwable);
-                    }));
+            Toast.makeText(this, R.string.toast_token, Toast.LENGTH_SHORT).show();
         }
     }
 

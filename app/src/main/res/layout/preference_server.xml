@@ -10,7 +10,7 @@
     android:clipToPadding="false"
     android:clipChildren="false">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         style="@style/MainItem.Card">
 
         <LinearLayout
@@ -44,9 +44,9 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         style="@style/MainItem.Card"
         android:visibility="gone"
         tools:visibility="visible">
@@ -64,9 +64,9 @@
             android:drawableStart="@drawable/ic_status_error_24dp"
             android:drawableTint="?android:textColorPrimaryInverse"/>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         style="@style/MainItem.Card"
         android:visibility="gone"
         tools:visibility="visible">
@@ -83,7 +83,7 @@
             android:drawableStart="@drawable/ic_status_error_24dp"
             android:drawableTint="?android:textColorPrimaryInverse"/>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>
 

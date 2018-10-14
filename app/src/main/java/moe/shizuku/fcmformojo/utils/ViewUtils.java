@@ -1,7 +1,8 @@
 package moe.shizuku.fcmformojo.utils;
 
-import android.support.annotation.Px;
 import android.view.View;
+
+import androidx.annotation.Px;
 
 public class ViewUtils {
 

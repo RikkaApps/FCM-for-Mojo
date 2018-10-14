@@ -4,9 +4,9 @@ import java.util.List;
 
 import io.reactivex.Single;
 import moe.shizuku.fcmformojo.model.openqq.Discuss;
-import moe.shizuku.fcmformojo.model.openqq.User;
 import moe.shizuku.fcmformojo.model.openqq.Group;
 import moe.shizuku.fcmformojo.model.openqq.SendResult;
+import moe.shizuku.fcmformojo.model.openqq.User;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -45,7 +45,7 @@ public interface OpenQQService {
     /**
      * 发送好友消息
      *
-     * @param id 好友的id（每次扫描登录可能会变化）
+     * @param id      好友的id（每次扫描登录可能会变化）
      * @param content 发送的消息
      */
     @FormUrlEncoded
@@ -55,7 +55,7 @@ public interface OpenQQService {
     /**
      * 发送好友消息
      *
-     * @param uid 好友的QQ号
+     * @param uid     好友的QQ号
      * @param content 发送的消息
      */
     @FormUrlEncoded
@@ -65,7 +65,7 @@ public interface OpenQQService {
     /**
      * 发送群组消息
      *
-     * @param id 群组的id（每次扫描登录可能会变化）
+     * @param id      群组的id（每次扫描登录可能会变化）
      * @param content 发送的消息
      */
     @FormUrlEncoded
@@ -75,7 +75,7 @@ public interface OpenQQService {
     /**
      * 发送群组消息
      *
-     * @param uid 群号码
+     * @param uid     群号码
      * @param content 发送的消息
      */
     @FormUrlEncoded
@@ -85,7 +85,7 @@ public interface OpenQQService {
     /**
      * 发送讨论组消息
      *
-     * @param id 讨论组的id（每次扫描登录可能会变化）
+     * @param id      讨论组的id（每次扫描登录可能会变化）
      * @param content 发送的消息
      */
     @FormUrlEncoded

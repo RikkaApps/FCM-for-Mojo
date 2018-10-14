@@ -19,7 +19,7 @@ import moe.shizuku.fcmformojo.model.openqq.Group;
 
 public class GroupWhitelistItemViewHolder extends WhitelistItemViewHolder<Group> implements View.OnClickListener {
 
-    public static final Creator CREATOR = (Creator<Pair<Group, Boolean>>) (inflater, parent) -> new GroupWhitelistItemViewHolder(inflater.inflate(R.layout.item_blacklist_item, parent ,false));
+    public static final Creator CREATOR = (Creator<Pair<Group, Boolean>>) (inflater, parent) -> new GroupWhitelistItemViewHolder(inflater.inflate(R.layout.item_blacklist_item, parent, false));
 
     public GroupWhitelistItemViewHolder(View itemView) {
         super(itemView);

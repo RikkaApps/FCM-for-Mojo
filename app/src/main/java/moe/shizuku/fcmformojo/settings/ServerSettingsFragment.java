@@ -3,7 +3,7 @@ package moe.shizuku.fcmformojo.settings;
 import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;

@@ -4,10 +4,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.util.LongSparseArray;
 
+import androidx.annotation.Nullable;
+import androidx.collection.LongSparseArray;
+import androidx.core.app.NotificationCompat;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Message;
@@ -105,7 +105,7 @@ public class NotificationBuilder {
 
         mMessages.put(id, chat);
 
-        mMessageCount ++;
+        mMessageCount++;
         mSendersCount = mMessages.size();
 
         notify(context, chat);
@@ -119,7 +119,7 @@ public class NotificationBuilder {
 
         chat.getMessages().add(message);
 
-        mMessageCount ++;
+        mMessageCount++;
         mSendersCount = mMessages.size();
 
         notify(context, chat);
@@ -142,7 +142,6 @@ public class NotificationBuilder {
 
     /**
      * 清空全部消息
-     *
      */
     public void clearMessages() {
         mMessageCount = 0;

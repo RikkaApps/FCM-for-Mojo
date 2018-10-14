@@ -118,6 +118,7 @@
     <string name="toast_something_wroing">Something wrong:\n%s</string>
     <string name="toast_nothing_changed">Nothing changed.</string>
     <string name="toast_token_exists">Already added this devices.</string>
+    <string name="toast_token">Can\'t get token.</string>
     <string name="toast_token_requesting">Can\'t get token, try requesting…</string>
     <string name="whitelist_group_no_uid">Can\'t toggle because unable to get group uid</string>
     <string name="whitelist_summary_discuss_on">Only receive messages from selected discusses</string>

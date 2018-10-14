@@ -5,13 +5,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
-import android.support.annotation.Keep;
 
 import java.lang.annotation.Retention;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 
+import androidx.annotation.IntDef;
+import androidx.annotation.Keep;
 import moe.shizuku.fcmformojo.notification.UserIcon;
 import moe.shizuku.fcmformojo.utils.ChatMessagesList;
 
@@ -24,7 +24,9 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 @Keep
 public class Chat implements Parcelable {
 
-    /** 定义聊天类型 */
+    /**
+     * 定义聊天类型
+     */
     @IntDef({
             ChatType.SYSTEM,
             ChatType.FRIEND,
@@ -33,32 +35,53 @@ public class Chat implements Parcelable {
     })
     @Retention(SOURCE)
     public @interface ChatType {
-        /** 好友 */
+        /**
+         * 好友
+         */
         int FRIEND = 0;
-        /** 群 */
+        /**
+         * 群
+         */
         int GROUP = 1;
-        /** 讨论组 */
+        /**
+         * 讨论组
+         */
         int DISCUSS = 2;
-        /** 系统 */
+        /**
+         * 系统
+         */
         int SYSTEM = 3;
     }
 
-    /** 类型 */
-    private final @ChatType int type;
+    /**
+     * 类型
+     */
+    private final @ChatType
+    int type;
 
-    /** 唯一 id */
+    /**
+     * 唯一 id
+     */
     private final long id;
 
-    /** 可见 id（如 QQ 号） */
+    /**
+     * 可见 id（如 QQ 号）
+     */
     private final long uid;
 
-    /** 名字 */
+    /**
+     * 名字
+     */
     private final String name;
 
-    /** 消息们 */
+    /**
+     * 消息们
+     */
     private ChatMessagesList messages = new ChatMessagesList();
 
-    /** 图标 */
+    /**
+     * 图标
+     */
     private WeakReference<Bitmap> icon = new WeakReference<>(null);
 
     /**
@@ -66,7 +89,8 @@ public class Chat implements Parcelable {
      *
      * @return {@link ChatType} 中定义的聊天类型
      */
-    public @ChatType int getType() {
+    public @ChatType
+    int getType() {
         return type;
     }
 

@@ -7,8 +7,8 @@ import android.os.Build;
 import android.os.Looper;
 import android.os.UserHandle;
 import android.os.UserManager;
-import android.support.annotation.WorkerThread;
 
+import androidx.annotation.WorkerThread;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import moe.shizuku.api.ShizukuActivityManagerV24;
@@ -26,8 +26,8 @@ public class ShizukuCompat {
     /**
      * 在所有用户中寻找并尝试打开 Activity。
      *
-     * @param context Context
-     * @param intent Intent
+     * @param context     Context
+     * @param intent      Intent
      * @param packageName 包名
      */
     public static boolean findAndStartActivity(Context context, final Intent intent, final String packageName) {
@@ -93,7 +93,7 @@ public class ShizukuCompat {
         try {
             int state = -1;
             if (Build.VERSION.SDK_INT >= 26) {
-                int uid = ShizukuPackageManagerV26.getPackageUid(packageName,0, userId);
+                int uid = ShizukuPackageManagerV26.getPackageUid(packageName, 0, userId);
                 if (uid > 0) {
                     state = ShizukuActivityManagerV26.getUidProcessState(uid, null);
                 }

@@ -1,6 +1,6 @@
 package moe.shizuku.fcmformojo.model;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 /**
  * Created by rikka on 2017/8/26.

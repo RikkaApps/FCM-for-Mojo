@@ -1,7 +1,8 @@
 package moe.shizuku.fcmformojo.model;
 
 import android.os.Parcel;
-import android.support.annotation.Keep;
+
+import androidx.annotation.Keep;
 
 /**
  * Created by Rikka on 2017/4/19.

@@ -2,13 +2,10 @@ package moe.shizuku.fcmformojo.viewholder;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.DateFormat;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -27,7 +24,7 @@ import moe.shizuku.support.recyclerview.BaseViewHolder;
 
 public class RegistrationIdViewHolder extends BaseViewHolder<RegistrationId> {
 
-    public static final Creator<RegistrationId> CREATOR = (inflater, parent) -> new RegistrationIdViewHolder(inflater.inflate(R.layout.item_registration_id, parent ,false));
+    public static final Creator<RegistrationId> CREATOR = (inflater, parent) -> new RegistrationIdViewHolder(inflater.inflate(R.layout.item_registration_id, parent, false));
 
     private TextView title;
     private TextView summary;

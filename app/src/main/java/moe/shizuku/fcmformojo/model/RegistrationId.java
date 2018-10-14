@@ -1,10 +1,11 @@
 package moe.shizuku.fcmformojo.model;
 
 import android.os.Build;
-import android.support.annotation.Keep;
 import android.text.TextUtils;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import androidx.annotation.Keep;
 
 /**
  * Created by rikka on 2017/8/15.

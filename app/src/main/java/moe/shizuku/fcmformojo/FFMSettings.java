@@ -2,14 +2,14 @@ package moe.shizuku.fcmformojo;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.IntDef;
-import android.support.annotation.StringDef;
-import android.support.v4.provider.DocumentFile;
 import android.text.TextUtils;
 
 import java.lang.annotation.Retention;
 import java.util.UUID;
 
+import androidx.annotation.IntDef;
+import androidx.annotation.StringDef;
+import androidx.documentfile.provider.DocumentFile;
 import moe.shizuku.fcmformojo.profile.Profile;
 import moe.shizuku.fcmformojo.profile.ProfileList;
 import moe.shizuku.support.utils.Settings;
@@ -68,7 +68,8 @@ public class FFMSettings {
         int LONG = 3;
     }
 
-    public static @Vibrate int getNotificationVibrate(boolean group) {
+    public static @Vibrate
+    int getNotificationVibrate(boolean group) {
         String value = Settings.getString(group ? "vibrate_group" : "vibrate", "1");
         return Integer.parseInt(value);
     }
@@ -107,7 +108,9 @@ public class FFMSettings {
         }
     }
 
-    /** 定义获取前台应用的方法 */
+    /**
+     * 定义获取前台应用的方法
+     */
     @StringDef({
             ForegroundImpl.NONE,
             ForegroundImpl.SHIZUKU,
@@ -115,11 +118,17 @@ public class FFMSettings {
     })
     @Retention(SOURCE)
     public @interface ForegroundImpl {
-        /** 不获取 */
+        /**
+         * 不获取
+         */
         String NONE = "disable";
-        /** 使用 Shizuku Server */
+        /**
+         * 使用 Shizuku Server
+         */
         String SHIZUKU = "privileged_server";
-        /** 使用“使用情况访问” */
+        /**
+         * 使用“使用情况访问”
+         */
         String USAGE_STATS = "usage_stats";
     }
 
@@ -128,7 +137,8 @@ public class FFMSettings {
      *
      * @return {@link ForegroundImpl} 中定义类型
      */
-    public static @ForegroundImpl String getForegroundImpl() {
+    public static @ForegroundImpl
+    String getForegroundImpl() {
         return Settings.getString(GET_FOREGROUND, ForegroundImpl.NONE);
     }
 

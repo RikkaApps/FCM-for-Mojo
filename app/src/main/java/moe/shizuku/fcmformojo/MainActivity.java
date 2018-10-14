@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
-import android.support.annotation.Nullable;
 import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,6 +24,7 @@ import com.crashlytics.android.Crashlytics;
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import moe.shizuku.fcmformojo.settings.MainSettingsFragment;
 import moe.shizuku.support.design.AboutDialogHelper;
 
@@ -140,6 +140,7 @@ public class MainActivity extends BaseActivity implements PurchasesUpdatedListen
                     mBillingClient.launchBillingFlow(MainActivity.this, flowParams);
                 }
             }
+
             @Override
             public void onBillingServiceDisconnected() {
                 // Try to restart the connection on the next request to

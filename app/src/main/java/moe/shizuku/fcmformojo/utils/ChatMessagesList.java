@@ -1,10 +1,9 @@
 package moe.shizuku.fcmformojo.utils;
 
-import android.support.annotation.NonNull;
-
 import java.util.Collection;
 import java.util.LinkedList;
 
+import androidx.annotation.NonNull;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.model.Message;
 

@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 
+import androidx.annotation.Nullable;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.compat.ShizukuCompat;
 import moe.shizuku.fcmformojo.model.Chat;

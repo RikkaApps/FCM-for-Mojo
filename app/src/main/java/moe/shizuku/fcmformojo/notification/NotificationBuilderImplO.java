@@ -15,7 +15,6 @@ import moe.shizuku.fcmformojo.R;
 
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_FRIENDS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_GROUPS;
-import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_PROGRESS;
 import static moe.shizuku.fcmformojo.FFMStatic.NOTIFICATION_CHANNEL_SERVER;
 
 /**
@@ -55,14 +54,6 @@ class NotificationBuilderImplO extends NotificationBuilderImplBase {
                 NotificationManager.IMPORTANCE_LOW);
         channel.enableLights(true);
         channel.setLightColor(context.getColor(R.color.colorNotification));
-        channel.enableVibration(false);
-        channel.setShowBadge(false);
-        channels.add(channel);
-
-        channel = new NotificationChannel(NOTIFICATION_CHANNEL_PROGRESS,
-                context.getString(R.string.notification_channel_progress_message),
-                NotificationManager.IMPORTANCE_LOW);
-        channel.enableLights(false);
         channel.enableVibration(false);
         channel.setShowBadge(false);
         channels.add(channel);

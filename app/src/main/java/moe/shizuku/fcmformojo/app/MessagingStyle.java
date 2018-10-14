@@ -2,9 +2,10 @@ package moe.shizuku.fcmformojo.app;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.Person;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.Person;
 
 /**
  * Created by Rikka on 2017/4/19.

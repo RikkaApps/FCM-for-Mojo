@@ -1,9 +1,8 @@
 package moe.shizuku.fcmformojo.model;
 
-import android.support.annotation.Keep;
-
 import java.util.Set;
 
+import androidx.annotation.Keep;
 import moe.shizuku.fcmformojo.model.openqq.Group;
 
 /**

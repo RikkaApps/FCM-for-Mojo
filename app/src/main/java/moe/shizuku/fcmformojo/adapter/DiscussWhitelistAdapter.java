@@ -5,8 +5,8 @@ import android.util.Pair;
 import java.util.HashSet;
 import java.util.Set;
 
-import moe.shizuku.fcmformojo.model.openqq.Discuss;
 import moe.shizuku.fcmformojo.model.DiscussWhitelistState;
+import moe.shizuku.fcmformojo.model.openqq.Discuss;
 import moe.shizuku.fcmformojo.viewholder.DiscussWhitelistViewHolder;
 
 /**

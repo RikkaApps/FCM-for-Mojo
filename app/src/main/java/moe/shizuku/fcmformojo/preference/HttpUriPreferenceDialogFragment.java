@@ -5,23 +5,23 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.URLUtil;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.utils.URLFormatUtils;
 import moe.shizuku.preference.PreferenceDialogFragment;
 
 /**
  * DialogFragment for {@link HttpUriPreference}
+ *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
 
@@ -148,10 +148,12 @@ public class HttpUriPreferenceDialogFragment extends PreferenceDialogFragment {
         public abstract void onTextChanged(boolean isValidUri);
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
 
         @Override
         public void afterTextChanged(Editable s) {

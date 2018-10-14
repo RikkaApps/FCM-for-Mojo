@@ -17,7 +17,7 @@ import moe.shizuku.fcmformojo.model.openqq.Discuss;
 
 public class DiscussWhitelistViewHolder extends WhitelistItemViewHolder<Discuss> {
 
-    public static final Creator CREATOR = (Creator<Pair<Discuss, Boolean>>) (inflater, parent) -> new DiscussWhitelistViewHolder(inflater.inflate(R.layout.item_blacklist_item, parent ,false));
+    public static final Creator CREATOR = (Creator<Pair<Discuss, Boolean>>) (inflater, parent) -> new DiscussWhitelistViewHolder(inflater.inflate(R.layout.item_blacklist_item, parent, false));
 
     public DiscussWhitelistViewHolder(View itemView) {
         super(itemView);

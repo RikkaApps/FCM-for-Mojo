@@ -1,13 +1,11 @@
 package moe.shizuku.fcmformojo.profile;
 
 import android.content.Context;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 
-import java.io.File;
-
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import moe.shizuku.fcmformojo.model.Chat;
 
 /**
@@ -28,14 +26,16 @@ public interface Profile {
      *
      * @return stringRes
      */
-    @StringRes int getDisplayName();
+    @StringRes
+    int getDisplayName();
 
     /**
      * 返回通知小图标资源
      *
      * @return drawableRes
      */
-    @DrawableRes int getNotificationIcon();
+    @DrawableRes
+    int getNotificationIcon();
 
     /**
      * 返回通知颜色资源
@@ -49,7 +49,7 @@ public interface Profile {
      * 当通知被点击时被调用，需要在这里打开对应的 activity
      *
      * @param context Context
-     * @param chat 对应的 Chat
+     * @param chat    对应的 Chat
      */
     void onStartChatActivity(Context context, @Nullable Chat chat);
 

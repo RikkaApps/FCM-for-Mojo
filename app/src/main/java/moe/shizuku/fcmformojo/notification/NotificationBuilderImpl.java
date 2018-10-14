@@ -1,9 +1,9 @@
 package moe.shizuku.fcmformojo.notification;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import moe.shizuku.fcmformojo.model.Chat;
 
 /**

@@ -5,11 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
-import android.support.annotation.Keep;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import androidx.annotation.Keep;
 import moe.shizuku.fcmformojo.model.Chat;
 import moe.shizuku.fcmformojo.notification.UserIcon;
 

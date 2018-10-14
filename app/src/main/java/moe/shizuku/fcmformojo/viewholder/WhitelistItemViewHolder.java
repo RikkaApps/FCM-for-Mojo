@@ -3,7 +3,6 @@ package moe.shizuku.fcmformojo.viewholder;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.support.annotation.NonNull;
 import android.util.Pair;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import io.reactivex.disposables.Disposable;
 import moe.shizuku.fcmformojo.adapter.WhitelistAdapter;
 import moe.shizuku.support.recyclerview.BaseViewHolder;

@@ -4,9 +4,10 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Keep;
 
 import java.lang.ref.WeakReference;
+
+import androidx.annotation.Keep;
 
 @Keep
 public abstract class BaseEntity implements Parcelable {

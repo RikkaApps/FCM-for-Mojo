@@ -3,12 +3,12 @@ package moe.shizuku.fcmformojo.preference;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.content.res.TypedArrayUtils;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.res.TypedArrayUtils;
+import androidx.fragment.app.DialogFragment;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.preference.DialogPreference;
 import moe.shizuku.preference.PreferenceDialogFragment;
@@ -16,6 +16,7 @@ import moe.shizuku.support.utils.Settings;
 
 /**
  * Preference to set http uri, http username and http password
+ *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
 
@@ -70,7 +71,7 @@ public class HttpUriPreference extends DialogPreference {
     @Override
     protected DialogFragment onCreateDialogFragment(String key) {
         final HttpUriPreferenceDialogFragment fragment = new HttpUriPreferenceDialogFragment();
-        final Bundle b  = new Bundle(1);
+        final Bundle b = new Bundle(1);
         b.putString(PreferenceDialogFragment.ARG_KEY, key);
         b.putString(HttpUriPreferenceDialogFragment.ARG_KEY_USERNAME, keyUsername);
         b.putString(HttpUriPreferenceDialogFragment.ARG_KEY_PASSWORD, keyPassword);

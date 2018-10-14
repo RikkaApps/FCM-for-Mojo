@@ -3,11 +3,11 @@ package moe.shizuku.fcmformojo.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.CallSuper;
 import io.reactivex.disposables.CompositeDisposable;
 import moe.shizuku.preference.PreferenceFragment;
 import moe.shizuku.support.recyclerview.RecyclerViewHelper;

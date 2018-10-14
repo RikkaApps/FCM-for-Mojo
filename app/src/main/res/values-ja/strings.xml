@@ -117,6 +117,7 @@
     <string name="toast_something_wroing">不正なこと:\n%s</string>
     <string name="toast_nothing_changed">何も変わされなかった</string>
     <string name="toast_token_exists">すでにこのデバイスが追加された</string>
+    <string name="toast_token">トークンを取得できません</string>
     <string name="toast_token_requesting">トークンを取得できません、もう一度請求中…</string>
     <string name="whitelist_group_no_uid">グループのuidを取得できないので切り替えできません</string>
     <string name="whitelist_summary_discuss_on">限定の討論からのメッセージを受信するのみ</string>

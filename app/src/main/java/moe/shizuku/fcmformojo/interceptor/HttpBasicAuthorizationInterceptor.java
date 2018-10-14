@@ -12,6 +12,7 @@ import okhttp3.Response;
 
 /**
  * OkHttp Interceptor for adding http basic authorization header
+ *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
 

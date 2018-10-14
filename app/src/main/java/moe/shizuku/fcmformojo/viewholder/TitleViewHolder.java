@@ -12,7 +12,7 @@ import moe.shizuku.support.recyclerview.BaseViewHolder;
 
 public class TitleViewHolder extends BaseViewHolder<CharSequence> {
 
-    public static final Creator<CharSequence> CREATOR = (inflater, parent) -> new TitleViewHolder(inflater.inflate(R.layout.item_header, parent ,false));
+    public static final Creator<CharSequence> CREATOR = (inflater, parent) -> new TitleViewHolder(inflater.inflate(R.layout.item_header, parent, false));
 
     private TextView title;
 

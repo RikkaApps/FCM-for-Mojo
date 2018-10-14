@@ -41,15 +41,6 @@
 -keep class * implements com.google.gson.JsonSerializer
 -keep class * implements com.google.gson.JsonDeserializer
 
--dontskipnonpubliclibraryclassmembers
--printconfiguration
--keep,allowobfuscation @interface android.support.annotation.Keep
-
--keep @android.support.annotation.Keep class *
--keepclassmembers class * {
-    @android.support.annotation.Keep *;
-}
-
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
 -dontnote retrofit2.Platform
 # Platform used when running on Java 8 VMs. Will not be used at runtime.

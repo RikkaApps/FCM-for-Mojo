@@ -2,7 +2,8 @@ package moe.shizuku.fcmformojo.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_REFRESH_STATUS;
 import static moe.shizuku.fcmformojo.FFMStatic.ACTION_UPDATE_URL;

@@ -1,7 +1,9 @@
 package moe.shizuku.fcmformojo.service;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,10 +14,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
@@ -27,6 +25,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.documentfile.provider.DocumentFile;
 import io.reactivex.Single;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
@@ -123,6 +126,18 @@ public class FFMIntentService extends ForegroundIntentService {
                 .setSmallIcon(android.R.drawable.stat_sys_download)
                 .setWhen(System.currentTimeMillis());
         return builder.build();
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    @Override
+    public void onCreateNotificationChannel(@NonNull NotificationManager notificationManager) {
+        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_PROGRESS,
+                getString(R.string.notification_channel_progress_message),
+                NotificationManager.IMPORTANCE_LOW);
+        channel.enableLights(false);
+        channel.enableVibration(false);
+        channel.setShowBadge(false);
+        notificationManager.createNotificationChannel(channel);
     }
 
     @Override

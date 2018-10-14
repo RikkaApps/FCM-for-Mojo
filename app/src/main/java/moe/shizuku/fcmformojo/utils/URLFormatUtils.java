@@ -1,11 +1,11 @@
 package moe.shizuku.fcmformojo.utils;
 
-import android.support.annotation.CheckResult;
-
+import androidx.annotation.CheckResult;
 import okhttp3.HttpUrl;
 
 /**
  * Utils to check whether a URL is in a valid format for mojo-qq endpoint
+ *
  * @author Haruue Icymoon haruue@caoyue.com.cn
  */
 

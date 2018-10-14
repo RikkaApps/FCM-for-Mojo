@@ -5,9 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.RemoteInput;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.RemoteInput;
 import moe.shizuku.fcmformojo.BuildConfig;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;

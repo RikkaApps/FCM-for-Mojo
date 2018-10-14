@@ -2,10 +2,10 @@ package moe.shizuku.fcmformojo.notification;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.Person;
-import android.support.v4.graphics.drawable.IconCompat;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.Person;
+import androidx.core.graphics.drawable.IconCompat;
 import moe.shizuku.fcmformojo.R;
 import moe.shizuku.fcmformojo.app.MessagingStyle;
 import moe.shizuku.fcmformojo.model.Chat;

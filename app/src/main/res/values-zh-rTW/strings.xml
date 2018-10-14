@@ -117,6 +117,7 @@
     <string name="toast_something_wroing">出錯了：\n%s</string>
     <string name="toast_nothing_changed">沒有改動。</string>
     <string name="toast_token_exists">已新增過這台設備。</string>
+    <string name="toast_token">無法取得令牌。</string>
     <string name="toast_token_requesting">無法取得令牌，正在嘗試請求…</string>
     <string name="whitelist_group_no_uid">由於無法取得群號無法修改</string>
     <string name="whitelist_summary_discuss_on">只接受開啟的討論組的訊息</string>

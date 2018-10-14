@@ -1,12 +1,12 @@
 package moe.shizuku.fcmformojo.model;
 
 
-import android.support.annotation.Keep;
-import android.support.annotation.NonNull;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
+
+import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 
 @Keep
 public class Account {
@@ -24,7 +24,8 @@ public class Account {
         return account;
     }
 
-    public @NonNull Password getPassword() {
+    public @NonNull
+    Password getPassword() {
         return password == null ? new Password(null, null) : password;
     }
 

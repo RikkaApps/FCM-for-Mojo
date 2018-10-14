@@ -12,13 +12,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.service.notification.StatusBarNotification;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.RemoteInput;
-import android.support.v4.provider.DocumentFile;
 
 import java.io.File;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.RemoteInput;
+import androidx.documentfile.provider.DocumentFile;
 import moe.shizuku.fcmformojo.FFMApplication;
 import moe.shizuku.fcmformojo.FFMSettings;
 import moe.shizuku.fcmformojo.FFMSettings.Vibrate;
@@ -141,7 +141,7 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
         style.setConversationTitle(chat.getName());
         style.setGroupConversation(chat.isGroup());
 
-        for (int i = chat.getMessages().size() - NOTIFICATION_MAX_MESSAGES, count = 0; i < chat.getMessages().size() && count <= 8; i++, count ++) {
+        for (int i = chat.getMessages().size() - NOTIFICATION_MAX_MESSAGES, count = 0; i < chat.getMessages().size() && count <= 8; i++, count++) {
             if (i < 0) {
                 continue;
             }
@@ -158,9 +158,9 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
     /**
      * 创建通知的回复动作。
      *
-     * @param context Context
+     * @param context     Context
      * @param requestCode PendingIntent 的 requestId
-     * @param chat 对应的 Chat
+     * @param chat        对应的 Chat
      * @return NotificationCompat.Action
      */
     private static NotificationCompat.Action createReplyAction(Context context, int requestCode, Chat chat) {
@@ -208,7 +208,6 @@ class NotificationBuilderImplBase extends NotificationBuilderImpl {
      * 同时设置浮动通知 / LED / 震动等
      *
      * @param chat 聊天内容
-     *
      * @return NotificationCompat.Builder
      **/
     @Override

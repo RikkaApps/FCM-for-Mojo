@@ -1,6 +1,6 @@
 package moe.shizuku.fcmformojo.model.openqq;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 @Keep
 public class SendResult {
