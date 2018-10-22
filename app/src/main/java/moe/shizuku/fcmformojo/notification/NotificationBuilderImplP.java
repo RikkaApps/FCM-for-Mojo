@@ -46,7 +46,7 @@ public class NotificationBuilderImplP extends NotificationBuilderImplO {
             User sender = message.getSenderUser();
 
             IconCompat icon = null;
-            Bitmap bitmap = UserIcon.getIcon(context, sender.getUid(), Chat.ChatType.FRIEND);
+            Bitmap bitmap = UserIcon.getIcon(context,chat.getUid(), Chat.ChatType.FRIEND);
             if (bitmap != null) {
                 icon = IconCompat.createWithBitmap(bitmap);
             }
